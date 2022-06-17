@@ -17,10 +17,11 @@ public:
     // Checks if the config file exists
     bool fileExists();
     // Reads the config file and turns it into a json object
-    bool readJson();
+    bool read();
     // Writes the json object to the config file
-    void writeJson();
+    void write();
     // Constructor, gets the filename of the config file
-    Config(std::string filename);
-    void printJson(); // testing
+    Config(std::string& filename);
+    void print(); // testing
+    void setPacksLocation(std::string& path);
 };

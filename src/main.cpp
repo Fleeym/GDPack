@@ -14,9 +14,10 @@ namespace fs = std::filesystem;
 // 3) Exit program
 
 int main() {
-    const std::string filename = "config.json";
+    std::string filename = "config.json";
+    std::string packsPath = "D:\\Packs";
     Config config(filename);
-    config.readJson();
-    config.printJson();
+    config.setPacksLocation(packsPath);
+    config.print();
     return 0;
 }

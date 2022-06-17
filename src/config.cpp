@@ -1,6 +1,6 @@
 #include "config.hpp"
 
-Config::Config(std::string filename) {
+Config::Config(std::string& filename) {
     m_filename = filename;
 }
 
@@ -13,9 +13,11 @@ bool Config::fileExists() {
     return false;
 }
 
-bool Config::readJson() {
-    if(!fileExists())
+bool Config::read() {
+    if(!fileExists()) {
+        std::cerr << "ERROR: File does not exist, cannot read it\n";
         return false;
+    }
     std::ifstream configFile(m_filename);
     configFile >> m_json;
     configFile.close();
@@ -23,12 +25,16 @@ bool Config::readJson() {
     return true;
 }
 
-void Config::printJson() {
+void Config::print() {
     std::cout << std::setw(4) << m_json;
 }
 
-void Config::writeJson() {
+void Config::write() {
     std::ofstream configFile(m_filename);
     configFile << m_json;
     configFile.close();
+}
+
+void Config::setPacksLocation(std::string& path) {
+    m_json["packsPath"] = path;
 }
