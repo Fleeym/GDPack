@@ -1,5 +1,6 @@
 #include "config.hpp"
 #include "interface.hpp"
+#include "switcher.hpp"
 
 // First, ask for the paths and Geometry Dash location if this is the first run.
 // If this isn't the first run, show the options menu:
@@ -19,6 +20,8 @@ int main(int argc, char **argv) {
     // Initialize components
     Config configObject(filename);
     Interface interfaceObject;
-    interfaceObject.init(configObject, directory);
+    Switcher switcherObject(configObject.getActivePack());
+    interfaceObject.init(configObject, directory, switcherObject);
+
     return 0;
 }

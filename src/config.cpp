@@ -8,16 +8,9 @@ Config::Config(std::string& filename) {
             std::cerr << "[ERROR]: Error opening the config file in the config constructor\n";
             return;
         }
+        // At initialization, read the config file and store it in the local variables, so no data is lost if you launch the program multiple times
         read();
-
     }
-}
-
-Config::Config(Config& config) {
-    m_json = config.m_json;
-    m_filename = config.m_filename;
-    m_geometryDashPath = config.m_geometryDashPath;
-    m_packsPath = config.m_packsPath;
 }
 
 bool Config::fileExists() {
