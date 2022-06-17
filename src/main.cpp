@@ -17,8 +17,8 @@ int main(int argc, char **argv) {
     
 
     // Initialize components
-    Config config(filename);
-    Interface interface;
-    interface.init(config, directory);
+    Config configObject(filename);
+    Interface interfaceObject;
+    interfaceObject.init(configObject, directory);
     return 0;
 }

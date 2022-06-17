@@ -9,7 +9,7 @@ void Interface::init(Config& config, std::string& directory) {
 }
 
 void Interface::mainMenu() {
-    char choice;
+    int choice;
     bool exit = false;
     std::cout << "GDPack CLI\n"
                     "1) Change active texture pack\n"
@@ -29,7 +29,24 @@ void Interface::mainMenu() {
 }
 
 void Interface::changeTP() {
+    std::cout << "Here's a list of all of your texture packs: \n\n";
+    fs::path packPath = m_directory;
+    std::vector<std::string> packNames;
+    int dirCount = 0;
 
+    for(auto entry : fs::directory_iterator{packPath}) {
+        if(fs::is_directory(entry)) {
+            std::string entryString = entry.path().string();
+            entryString = entryString.substr(entryString.find_last_of('\\') + 1, (entryString.length() - entryString.find_last_of('\\')));
+            packNames.push_back(entryString);
+            ++dirCount;
+        }
+    }
+    int i = 1;
+    for(auto pack : packNames) {
+        std::cout << i << ") " << pack << "\n";
+        ++i;
+    }
 }
 
 void Interface::revert() {
@@ -61,6 +78,9 @@ void Interface::setup(Config& config) {
         ok = true;
     }
 
+    std::string defaultPack = "vanilla";
+
+    config.setActivePack(defaultPack);
     config.setPacksPath(m_directory);  
     config.setGeometryDashPath(gdPath.string());
     config.save();

@@ -8,6 +8,7 @@ namespace fs = std::filesystem;
 class Interface {
 private:
     std::string m_directory = "";
+
 public:
     // Initializes the interface and starts the first-time setup if no config file is detected
     void init(Config& config, std::string& directory);
