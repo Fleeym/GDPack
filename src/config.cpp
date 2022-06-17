@@ -4,6 +4,10 @@ Config::Config(std::string& filename) {
     m_filename = filename;
 }
 
+Config::~Config() {
+    save();
+}
+
 bool Config::fileExists() {
     std::ifstream configFile (m_filename);
     if(configFile) {
@@ -29,12 +33,19 @@ void Config::print() {
     std::cout << std::setw(4) << m_json;
 }
 
-void Config::write() {
-    std::ofstream configFile(m_filename);
-    configFile << m_json;
-    configFile.close();
+void Config::setPacksPath(std::string& path) {
+    m_packsPath = path;
 }
 
-void Config::setPacksLocation(std::string& path) {
-    m_json["packsPath"] = path;
+void Config::setGeometryDashPath(std::string& path) {
+    m_geometryDashPath = path;
+}
+
+void Config::save() {
+    m_json["packsPath"] = m_packsPath;
+    m_json["geometryDashPath"] = m_geometryDashPath;
+
+    std::ofstream out(m_filename);
+    out << m_json;
+    out.close();
 }

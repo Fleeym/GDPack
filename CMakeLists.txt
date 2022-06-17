@@ -19,5 +19,7 @@ file (GLOB_RECURSE HEADERS
 )
 
 add_executable(GDPack ${SOURCES})
+target_precompile_headers(GDPack PUBLIC ${HEADERS})
+
 target_include_directories(GDPack PRIVATE include)
 target_link_libraries(GDPack PRIVATE nlohmann_json::nlohmann_json)
