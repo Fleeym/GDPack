@@ -14,6 +14,9 @@ namespace fs = std::filesystem;
 // 3) Exit program
 
 int main() {
-
+    const std::string filename = "config.json";
+    Config config(filename);
+    config.readJson();
+    config.printJson();
     return 0;
 }
