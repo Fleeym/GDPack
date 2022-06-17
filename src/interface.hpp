@@ -15,9 +15,9 @@ public:
     // Sets up the config file, asks for location of GD
     void setup(Config& config);
     // Main menu loop, leads to all functions
-    void mainMenu();
+    void mainMenu(Config& config);
     // Changes current texture pack
-    void changeTP();
+    void changeTP(Config& config);
     // Reverts to vanilla textures
     void revert();
     // Starts a config setup
