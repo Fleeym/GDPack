@@ -10,17 +10,15 @@
 // 4) Exit program
 
 int main(int argc, char **argv) {
+    // Sets working directory to application folder, used to set config filepath
     std::string directory = argv[0];
     directory.erase(directory.find_last_of('\\')+ 1);
-
     std::string filename = directory + "config.json";
-    std::string packsPath = "D:\\Packs";
+    
+
+    // Initialize components
     Config config(filename);
     Interface interface;
-    interface.init(config);
-
-
-    config.setPacksPath(packsPath);
-    config.save();
+    interface.init(config, directory);
     return 0;
 }

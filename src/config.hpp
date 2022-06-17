@@ -21,8 +21,6 @@ private:
 public:
     // Constructor, gets the filename of the config file
     Config(std::string& filename);
-    // Destructor, saves all settings to the config file
-    ~Config();
     // Checks if the config file exists
     bool fileExists();
     // Reads the config file and turns it into a json object
@@ -31,6 +29,7 @@ public:
     // Saves all stored settings to the config.json file
     void save();
     
+    // Setters for settings, cringe
     void setPacksPath(std::string& path);
     void setGeometryDashPath(std::string& path);
 };
