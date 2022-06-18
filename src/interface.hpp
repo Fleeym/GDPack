@@ -9,7 +9,7 @@ namespace fs = std::filesystem;
 
 class Interface {
 private:
-    std::string m_directory = "";
+    std::string m_directory;
     Config *m_config;
     Switcher *m_switcher;
 

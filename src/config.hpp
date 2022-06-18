@@ -17,8 +17,8 @@ private:
 
     // Settings
     std::map<std::string, std::string> m_settings;
-    std::string m_packsPath = "";
-    std::string m_geometryDashPath = "";
+    std::string m_packsPath;
+    std::string m_geometryDashPath;
     std::string m_activePack;
 
 public:
@@ -32,7 +32,7 @@ public:
     void print();
     // Saves all stored settings to the config.json file
     void save();
-    // First time setup
+    // First time setup, runs if config.json doesn't exist
     void setup();
     
     // Setters for settings, cringe

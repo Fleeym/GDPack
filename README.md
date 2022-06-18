@@ -1,5 +1,6 @@
 # GDPack
-A small program I made for myself that manages Geometry Dash texture packs. Written in C++
+A small program I made for myself that will manage Geometry Dash texture packs. Written in C++.
+This is my first project so if the code sucks, you know why :)
 
 ## Building from source
 At the moment you can only build this from source. This is how I do it.
