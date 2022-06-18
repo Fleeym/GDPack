@@ -1,7 +1,8 @@
 #include "switcher.hpp"
 
-Switcher::Switcher(std::string& activePack) {
-    m_activePack = activePack;
+
+void Switcher::init(Config *config) {
+    m_config = config;
 }
 
 // Future me, I am so, so terribly sorry for this pestilence that I have inflicted upon you. I only hope you have the mercy to gaze in the mirror after rewatching this
@@ -31,10 +32,6 @@ std::string Switcher::getNameFromPath(std::string& path) {
     if(temp.at(temp.length() - 1) == '\\')
         temp.pop_back();
     return temp.substr(temp.find_last_of('\\') + 1, (temp.length() - temp.find_last_of('\\')));
-}
-
-void Switcher::setDefaultActivePack(std::string& name) {
-    m_activePack = name;
 }
 
 void createVanillaFolder() {

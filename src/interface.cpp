@@ -1,14 +1,22 @@
 #include "interface.hpp"
 
-void Interface::init(Config& config, std::string& directory, Switcher& switcherObject) {
+/*void Interface::init(Config& config, std::string& directory, Switcher& switcherObject) {
     m_directory = directory;
     if (!config.fileExists()) {
         setup(config, switcherObject);
     }
     mainMenu(config, switcherObject);
+}*/
+
+void Interface::init(Config* configObject, Switcher* switcherObject, std::string& directory) {
+    m_directory = directory;
+    m_config = configObject;
+    m_switcher = switcherObject;
+
+    mainMenu();
 }
 
-void Interface::mainMenu(Config& config, Switcher& swticherObject) {
+void Interface::mainMenu() {
     int choice;
     bool exit = false;
     std::cout << "GDPack CLI\n"
@@ -20,7 +28,7 @@ void Interface::mainMenu(Config& config, Switcher& swticherObject) {
         std::cout << "GDPack >> ";
         std::cin >> choice;
         switch(choice) {
-            case 1: listTP(config, swticherObject); break;
+            case 1: listTP(); break;
             case 2: revert(); break;
             case 3: editConfig(); break;
             default: exit = true; break;
@@ -28,7 +36,7 @@ void Interface::mainMenu(Config& config, Switcher& swticherObject) {
     }
 }
 
-void Interface::listTP(Config& config, Switcher& switcherObject) {
+void Interface::listTP() {
     std::cout << "Here's a list of all of your texture packs: \n\n";
     fs::path packPath = m_directory;
     std::vector<std::string> packNames;
@@ -49,7 +57,7 @@ void Interface::listTP(Config& config, Switcher& switcherObject) {
     std::cout << "You have " << dirCount << " texture packs\n";
     int i = 1;
     for(auto pack : packNames) {
-        if(config.getActivePack() == pack) {
+        if(m_config->getActivePack() == pack) {
             std::cout << "[Active] " << i << ") " << pack << '\n';
         } else {
             std::cout << i << ") " << pack << "\n";
@@ -60,9 +68,8 @@ void Interface::listTP(Config& config, Switcher& switcherObject) {
     std::cout << "Choose a pack to swap (press any other key to return to the menu): ";
     std::cin >> choice;
     if(choice <= dirCount && choice > 0) {
-        switcherObject.setActivePack(packPaths.at(choice - 1), config.getGeometryDashPath());
+        m_switcher->setActivePack(packPaths.at(choice - 1), m_config->getGeometryDashPath());
     }
-        
 }
 
 void Interface::revert() {
@@ -73,33 +80,3 @@ void Interface::editConfig() {
 
 }
 
-void Interface::setup(Config& config, Switcher& switcherObject) {
-    std::string input;
-    fs::path gdPath;
-
-    std::cout << "\nGDPack CLI\n\n"
-                "[WARNING]: GDPack should be placed in an empty folder, if GDPack isn't in an empty folder, please move it.\n\n"
-                "Couldn't find a config file. Setting up GDPack...\n";
-
-    bool ok = false;
-    while(ok == false) {
-        std::cout << "Enter your Geometry Dash RESOURCES folder path (Paste with CTRL + SHIFT + V): ";
-        std::getline(std::cin, input);
-        gdPath = input;
-
-        if(!fs::exists(gdPath)) {
-            std::cerr << "[ERROR]: Not a valid path. Try again.\n";
-            continue;
-        }
-        ok = true;
-    }
-
-    std::string defaultPack = "vanilla";
-
-    switcherObject.setDefaultActivePack(defaultPack);
-
-    config.setActivePack(defaultPack);
-    config.setPacksPath(m_directory);  
-    config.setGeometryDashPath(gdPath.string());
-    config.save();
-}

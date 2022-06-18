@@ -7,9 +7,9 @@ namespace fs = std::filesystem;
 
 class Switcher {
 private:
-    std::string m_activePack;
+    Config *m_config;
 public:
-    Switcher(std::string& activePack);
+    void init(Config *config);
     void setActivePack(std::string& packPath, std::string& resPath);
     std::string getNameFromPath(std::string& path);
     void setDefaultActivePack(std::string& name);
