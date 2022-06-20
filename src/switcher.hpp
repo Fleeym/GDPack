@@ -13,4 +13,5 @@ public:
     void setActivePack(std::string& packPath, std::string& resPath);
     std::string getNameFromPath(std::string& path);
     void setDefaultActivePack(std::string& name);
+    void createVanilla();
 };

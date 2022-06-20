@@ -26,8 +26,13 @@ int main(int argc, char **argv) {
 
     std::string command = "";
     std::string argument = "";
+    std::string argument2 = "";
 
-    if(argc >= 3) {
+    if(argc == 4) {
+        command = argv[1];
+        argument = argv[2];
+        argument2 = argv[3];
+    } else if(argc == 3) {
         command = argv[1];
         argument = argv[2];
     } else if(argc == 2) {
@@ -57,13 +62,21 @@ int main(int argc, char **argv) {
 void selectCommand(Interface* interfaceObject, Config* configObject, Switcher* switcherObject,
                   const std::string& command, const std::string& argument, const std::vector<std::string>& commands) {
     // if the user entered a command (gdpack help)
-    uint32_t commandID = 0;
+    int commandID = -1;
     if(command != "") {
         for(int i = 0; i < commands.size() - 1; i++) {
-            if(command == commands[i])
+            if(command == commands[i] && command.size() == commands[i].size())
                 commandID = i;
         }
+    } else {
+        commandID = 0;
     }
+
+    if(commandID == -1) {
+        fmt::print(fg(fmt::color::red), "Invalid command, do \"gdpack help\" for more info!");
+        return;
+    }
+
     switch(commandID) {
         case 0: interfaceObject->showHelp(interfaceObject->getProgramVersion()); break;
         case 1: configObject->setup(true); break;

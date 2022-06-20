@@ -13,11 +13,15 @@ void Interface::init(Config* configObject, Switcher* switcherObject, std::string
     m_config = configObject;
     m_switcher = switcherObject;
 
+    if(!m_config->fileExists()) {
+        m_config->setup(false);
+    }
+
     m_packPaths = getPackPaths();
     m_packNames = getPackNames(m_packPaths);
 }
 
-void Interface::mainMenu() {
+void Interface::mainMenu() { // legacy
     int choice;
     bool exit = false;
     std::cout << "GDPack CLI\n"
@@ -66,7 +70,8 @@ std::vector<std::string> Interface::getPackNames(const std::vector<std::string>&
 }
 
 void Interface::listTP() {
-    fmt::print(fg(fmt::color::yellow), "GDPack CLI\n");
+    fmt::print(fg(fmt::color::yellow), "GDPack CLI ");
+    fmt::print(fg(fmt::color::purple), "v{}\n", m_programVersion);
     fmt::print(fg(fmt::color::orange), "Here's a list of all of your texture packs: \n\n");
     
     int i = 1;
@@ -102,7 +107,7 @@ void Interface::showHelp(std::string& version) {
     fmt::print(fg(fmt::color::purple), "v{}", version);
     fmt::print(" [COMMAND] [VALUE]\n"
                 "The CLI Geometry Dash texture pack manager!\n\n");
-    fmt::print(fg(fmt::color::orange), "This is the help dialogue. Here is a list of possible commands: \n");
+    fmt::print(fg(fmt::color::orange), "Here is a list of possible commands: \n");
     fmt::print(fg(fmt::color::cyan),
         " * help -> Shows this dialogue. Can also be used as an argument for the other commands.\n"
         " * setup -> Repeats the first-run setup.\n"

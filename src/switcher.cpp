@@ -34,7 +34,7 @@ std::string Switcher::getNameFromPath(std::string& path) {
     return temp.substr(temp.find_last_of('\\') + 1, (temp.length() - temp.find_last_of('\\')));
 }
 
-void createVanillaFolder() {
-
+void Switcher::createVanilla() {
+    
 }
 
