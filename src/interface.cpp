@@ -12,8 +12,6 @@ void Interface::init(Config* configObject, Switcher* switcherObject, std::string
     m_directory = directory;
     m_config = configObject;
     m_switcher = switcherObject;
-
-    mainMenu();
 }
 
 void Interface::mainMenu() {
@@ -80,3 +78,22 @@ void Interface::editConfig() {
 
 }
 
+void Interface::showHelp(std::string& version) {
+    fmt::print(fg(fmt::color::yellow), "GDPack ");
+    fmt::print(fg(fmt::color::purple), "v{}", version);
+    fmt::print(" [COMMAND] [VALUE]\n"
+                "The CLI Geometry Dash texture pack manager!\n\n");
+    fmt::print(fg(fmt::color::orange), "This is the help dialogue. Here is a list of possible commands: \n");
+    fmt::print(fg(fmt::color::coral),
+        " * help -> Shows this dialogue. Can also be used as an argument for the other commands.\n"
+        " * setup -> Repeats the first-run setup.\n"
+        " * list -> Lists all installed packs.\n"
+        " * revert -> Reverts the game to vanilla resources.\n"
+        " * set [PACK] -> Sets the active pack.\n"
+        " * config [OPTION] [VALUE] -> Edits the settings from the config file.\n"
+    );
+}
+
+std::string& Interface::getProgramVersion() {
+    return m_programVersion;
+}
