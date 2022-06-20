@@ -7,24 +7,43 @@ void Switcher::init(Config *config) {
 
 // Future me, I am so, so terribly sorry for this pestilence that I have inflicted upon you. I only hope you have the mercy to gaze in the mirror after rewatching this
 // disaster of a function. Also sorry for playing hot potato with object references, I should have used pointers lol
-void Switcher::setActivePack(std::string& packPathStr, std::string& resPathStr) {
-    // names of the files we are swapping
-    std::vector<std::string> resPathsPack;
-    std::vector<std::string> resPathsGD;
+void Switcher::setActivePack(const std::string& packPathString, const std::string& gdResPathString, const std::string& packName) {
+    //std::cout << packPathString << "\n" << gdResPathString << "\n";
+    std::string packPathFilesString = packPathString + "\\Resources";
+    std::string gdResPathFilesString = gdResPathString + "\\Resources";
 
-    fs::path packPath = packPathStr;
-    for(auto file : fs::directory_iterator{packPath}) {
-        std::string fileStr = file.path().string();
-        std::string fileName = getNameFromPath(fileStr);
+    // Paths to <pack>/Resources, and GD/Resources respectively
+    fs::path gdResPathFiles = gdResPathFilesString;
+    fs::path packPathFiles = packPathFilesString;
 
-        std::string vanillaStr = packPathStr;
-        if(vanillaStr.at(vanillaStr.length() - 1) == '\\')
-            vanillaStr.pop_back();
-        vanillaStr = vanillaStr.substr(0, vanillaStr.length() - getNameFromPath(vanillaStr).length()) + "vanilla\\" + fileName;
+    // Paths to root folder of pack and GD folder
+    fs::path packPath = packPathString;
+    fs::path gdResPath = gdResPathString;
 
-        std::cout << vanillaStr << "\n";
-        std::cout << fileStr << "\n";
-        fs::path resPath = resPathStr + fileName;
+    std::vector<std::string> filesToCopy;
+
+    const auto copyOptions = fs::copy_options::overwrite_existing
+                            | fs::copy_options::recursive;
+    
+    // Iterate in the texture pack folder and remember which files to move
+    auto iterator = fs::directory_iterator(packPathFiles);
+    for(auto file : iterator) {
+        std::string tempStr = file.path().string();
+        std::string fileName = getNameFromPath(tempStr);
+        filesToCopy.push_back(fileName);
+    }
+    if(m_config->getActivePack() == "vanilla") {
+        createVanilla();
+
+    }
+
+    iterator = fs::directory_iterator(gdResPathFiles);
+    for(auto file : iterator) {  
+
+        std::string fileName = getNameFromPath(file.path().string());
+        auto neededFile = std::find(filesToCopy.begin(), filesToCopy.end(), fileName);
+        //if(neededFile != std::end(filesToCopy)) 
+            //std::cout << (*neededFile) << "\n";
     }
 }
 std::string Switcher::getNameFromPath(std::string& path) {
@@ -35,6 +54,14 @@ std::string Switcher::getNameFromPath(std::string& path) {
 }
 
 void Switcher::createVanilla() {
-    
-}
+    // Creates vanilla folder if it doesn't exist
+    std::string vanillaStr = m_config->getPacksPath();
+    vanillaStr += "\\vanilla";
+    if(vanillaStr.at(vanillaStr.length() - 1) == '\\')
+        vanillaStr.pop_back();
+
+    fs::path vanillaPath = vanillaStr;
+    if(!fs::exists(vanillaPath))
+        fs::create_directory(vanillaPath);
+}   
 
