@@ -12,8 +12,8 @@ private:
     Config *m_config;
 public:
     void init(Config *config);
-    void setActivePack(const std::string& gdResPath, const std::string& packPath, const std::string& packName);
+    void setActivePack(const std::string& gdResPath, const std::string& packPath, std::string& packName);
     std::string getNameFromPath(std::string& path);
     void setDefaultActivePack(std::string& name);
-    void createVanilla();
+    fs::path createVanilla();
 };

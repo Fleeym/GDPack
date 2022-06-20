@@ -89,14 +89,17 @@ void Config::setup(bool manualActivate) {
 
 void Config::setActivePack(std::string& name) {
     m_settings["activePack"] = name;
+    save();
 }
 
 void Config::setPacksPath(std::string& path) {
     m_settings["packsPath"] = path;
+    save();
 }
 
 void Config::setGeometryDashPath(std::string& path) {
     m_settings["geometryDashPath"] = path;
+    save();
 }
 
 std::string Config::getGeometryDashPath() {

@@ -88,7 +88,7 @@ void Interface::listTP() {
 void Interface::setPack(const std::string& indexStr) {
     int index = std::stoi(indexStr);
     if(index <= m_packPaths.size() && index > 0) {
-        m_switcher->setActivePack(m_packPaths.at(index - 1), m_config->getGeometryDashPath(), m_packNames.at(index));
+        m_switcher->setActivePack(m_packPaths.at(index - 1), m_config->getGeometryDashPath(), m_packNames.at(index - 1));
     }
 }
 
