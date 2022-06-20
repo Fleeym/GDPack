@@ -14,6 +14,9 @@ private:
     std::string m_directory;
     Config *m_config;
     Switcher *m_switcher;
+
+    std::vector<std::string> m_packPaths;
+    std::vector<std::string> m_packNames;
     std::string m_programVersion = "0.0.1";
 
 public:
@@ -29,7 +32,17 @@ public:
     void editConfig();
     // Shows the help dialogue
     void showHelp(std::string& version);
+    // sets the pack lol
+    void setPack(const std::string& indexStr);
+    // Read the pack directories from the parent dir
+    std::vector<std::string> getPackPaths();
+    // Read the pack names from the parent dir
+    std::vector<std::string> getPackNames(const std::vector<std::string>& packPaths);
 
     //getter
     std::string& getProgramVersion();
+
+    //setter
+    void setPackPaths(const std::vector<std::string> packPaths);
+    void setPackNames(const std::vector<std::string> packNames);
 };

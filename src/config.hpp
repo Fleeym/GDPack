@@ -33,7 +33,7 @@ public:
     // Saves all stored settings to the config.json file
     void save();
     // First time setup, runs if config.json doesn't exist
-    void setup();
+    void setup(bool manualActivate);
     
     // Setters for settings, cringe
     void setPacksPath(std::string& path);

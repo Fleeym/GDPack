@@ -3,9 +3,12 @@
 #include "switcher.hpp"
 
 #include <vector>
+#include <algorithm>
+#include <iterator>
 
 int getCommand(std::string&, std::vector<std::string>&);
-void selectCommand(Interface* interfaceObject, int argc);
+void selectCommand(Interface* interfaceObject, Config* configObject, Switcher* switcherObject, 
+                    const std::string& command, const std::string& argument, const std::vector<std::string>& commands);
 
 // First, ask for the paths and Geometry Dash location if this is the first run.
 // If this isn't the first run, show the options menu:
@@ -31,7 +34,7 @@ int main(int argc, char **argv) {
         command = argv[1];
     }
 
-    std::vector<std::string> commandOptions = {"help", "list", "setup", "revert", "set", "config"};
+    const std::vector<std::string> commandOptions = {"help", "setup", "list", "revert", "set", "config"};
 
     // Initialize components
     Config* configObject = new Config;
@@ -42,7 +45,7 @@ int main(int argc, char **argv) {
     switcherObject->init(configObject);
     interfaceObject->init(configObject, switcherObject, directory);
 
-    selectCommand(interfaceObject, command, argument);
+    selectCommand(interfaceObject, configObject, switcherObject,  command, argument, commandOptions);
 
     delete configObject;
     delete interfaceObject;
@@ -51,9 +54,27 @@ int main(int argc, char **argv) {
     return 0;
 }
 
-void selectCommand(Interface* interfaceObject, const std::string& command, const std::string& argument) {
-    // if we have a command
+void selectCommand(Interface* interfaceObject, Config* configObject, Switcher* switcherObject,
+                  const std::string& command, const std::string& argument, const std::vector<std::string>& commands) {
+    // if the user entered a command (gdpack help)
+    uint32_t commandID = 0;
     if(command != "") {
-        
+        for(int i = 0; i < commands.size() - 1; i++) {
+            if(command == commands[i])
+                commandID = i;
+        }
+    }
+    switch(commandID) {
+        case 0: interfaceObject->showHelp(interfaceObject->getProgramVersion()); break;
+        case 1: configObject->setup(true); break;
+        case 2: interfaceObject->listTP(); break;
+        case 3: interfaceObject->revert(); break;
+    }
+
+    if(argument != "") {
+        switch(commandID) {
+            case 4: interfaceObject->setPack(argument);
+            case 5: interfaceObject->editConfig();
+        }
     }
 }

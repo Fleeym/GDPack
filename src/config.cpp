@@ -14,7 +14,7 @@ void Config::init(std::string& filename, std::string& directory) {
         if(!read())
             std::cerr << "[ERROR]: Error reading config.json\n";
     } else {
-        setup();
+        setup(false);
     }
 }
 
@@ -56,13 +56,15 @@ void Config::print() {
     std::cout << std::setw(4) << m_json;
 }
 
-void Config::setup() {
+void Config::setup(bool manualActivate) {
     std::string input;
     fs::path gdPath;
 
-    std::cout << "\nGDPack CLI\n\n"
-                "[WARNING]: GDPack should be placed in an empty folder, if GDPack isn't in an empty folder, please move it.\n\n"
-                "Couldn't find a config file. Setting up GDPack...\n";
+    fmt::print(fg(fmt::color::yellow), "GDPack CLI Setup\n");
+    fmt::print(fg(fmt::color::red), "[WARNING]: GDPack should be placed in an empty folder, if GDPack isn't in an empty folder, please move it.\n\n");
+
+    if(!manualActivate)
+        fmt::print("Couldn't find a config file. Setting up GDPack...\n");
 
     bool ok = false;
     while(ok == false) {
