@@ -72,6 +72,7 @@ At the moment you can only build this from source. This is how I do it.
 - Install CMake Tools for VSCode
 - Open gdpack-master in VSCode
 - F1 -> CMake: Configure
+- F1 -> CMake: Select Variant -> Release
 - Build it using the button in the bottom bar or by pressing F7
 
 You can do this with commands, too, but you're on your own there.
