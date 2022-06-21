@@ -81,6 +81,7 @@ void Interface::setPack(const std::string& indexStr) {
 
 void Interface::revert() {
     if(m_config->getActivePack() == "vanilla") {
+        fmt::print(fg(fmt::color::red), "\"vanilla\" is already the default pack.\n");
         return;
     }
 

@@ -39,7 +39,7 @@ int main(int argc, char **argv) {
         command = argv[1];
     }
 
-    const std::vector<std::string> commandOptions = {"help", "setup", "list", "revert", "set", "config"};
+    const std::vector<std::string> commandOptions = {"help", "setup", "list", "revert", "set"};
 
     // Initialize components
     Config* configObject = new Config;
@@ -64,7 +64,7 @@ void selectCommand(Interface* interfaceObject, Config* configObject, Switcher* s
     // if the user entered a command (gdpack help)
     int commandID = -1;
     if(command != "") {
-        for(int i = 0; i < commands.size() - 1; i++) {
+        for(int i = 0; i < commands.size(); i++) {
             if(command == commands[i] && command.size() == commands[i].size())
                 commandID = i;
         }
