@@ -21,10 +21,10 @@ void Switcher::setActivePack(const std::string& packPathString, const std::strin
     fs::path gdResPath = gdResPathString;
 
     std::vector<std::string> filesToCopy;
-    if(packName == m_config->getActivePack()) {
+    /*if(packName == m_config->getActivePack()) {
         fmt::print(fg(fmt::color::red), "This pack is already in use.\n");
         return;
-    }
+    }*/
     const auto copyOptions = fs::copy_options::overwrite_existing
                             | fs::copy_options::recursive;
     
@@ -62,7 +62,7 @@ void Switcher::setActivePack(const std::string& packPathString, const std::strin
     fs::copy(packPathFiles, gdResPathFiles, copyOptions);
     m_config->setActivePack(packName);
     m_config->save();
-    fmt::print(fg(fmt::color::green), "Successfully switched pack to {}!", packName);
+    fmt::print(fg(fmt::color::green), "Successfully switched pack to {}!\n", packName);
 }
 std::string Switcher::getNameFromPath(std::string& path) {
     std::string temp = path;

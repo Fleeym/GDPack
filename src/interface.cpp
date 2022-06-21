@@ -72,7 +72,13 @@ void Interface::setPack(const std::string& indexStr) {
         return;
     }
     int index = std::stoi(indexStr);
+    if(m_packNames.at(index - 1) == "vanilla") {
+        fmt::print(fg(fmt::color::red), "Can't switch to vanilla using this command, instead use \"gdpack revert\"");
+        return;
+    }
     if(index <= m_packPaths.size() && index > 0) {
+        if(m_packNames.at(index - 1) == m_config->getActivePack())
+            revert();
         m_switcher->setActivePack(m_packPaths.at(index - 1), m_config->getGeometryDashPath(), m_packNames.at(index - 1));
     } else {
         fmt::print(fg(fmt::color::red), "Invalid index. Use \"gdpack list\" to see available packs.");
