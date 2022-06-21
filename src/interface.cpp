@@ -96,11 +96,11 @@ void Interface::revert() {
 void Interface::showHelp(std::string& version) {
     fmt::print(fg(fmt::color::yellow), "GDPack ");
     fmt::print(fg(fmt::color::purple), "v{}", version);
-    fmt::print(" [COMMAND] [VALUE]\n"
+    fmt::print(" [COMMAND] [ARGUMENT]\n"
                 "The CLI Geometry Dash texture pack manager!\n\n");
     fmt::print(fg(fmt::color::orange), "Here is a list of possible commands: \n");
     fmt::print(fg(fmt::color::cyan),
-        " * help -> Shows this dialogue. Can also be used as an argument for the other commands.\n"
+        " * help -> Shows this dialogue. Can be used as argument for other commands.\n"
         " * setup -> Repeats the first-run setup.\n"
         " * list -> Lists all installed packs.\n"
         " * revert -> Reverts the game to vanilla resources.\n"
