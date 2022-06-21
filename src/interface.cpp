@@ -112,7 +112,7 @@ void Interface::showHelp(std::string& version) {
 void Interface::showCommandHelp(const std::string& command) {
     fmt::print(fg(fmt::color::yellow), "GDPack ");
     fmt::print(fg(fmt::color::purple), "v{}", m_programVersion);
-    fmt::print(" [COMMAND] [VALUE]\n"
+    fmt::print(" [COMMAND] [ARGUMENT]\n"
                 "The CLI Geometry Dash texture pack manager!\n\n");
     if(command == "setup") {
         fmt::print(fg(fmt::color::yellow), "Command \"setup\": ");
