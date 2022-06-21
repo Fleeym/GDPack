@@ -71,13 +71,13 @@ void Config::setup(bool manualActivate) {
 
     bool ok = false;
     while(ok == false) {
-        std::cout << "Enter your Geometry Dash folder path (Paste with CTRL + SHIFT + V): ";
+        fmt::print("Enter your Geometry Dash folder path (Paste with CTRL + SHIFT + V): ");
         std::getline(std::cin, input);
         gdPath = input;
 
         if(!fs::exists(gdPath)) {
-            std::cerr << "[ERROR]: Not a valid path. Try again.\n";
-            continue;
+            fmt::print(fg(fmt::color::red), "\n[ERROR]: Not a valid path. Try again.\n");
+            return;
         }
         ok = true;
     }

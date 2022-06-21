@@ -77,16 +77,17 @@ void Interface::setPack(const std::string& indexStr) {
         return;
     }
     if(index <= m_packPaths.size() && index > 0) {
-        revert();
+        revert(true);
         m_switcher->setActivePack(m_packPaths.at(index - 1), m_config->getGeometryDashPath(), m_packNames.at(index - 1), false);
     } else {
         fmt::print(fg(fmt::color::red), "Invalid index. Use \"gdpack list\" to see available packs.");
     }
 }
 
-void Interface::revert() {
+void Interface::revert(bool fromCommand) {
     if(m_config->getActivePack() == "vanilla") {
-        fmt::print(fg(fmt::color::red), "\"vanilla\" is already the default pack.\n");
+        if(!fromCommand)
+            fmt::print(fg(fmt::color::red), "\"vanilla\" is already the default pack.\n");
         return;
     }
 
@@ -96,7 +97,7 @@ void Interface::revert() {
         position = std::distance(m_packNames.begin(), found);
         // std::cout << "Pack position: " << position << '\n';
     }
-    m_switcher->setActivePack(m_packPaths.at(position), m_config->getGeometryDashPath(), m_packNames.at(position), true);
+    m_switcher->setActivePack(m_packPaths.at(position), m_config->getGeometryDashPath(), m_packNames.at(position), fromCommand);
 }
 
 void Interface::showHelp(std::string& version) {

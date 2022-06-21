@@ -25,7 +25,7 @@ public:
     // Searches and lists texture packs in parent dir
     void listTP();
     // Reverts to vanilla textures
-    void revert();
+    void revert(bool);
     // Shows the help dialogue
     void showHelp(std::string& version);
     // Shows help for a specified command

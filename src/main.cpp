@@ -86,7 +86,7 @@ void selectCommand(Interface* interfaceObject, Config* configObject, Switcher* s
             case 0: interfaceObject->showHelp(interfaceObject->getProgramVersion()); break;
             case 1: configObject->setup(true); break;
             case 2: interfaceObject->listTP(); break;
-            case 3: interfaceObject->revert(); break;
+            case 3: interfaceObject->revert(false); break;
             case 4: interfaceObject->setPack(argument); break;
         }    
     }
