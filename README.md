@@ -1,6 +1,6 @@
 # GDPack - A CLI Geometry Dash texture pack manager!
 A small program I made for myself that manages Geometry Dash texture packs.
-This is my first project so if the code sucks, you know why. If you want to report a bug, or contact me, here's my discord: Flame#7148.
+This is my first project so if the code sucks, you know why. If you want to report a bug, or contact me, here's my discord: ```Flame#7148```
 
 # Usage
 ## Commands
