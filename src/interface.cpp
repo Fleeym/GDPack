@@ -93,7 +93,17 @@ void Interface::setPack(const std::string& indexStr) {
 }
 
 void Interface::revert() {
+    if(m_config->getActivePack() == "vanilla") {
+        return;
+    }
 
+    int64_t position = 0;
+    auto found = std::find(m_packNames.begin(), m_packNames.end(), "vanilla");
+    if(found != std::end(m_packNames)) {
+        position = std::distance(m_packNames.begin(), found);
+        std::cout << position;
+    }
+    m_switcher->setActivePack(m_packPaths.at(position), m_config->getGeometryDashPath(), m_packNames.at(position));
 }
 
 void Interface::editConfig() {
@@ -107,12 +117,12 @@ void Interface::showHelp(std::string& version) {
                 "The CLI Geometry Dash texture pack manager!\n\n");
     fmt::print(fg(fmt::color::orange), "Here is a list of possible commands: \n");
     fmt::print(fg(fmt::color::cyan),
-        " * help -> Shows this dialogue. Can also be used as an argument for the other commands.\n"
+        " * help -> Shows this dialogue. Can also be used as an argument for the other commands. (Help for other commands not implemented yet.)\n"
         " * setup -> Repeats the first-run setup.\n"
         " * list -> Lists all installed packs.\n"
-        " * revert -> Reverts the game to vanilla resources.\n"
+        " * revert -> Reverts the game to vanilla resources. (NOT FINISHED)\n"
         " * set [PACK] -> Sets the active pack.\n"
-        " * config [OPTION] [VALUE] -> Edits the settings from the config file.\n"
+        " * config [OPTION] [VALUE] -> Edits the settings from the config file. (NOT FINISHED)\n"
     );
 }
 

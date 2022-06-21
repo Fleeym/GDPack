@@ -12,7 +12,7 @@ private:
     Config *m_config;
 public:
     void init(Config *config);
-    void setActivePack(const std::string& gdResPath, const std::string& packPath, std::string& packName);
+    void setActivePack(const std::string& packPathString, const std::string& gdResPathString, std::string& packName);
     std::string getNameFromPath(std::string& path);
     void setDefaultActivePack(std::string& name);
     fs::path createVanilla();
