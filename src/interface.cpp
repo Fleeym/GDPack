@@ -77,9 +77,8 @@ void Interface::setPack(const std::string& indexStr) {
         return;
     }
     if(index <= m_packPaths.size() && index > 0) {
-        if(m_packNames.at(index - 1) == m_config->getActivePack())
-            revert();
-        m_switcher->setActivePack(m_packPaths.at(index - 1), m_config->getGeometryDashPath(), m_packNames.at(index - 1));
+        revert();
+        m_switcher->setActivePack(m_packPaths.at(index - 1), m_config->getGeometryDashPath(), m_packNames.at(index - 1), false);
     } else {
         fmt::print(fg(fmt::color::red), "Invalid index. Use \"gdpack list\" to see available packs.");
     }
@@ -97,7 +96,7 @@ void Interface::revert() {
         position = std::distance(m_packNames.begin(), found);
         // std::cout << "Pack position: " << position << '\n';
     }
-    m_switcher->setActivePack(m_packPaths.at(position), m_config->getGeometryDashPath(), m_packNames.at(position));
+    m_switcher->setActivePack(m_packPaths.at(position), m_config->getGeometryDashPath(), m_packNames.at(position), true);
 }
 
 void Interface::showHelp(std::string& version) {

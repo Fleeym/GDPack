@@ -7,7 +7,7 @@ void Switcher::init(Config *config) {
 
 // Future me, I am so, so terribly sorry for this pestilence that I have inflicted upon you. I only hope you have the mercy to gaze in the mirror after rewatching this
 // disaster of a function. Also sorry for playing hot potato with object references, I should have used pointers lol
-void Switcher::setActivePack(const std::string& packPathString, const std::string& gdResPathString, std::string& packName) {
+void Switcher::setActivePack(const std::string& packPathString, const std::string& gdResPathString, std::string& packName, bool fromRevert) {
     //std::cout << packPathString << "\n" << gdResPathString << "\n";
     std::string packPathFilesString = packPathString + "\\Resources";
     std::string gdResPathFilesString = gdResPathString + "\\Resources";
@@ -62,7 +62,8 @@ void Switcher::setActivePack(const std::string& packPathString, const std::strin
     fs::copy(packPathFiles, gdResPathFiles, copyOptions);
     m_config->setActivePack(packName);
     m_config->save();
-    fmt::print(fg(fmt::color::green), "Successfully switched pack to {}!\n", packName);
+    if(!fromRevert)
+        fmt::print(fg(fmt::color::green), "Successfully switched pack to {}!\n", packName);
 }
 std::string Switcher::getNameFromPath(std::string& path) {
     std::string temp = path;
