@@ -12,6 +12,11 @@ void Switcher::setActivePack(const std::string& packPathString, const std::strin
     std::string packPathFilesString = packPathString + "\\Resources";
     std::string gdResPathFilesString = gdResPathString + "\\Resources";
 
+    if(!fs::exists(packPathFilesString)) {
+        fmt::print(fg(fmt::color::red), "Resources folder not detected in pack folder, check the pack's folder structure.\n");
+        return;
+    }
+
     // Paths to <pack>/Resources, and GD/Resources respectively
     fs::path gdResPathFiles = gdResPathFilesString;
     fs::path packPathFiles = packPathFilesString;
@@ -34,6 +39,11 @@ void Switcher::setActivePack(const std::string& packPathString, const std::strin
         std::string tempStr = file.path().string();
         std::string fileName = getNameFromPath(tempStr);
         filesToCopy.push_back(fileName);
+    }
+
+    if(filesToCopy.size() == 0) {
+        fmt::print(fg(fmt::color::red), "No files detected in pack Resources folder.\n");
+        return;
     }
 
     std::string vanillaPathStr;
