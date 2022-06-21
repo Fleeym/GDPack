@@ -26,10 +26,10 @@ public:
     void listTP();
     // Reverts to vanilla textures
     void revert();
-    // Starts a config setup
-    void editConfig();
     // Shows the help dialogue
     void showHelp(std::string& version);
+    // Shows help for a specified command
+    void showCommandHelp(const std::string& command);
     // sets the pack lol
     void setPack(const std::string& indexStr);
     // Read the pack directories from the parent dir

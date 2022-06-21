@@ -82,9 +82,11 @@ void Config::setup(bool manualActivate) {
         ok = true;
     }
 
-    std::string defaultPack = "vanilla";
-
-    setActivePack(defaultPack);
+    if(!manualActivate) {
+        std::string defaultPack = "vanilla";
+        setActivePack(defaultPack);
+    }
+    
     setGeometryDashPath(gdPath.string());
     save();
 }
