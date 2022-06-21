@@ -1,6 +1,6 @@
 # GDPack - A CLI Geometry Dash texture pack manager!
 A small program I made for myself that manages Geometry Dash texture packs.
-This is my first project so if the code sucks, you know why :)
+This is my first project so if the code sucks, you know why. If you want to report a bug, or contact me, here's my discord: Flame#7148.
 
 # Usage
 ## Commands
@@ -61,7 +61,7 @@ And so on...
 ## Vanilla resources
 GDPack stores the vanilla files it replaces in a "vanilla" pack. Do not touch this folder, stuff will break.
 
-**IMPORTANT**: If your Geometry Dash Resources folder has been edited when running GDPack, the state it is in will be considered as "vanilla". GDPack won't magically make the vanilla files appear when running "gdpack revert" if your resources were modified. If you want this behaviour, reinstall Geometry Dash, and run GDPack.
+**IMPORTANT**: If your Geometry Dash Resources folder has been edited before running GDPack for the first time, the state it is in will be considered as "vanilla". GDPack won't magically make the vanilla files appear when running "gdpack revert" if your resources were modified. If you want this behaviour, reinstall Geometry Dash, and run GDPack.
 
 I will try to create a system that saves your edited resources when it detects that they are modified so that you can reinstall the game. Expect this soon™️.
 
