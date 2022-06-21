@@ -6,9 +6,11 @@
 #include <algorithm>
 #include <iterator>
 
-int getCommand(std::string&, std::vector<std::string>&);
+
 void selectCommand(Interface* interfaceObject, Config* configObject, Switcher* switcherObject, 
                     const std::string& command, const std::string& argument, const std::vector<std::string>& commands);
+
+// This is how I imagined the old IO system. Keeping it as a sort of easter egg :)
 
 // First, ask for the paths and Geometry Dash location if this is the first run.
 // If this isn't the first run, show the options menu:
