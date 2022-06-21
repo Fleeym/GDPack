@@ -11,8 +11,11 @@ void Config::init(std::string& filename, std::string& directory) {
             return;
         }
         // At initialization, read the config file and store it in the local variables, so no data is lost if you launch the program multiple times
-        if(!read())
+        if(!read()) {
             std::cerr << "[ERROR]: Error reading config.json\n";
+            return;
+        }
+        setPacksPath(m_directory);
     } else {
         setup(false);
     }
@@ -68,7 +71,7 @@ void Config::setup(bool manualActivate) {
 
     bool ok = false;
     while(ok == false) {
-        std::cout << "Enter your Geometry Dash RESOURCES folder path (Paste with CTRL + SHIFT + V): ";
+        std::cout << "Enter your Geometry Dash folder path (Paste with CTRL + SHIFT + V): ";
         std::getline(std::cin, input);
         gdPath = input;
 
@@ -82,7 +85,6 @@ void Config::setup(bool manualActivate) {
     std::string defaultPack = "vanilla";
 
     setActivePack(defaultPack);
-    setPacksPath(m_directory);  
     setGeometryDashPath(gdPath.string());
     save();
 }

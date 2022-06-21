@@ -61,6 +61,8 @@ void Switcher::setActivePack(const std::string& packPathString, const std::strin
     }
     fs::copy(packPathFiles, gdResPathFiles, copyOptions);
     m_config->setActivePack(packName);
+    m_config->save();
+    fmt::print(fg(fmt::color::green), "Successfully switched pack to {}!", packName);
 }
 std::string Switcher::getNameFromPath(std::string& path) {
     std::string temp = path;

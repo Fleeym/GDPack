@@ -21,26 +21,6 @@ void Interface::init(Config* configObject, Switcher* switcherObject, std::string
     m_packNames = getPackNames(m_packPaths);
 }
 
-void Interface::mainMenu() { // legacy
-    int choice;
-    bool exit = false;
-    std::cout << "GDPack CLI\n"
-                    "1) Change active texture pack\n"
-                    "2) Revert to vanilla\n"
-                    "3) Edit config\n"
-                    "Press any other key to exit\n\n";
-    while (exit != true) {
-        std::cout << "GDPack >> ";
-        std::cin >> choice;
-        switch(choice) {
-            case 1: listTP(); break;
-            case 2: revert(); break;
-            case 3: editConfig(); break;
-            default: exit = true; break;
-        }
-    }
-}
-
 std::vector<std::string> Interface::getPackPaths(){
     fs::path packsPath = m_directory;
     std::vector<std::string> packPaths;
@@ -101,7 +81,7 @@ void Interface::revert() {
     auto found = std::find(m_packNames.begin(), m_packNames.end(), "vanilla");
     if(found != std::end(m_packNames)) {
         position = std::distance(m_packNames.begin(), found);
-        std::cout << position;
+        // std::cout << "Pack position: " << position << '\n';
     }
     m_switcher->setActivePack(m_packPaths.at(position), m_config->getGeometryDashPath(), m_packNames.at(position));
 }
@@ -120,9 +100,8 @@ void Interface::showHelp(std::string& version) {
         " * help -> Shows this dialogue. Can also be used as an argument for the other commands. (Help for other commands not implemented yet.)\n"
         " * setup -> Repeats the first-run setup.\n"
         " * list -> Lists all installed packs.\n"
-        " * revert -> Reverts the game to vanilla resources. (NOT FINISHED)\n"
+        " * revert -> Reverts the game to vanilla resources.\n"
         " * set [PACK] -> Sets the active pack.\n"
-        " * config [OPTION] [VALUE] -> Edits the settings from the config file. (NOT FINISHED)\n"
     );
 }
 

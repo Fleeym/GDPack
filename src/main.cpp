@@ -39,7 +39,7 @@ int main(int argc, char **argv) {
         command = argv[1];
     }
 
-    const std::vector<std::string> commandOptions = {"help", "setup", "list", "revert", "set", "config"};
+    const std::vector<std::string> commandOptions = {"help", "setup", "list", "revert", "set"};
 
     // Initialize components
     Config* configObject = new Config;
@@ -86,8 +86,7 @@ void selectCommand(Interface* interfaceObject, Config* configObject, Switcher* s
 
     if(argument != "") {
         switch(commandID) {
-            case 4: interfaceObject->setPack(argument);
-            case 5: interfaceObject->editConfig();
+            case 4: interfaceObject->setPack(argument); break;
         }
     }
 }
