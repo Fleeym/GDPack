@@ -131,11 +131,14 @@ void Interface::showCommandHelp(const std::string& command) {
     } else if(command == "revert") {
         fmt::print(fg(fmt::color::yellow), "Command \"revert\": ");
         fmt::print("Reverts to the vanilla textures. Basically runs ");
-        fmt::print(fg(fmt::color::yellow), "\"gdpack set [vanilla-index]\".\n");
-        fmt::print(fg(fmt::color::orange), "[IMPORTANT]: The \"vanilla\" pack is the state of your Resources folder when GDPack first ran. That means that revert won't revert to vanilla textures, but it will revert to that state.\n");
+        fmt::print(fg(fmt::color::yellow), "\"gdpack set [vanilla-index]\". ");
+        fmt::print(fg(fmt::color::orange), "DO NOT use this while the game is running.\n");
+        fmt::print(fg(fmt::color::lavender), "[IMPORTANT]: The \"vanilla\" pack is the state of your Resources folder when GDPack first ran. That means that revert won't revert to vanilla textures, but it will revert to that state.\n");
     } else if(command == "set") {
         fmt::print(fg(fmt::color::yellow), "Command \"set\" [INDEX]: ");
-        fmt::print("Sets the active pack to the index specified. The index can be found by using ");
+        fmt::print("Sets the active pack to the index specified. ");
+        fmt::print(fg(fmt::color::orange), "DO NOT use this while the game is running. ");
+        fmt::print("The index can be found by using ");
         fmt::print(fg(fmt::color::yellow), "\"gdpack list\".\n");
     }
 }

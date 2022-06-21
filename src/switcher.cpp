@@ -43,7 +43,6 @@ void Switcher::setActivePack(const std::string& packPathString, const std::strin
         if(vanillaPathStr.at(vanillaPathStr.length() - 1) == '\\') 
             vanillaPathStr.pop_back();
     }
-
     
     iterator = fs::directory_iterator(gdResPathFiles);
     for(auto file : iterator) {  
@@ -59,11 +58,17 @@ void Switcher::setActivePack(const std::string& packPathString, const std::strin
             }
         }
     }
-    fs::copy(packPathFiles, gdResPathFiles, copyOptions);
-    m_config->setActivePack(packName);
-    m_config->save();
-    if(!fromRevert)
-        fmt::print(fg(fmt::color::green), "Successfully switched pack to {}!\n", packName);
+    try {
+        fs::copy(packPathFiles, gdResPathFiles, copyOptions);
+        m_config->setActivePack(packName);
+        m_config->save();
+        if(!fromRevert)
+            fmt::print(fg(fmt::color::green), "Successfully switched pack to {}!\n", packName);
+    }
+    catch (...) {
+        fmt::print(fg(fmt::color::red), "Error while accessing GD Resources. If your game is open, close it, and then use ");
+        fmt::print(fg(fmt::color::yellow), "\"gdpack revert\"\n");
+    }
 }
 std::string Switcher::getNameFromPath(std::string& path) {
     std::string temp = path;
