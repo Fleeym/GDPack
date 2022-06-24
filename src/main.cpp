@@ -1,11 +1,21 @@
 #include "config.hpp"
 #include "interface.hpp"
 #include "switcher.hpp"
+#include "packman.hpp"
 
 #include <vector>
 #include <algorithm>
 #include <iterator>
+#include <filesystem>
+#include <fmt/core.h>
+#include <fmt/color.h>
+#include <nlohmann/json.hpp>
+#include <map>
+#include <fstream>
+#include <iostream>
+#include <string>
 
+using json = nlohmann::json;
 
 void selectCommand(Interface* interfaceObject, Config* configObject, Switcher* switcherObject, 
                     const std::string& command, const std::string& argument, const std::vector<std::string>& commands);
@@ -49,9 +59,10 @@ int main(int argc, char **argv) {
     Switcher* switcherObject = new Switcher;
 
     configObject->init(filename, directory);
-    switcherObject->init(configObject);
-    interfaceObject->init(configObject, switcherObject, directory);
-
+    if(!switcherObject->init(configObject)) {
+        fmt::print(stderr, fg(fmt::color::red), "[ERROR]: Initializing Switcher failed.");
+        return -1;
+    }
     selectCommand(interfaceObject, configObject, switcherObject,  command, argument, commandOptions);
 
     delete configObject;

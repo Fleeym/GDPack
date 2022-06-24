@@ -1,8 +1,12 @@
 #include "switcher.hpp"
 
 
-void Switcher::init(Config *config) {
+bool Switcher::init(Config *config) {
     m_config = config;
+    m_packman = new PackManager;
+    if(!m_packman) return false;
+
+    return true;
 }
 
 // Future me, I am so, so terribly sorry for this pestilence that I have inflicted upon you. I only hope you have the mercy to gaze in the mirror after rewatching this
@@ -11,6 +15,8 @@ void Switcher::setActivePack(const std::string& packPathString, const std::strin
     //std::cout << packPathString << "\n" << gdResPathString << "\n";
     std::string packPathFilesString = packPathString + "\\Resources";
     std::string gdResPathFilesString = gdResPathString + "\\Resources";
+
+    m_packman->init(packName, packPathString);
 
     if(!fs::exists(packPathFilesString)) {
         fmt::print(fg(fmt::color::red), "Resources folder not detected in pack folder, check the pack's folder structure.\n");
@@ -105,3 +111,7 @@ fs::path Switcher::createVanilla() {
     return vanillaPath;
 }   
 
+Switcher::~Switcher() {
+    delete m_config;
+    delete m_packman;
+}
