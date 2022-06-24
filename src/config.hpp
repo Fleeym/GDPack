@@ -17,9 +17,6 @@ private:
 
     // Settings
     std::map<std::string, std::string> m_settings;
-    std::string m_packsPath;
-    std::string m_geometryDashPath;
-    std::string m_activePack;
 
 public:
     // Constructor, gets the filename of the config file
