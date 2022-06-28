@@ -49,24 +49,33 @@ std::vector<std::string> Interface::getPackNames(const std::vector<std::string>&
     return packNames;
 }
 
-void Interface::listTP() {
-    fmt::print(fg(fmt::color::yellow), "GDPack CLI ");
-    fmt::print(fg(fmt::color::purple), "v{}\n", m_programVersion);
+void Interface::listTP(const std::string& argument) {
+    if(argument != "") {
+        fmt::print(fg(fmt::color::yellow), "GDPack CLI ");
+        fmt::print(fg(fmt::color::purple), "v{}\n", m_programVersion);
     
-    if(m_packNames.size() == 0) {
-        fmt::print(fg(fmt::color::orange), "You don't have any packs installed!\n");
-        return;
-    }
-    fmt::print(fg(fmt::color::orange), "Here's a list of all of your texture packs: \n\n");
-    
-    int i = 1;
-    for(auto pack : m_packNames) {
-        if(m_config->getActivePack() == pack) {
-            std::cout << i << ") " << pack << "[*]" << '\n';
-        } else {
-            std::cout << i << ") " << pack << "\n";
+        if(m_packNames.size() == 0) {
+            fmt::print(fg(fmt::color::orange), "You don't have any packs installed!\n");
+            return;
         }
-        ++i;
+        fmt::print(fg(fmt::color::orange), "Here's a list of all of your texture packs: \n\n");
+    
+        int i = 1;
+        for(auto pack : m_packNames) {
+            if(m_config->getActivePack() == pack) {
+                std::cout << i << ") " << pack << "[*]" << '\n';
+            } else {
+                std::cout << i << ") " << pack << "\n";
+            }
+            ++i;
+        }
+    } else {
+        bool containsDigits = (argument.find_first_not_of("0123456789") == std::string::npos);
+        int index = std::stoi(argument);
+        if(!containsDigits) {
+            fmt::print(fg(fmt::color::red), "Invalid argument, try ");
+            fmt::print(fg(fmt::color::yellow), "\"gdpack list help\"");
+        }
     }
 }
 

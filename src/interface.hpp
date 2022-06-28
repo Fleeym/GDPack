@@ -6,6 +6,7 @@
 #include <fmt/color.h>
 
 #include "switcher.hpp"
+#include "packman.hpp"
 
 namespace fs = std::filesystem;
 
@@ -15,6 +16,8 @@ private:
     Config *m_config;
     Switcher *m_switcher;
 
+    std::vector<PackManager*> packs;
+
     std::vector<std::string> m_packPaths;
     std::vector<std::string> m_packNames;
     std::string m_programVersion = "1.0.1";
@@ -23,7 +26,7 @@ public:
     // Initializes the interface and starts the first-time setup if no config file is detected
     void init(Config* configObject, Switcher* switcherObject, std::string& directory);
     // Searches and lists texture packs in parent dir
-    void listTP();
+    void listTP(const std::string& argument);
     // Reverts to vanilla textures
     void revert(bool);
     // Shows the help dialogue
