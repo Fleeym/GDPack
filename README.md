@@ -64,7 +64,7 @@ GDPack stores the vanilla files it replaces in a "vanilla" pack. Do not touch th
 **IMPORTANT**: If your Geometry Dash Resources folder has been edited before running GDPack for the first time, the state it is in will be considered as "vanilla". GDPack won't magically make the vanilla files appear when running "gdpack revert" if your resources were modified. If you want this behaviour, reinstall Geometry Dash, and run GDPack.
 
 
-## The manifest system
+## The manifest system (Not in current release)
 GDPack uses a manifest.json for every pack. If your pack doesn't have one, GDPack will create a template for you. The manifest.json has the following structure: 
 
 ```json
