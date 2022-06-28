@@ -8,7 +8,7 @@
     mainMenu(config, switcherObject);
 }*/
 
-void Interface::init(Config* configObject, Switcher* switcherObject, std::string& directory) {
+bool Interface::init(Config* configObject, Switcher* switcherObject, std::string& directory) {
     m_directory = directory;
     m_config = configObject;
     m_switcher = switcherObject;
@@ -19,6 +19,13 @@ void Interface::init(Config* configObject, Switcher* switcherObject, std::string
 
     m_packPaths = getPackPaths();
     m_packNames = getPackNames(m_packPaths);
+
+    for(int i = 0; i < m_packNames.size(); i++) {
+        m_packs.push_back(new PackManager);
+        m_packs.at(i)->init(m_packNames.at(i), m_packPaths.at(i));
+        if(!m_packs.at(i)) return false;
+    }
+    return true;
 }
 
 std::vector<std::string> Interface::getPackPaths(){
@@ -50,7 +57,7 @@ std::vector<std::string> Interface::getPackNames(const std::vector<std::string>&
 }
 
 void Interface::listTP(const std::string& argument) {
-    if(argument != "") {
+    if(argument == "") {
         fmt::print(fg(fmt::color::yellow), "GDPack CLI ");
         fmt::print(fg(fmt::color::purple), "v{}\n", m_programVersion);
     
@@ -71,11 +78,21 @@ void Interface::listTP(const std::string& argument) {
         }
     } else {
         bool containsDigits = (argument.find_first_not_of("0123456789") == std::string::npos);
-        int index = std::stoi(argument);
         if(!containsDigits) {
             fmt::print(fg(fmt::color::red), "Invalid argument, try ");
             fmt::print(fg(fmt::color::yellow), "\"gdpack list help\"");
+            return;
         }
+        int index = std::stoi(argument);
+        fmt::print(fg(fmt::color::yellow), "{}\n\n", m_packNames.at(index - 1));
+        json manifest = m_packs.at(index - 1)->getJson();
+        fmt::print(fg(fmt::color::green), 
+                    "Author: {}\n"
+                    "Pack Version: {}\n"
+                    "Description: {}\n"
+                    "GD Version: {}\n"
+                    "Pack Path: {}\n",
+                    manifest["author"], manifest["version"], manifest["description"], manifest["gdVersion"], manifest["path"]);
     }
 }
 
@@ -138,10 +155,11 @@ void Interface::showCommandHelp(const std::string& command) {
         fmt::print(fg(fmt::color::yellow), "Command \"setup\": ");
         fmt::print("Repeats the first-run setup, used to set the Geometry Dash path if needed.\nThis command doesn't take any arguments.\n");
     } else if(command == "list") {
-        fmt::print(fg(fmt::color::yellow), "Command \"list\": ");
+        fmt::print(fg(fmt::color::yellow), "Command \"list\" [INDEX]: ");
         fmt::print("Lists the packs present in the root directory of GDPack. Used along with ");
         fmt::print(fg(fmt::color::yellow), "\"gdpack set [INDEX]\"");
         fmt::print(" to switch packs.\n");
+        fmt::print("If you enter an index, you will get information about the selected pack.\n");
     } else if(command == "revert") {
         fmt::print(fg(fmt::color::yellow), "Command \"revert\": ");
         fmt::print("Reverts to the vanilla textures. Basically runs ");

@@ -16,7 +16,7 @@ private:
     Config *m_config;
     Switcher *m_switcher;
 
-    std::vector<PackManager*> packs;
+    std::vector<PackManager*> m_packs;
 
     std::vector<std::string> m_packPaths;
     std::vector<std::string> m_packNames;
@@ -24,7 +24,7 @@ private:
 
 public:
     // Initializes the interface and starts the first-time setup if no config file is detected
-    void init(Config* configObject, Switcher* switcherObject, std::string& directory);
+    bool init(Config* configObject, Switcher* switcherObject, std::string& directory);
     // Searches and lists texture packs in parent dir
     void listTP(const std::string& argument);
     // Reverts to vanilla textures

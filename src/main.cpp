@@ -15,6 +15,8 @@
 #include <iostream>
 #include <string>
 
+#define DEBUG_MDOE true
+
 using json = nlohmann::json;
 
 void selectCommand(Interface* interfaceObject, Config* configObject, Switcher* switcherObject, 
@@ -60,10 +62,13 @@ int main(int argc, char **argv) {
 
     configObject->init(filename, directory);
     if(!switcherObject->init(configObject)) {
-        fmt::print(stderr, fg(fmt::color::red), "[ERROR]: Initializing Switcher failed.");
+        fmt::print(stderr, fg(fmt::color::red), "[ERROR]: Initializing Switcher failed.\n");
         return -1;
     }
-    interfaceObject->init(configObject, switcherObject, directory);
+    if(!interfaceObject->init(configObject, switcherObject, directory)) {
+        fmt::print(stderr, fg(fmt::color::red), "[ERROR]: Initializing Interface failed.\n");
+        return -1;
+    }
     selectCommand(interfaceObject, configObject, switcherObject,  command, argument, commandOptions);
 
     delete configObject;

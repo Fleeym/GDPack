@@ -5,10 +5,14 @@ void PackManager::init(const std::string& packName, const std::string& packPath)
     m_packPath = packPath;
     m_manifestPath = m_packPath + "/manifest.json";
     if(manifestExists()) {
-        fmt::print("Found manifest.json for {}\n", m_packName);
+#ifdef DEBUG
+        fmt::print("[DEBUG]: Found manifest.json for {}\n", m_packName);
+#endif
         readManifest();
     } else {
-        fmt::print("manifest.json doesn't exist for {}, creating basic manifest.json!\n", m_packName);
+#ifdef DEBUG
+        fmt::print("[DEBUG]: manifest.json doesn't exist for {}, creating basic manifest.json!\n", m_packName);
+#endif
         createManifest();
     }
 }
@@ -54,6 +58,11 @@ void PackManager::createManifest() {
     // Dummy gd version, assume the pack is for 2.11
     m_json["gdVersion"] = "2.113";
     m_json["path"] = m_packPath;
+
+    if(m_packName == "vanilla") {
+        m_json["author"] = "RobTopGames";
+        m_json["description"] = "The default resources for Geoemtry Dash.";
+    }
 
     manifest << m_json;
 
