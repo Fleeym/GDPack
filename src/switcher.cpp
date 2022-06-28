@@ -16,7 +16,8 @@ void Switcher::setActivePack(const std::string& packPathString, const std::strin
     std::string gdResPathFilesString = gdResPathString + "\\Resources";
 
     if(!fs::exists(packPathFilesString)) {
-        fmt::print(fg(fmt::color::red), "Resources folder not detected in pack folder, check the pack's folder structure.\n");
+        fmt::print(fg(fmt::color::red), "[ERROR]: ");
+        fmt::print("Resources folder not detected in pack folder, check the pack's folder structure.\n");
         return;
     }
 
@@ -42,7 +43,8 @@ void Switcher::setActivePack(const std::string& packPathString, const std::strin
     }
 
     if(filesToCopy.size() == 0) {
-        fmt::print(fg(fmt::color::red), "No files detected in pack Resources folder.\n");
+        fmt::print(fg(fmt::color::red), "[ERROR]: ");
+        fmt::print("No files detected in pack Resources folder.\n");
         return;
     }
 
@@ -75,8 +77,8 @@ void Switcher::setActivePack(const std::string& packPathString, const std::strin
         if(!fromRevert)
             fmt::print(fg(fmt::color::green), "Successfully switched pack to {}!\n", packName);
     }
-    catch (...) {
-        fmt::print(fg(fmt::color::red), "Error while accessing GD Resources. If your game is open, close it, and then use ");
+    catch (std::exception e) {
+        fmt::print(fg(fmt::color::red), "Error while accessing GD Resources: {}. If your game is open, close it, and then use ", e.what());
         fmt::print(fg(fmt::color::yellow), "\"gdpack revert\"\n");
     }
 }

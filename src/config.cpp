@@ -7,12 +7,14 @@ void Config::init(std::string& filename, std::string& directory) {
     if(fileExists()) {
         std::ifstream config(filename);
         if(!config) {
-            std::cerr << "[ERROR]: Error opening the config file\n";
+            fmt::print(stderr, fg(fmt::color::red), "[ERROR]: ");
+            fmt::print("Error opening config.json\n");
             return;
         }
         // At initialization, read the config file and store it in the local variables, so no data is lost if you launch the program multiple times
         if(!read()) {
-            std::cerr << "[ERROR]: Error reading config.json\n";
+            fmt::print(stderr, fg(fmt::color::red), "[ERROR]: ");
+            fmt::print("Error reading config.json\n");
             return;
         }
         setPacksPath(m_directory);
@@ -29,7 +31,8 @@ bool Config::fileExists() {
 
 bool Config::read() {
     if(!fileExists()) {
-        std::cerr << "[ERROR]: File does not exist, cannot read it\n";
+        fmt::print(stderr, fg(fmt::color::red), "[ERROR]: ");
+        fmt::print("File does not exist, cannot read it\n");
         return false;
     }
     std::ifstream configFile(m_filename);
@@ -64,7 +67,8 @@ void Config::setup(bool manualActivate) {
     fs::path gdPath;
 
     fmt::print(fg(fmt::color::yellow), "GDPack CLI Setup\n");
-    fmt::print(fg(fmt::color::red), "[WARNING]: GDPack should be placed in an empty folder, if GDPack isn't in an empty folder, please move it.\n\n");
+    fmt::print(fg(fmt::color::red), "[WARNING]: ");
+    fmt::print("GDPack should be placed in an empty folder, if GDPack isn't in an empty folder, please move it.\n\n");
 
     if(!manualActivate)
         fmt::print("Couldn't find a config file. Setting up GDPack...\n");
@@ -76,7 +80,8 @@ void Config::setup(bool manualActivate) {
         gdPath = input;
 
         if(!fs::exists(gdPath)) {
-            fmt::print(fg(fmt::color::red), "\n[ERROR]: Not a valid path. Try again.\n");
+            fmt::print(fg(fmt::color::red), "\n[ERROR]: ");
+            fmt::print("Not a valid path. Try again.\n");
             return;
         }
         ok = true;

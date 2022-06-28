@@ -71,11 +71,19 @@ void Interface::listTP(const std::string& argument) {
     } else {
         bool containsDigits = (argument.find_first_not_of("0123456789") == std::string::npos);
         if(!containsDigits) {
-            fmt::print(fg(fmt::color::red), "Invalid argument, try ");
+            fmt::print(fg(fmt::color::red), "[ERROR]: ");
+            fmt::print("Invalid argument, try ");
             fmt::print(fg(fmt::color::yellow), "\"gdpack list help\"");
             return;
         }
         int index = std::stoi(argument);
+        if(index > m_packNames.size() || index < 1) {
+            fmt::print(fg(fmt::color::red), "[ERROR]: ");
+            fmt::print("Invalid index, use ");
+            fmt::print(fg(fmt::color::yellow), "\"gdpack list\"");
+            fmt::print(" to see available packs.\n");
+            return;
+        }
         fmt::print(fg(fmt::color::yellow), "{}\n\n", m_packNames.at(index - 1));
         json manifest = m_packs.at(index - 1)->getJson();
         fmt::print(fg(fmt::color::green), 
@@ -91,29 +99,39 @@ void Interface::listTP(const std::string& argument) {
 void Interface::setPack(const std::string& indexStr) {
     bool containsDigits = (indexStr.find_first_not_of("0123456789") == std::string::npos);
     if(indexStr == "" || !containsDigits) {
-        fmt::print(fg(fmt::color::red), "Invalid argument. Argument should be the pack index. Use \"gdpack list\" to see available packs.");
+        fmt::print(fg(fmt::color::red), "[ERROR]: ");
+        fmt::print("Invalid argument. Argument should be the pack index. Use ");
+        fmt::print(fg(fmt::color::yellow), "\"gdpack list\"");
+        fmt::print(" to see available packs.\n");
         return;
     }
     int index = std::stoi(indexStr);
     if(m_packNames.at(index - 1) == "vanilla") {
-        fmt::print(fg(fmt::color::red), "Can't switch to vanilla using this command, instead use \"gdpack revert\"");
+        fmt::print(fg(fmt::color::red), "[ERROR]: ");
+        fmt::print("Can't switch to vanilla using this command, instead use ");
+        fmt::print(fg(fmt::color::yellow), "\"gdpack revert\"\n");
         return;
     }
     if(index <= m_packPaths.size() && index > 0) {
         revert(true);
         m_switcher->setActivePack(m_packPaths.at(index - 1), m_config->getGeometryDashPath(), m_packNames.at(index - 1), false);
     } else {
-        fmt::print(fg(fmt::color::red), "Invalid index. Use \"gdpack list\" to see available packs.");
+        fmt::print(fg(fmt::color::red), "[ERROR]: ");
+        fmt::print("Invalid index. Use ");
+        fmt::print(fg(fmt::color::yellow), "\"gdpack list\"");
+        fmt::print(" to see available packs.\n");
     }
 }
 
 void Interface::revert(bool fromCommand) {
     if(m_config->getActivePack() == "vanilla") {
-        if(!fromCommand)
-            fmt::print(fg(fmt::color::red), "\"vanilla\" is already the default pack.\n");
-        return;
+        if(!fromCommand) {
+            fmt::print(fg(fmt::color::red), "[ERROR]: ");
+            fmt::print(fg(fmt::color::yellow), "\"vanilla\"");
+            fmt::print(" is already the default pack.\n");
+            return;
+        }
     }
-
     int64_t position = 0;
     auto found = std::find(m_packNames.begin(), m_packNames.end(), "vanilla");
     if(found != std::end(m_packNames)) {

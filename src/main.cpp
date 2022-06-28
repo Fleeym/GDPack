@@ -62,11 +62,13 @@ int main(int argc, char **argv) {
 
     configObject->init(filename, directory);
     if(!switcherObject->init(configObject)) {
-        fmt::print(stderr, fg(fmt::color::red), "[ERROR]: Initializing Switcher failed.\n");
+        fmt::print(stderr, fg(fmt::color::red), "[ERROR]: ");
+        fmt::print(stderr, "Initializing Switcher failed.\n");
         return -1;
     }
     if(!interfaceObject->init(configObject, switcherObject, directory)) {
-        fmt::print(stderr, fg(fmt::color::red), "[ERROR]: Initializing Interface failed.\n");
+        fmt::print(stderr, fg(fmt::color::red), "[ERROR]: ");
+        fmt::print(stderr, "Initializing Interface failed.\n");
         return -1;
     }
     selectCommand(interfaceObject, configObject, switcherObject,  command, argument, commandOptions);
