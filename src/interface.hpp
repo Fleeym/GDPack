@@ -20,7 +20,7 @@ private:
 
     std::vector<std::string> m_packPaths;
     std::vector<std::string> m_packNames;
-    std::string m_programVersion = "1.0.1";
+    std::string m_programVersion = "1.1.0";
 
 public:
     // Initializes the interface and starts the first-time setup if no config file is detected
