@@ -1,26 +1,59 @@
 #include "config.hpp"
 
-void Config::init(std::string& filename, std::string& directory) {
+bool Config::init(std::string& filename, std::string& directory) {
     m_filename = filename;
     m_directory = directory;
 
+    setPackPaths();
+    setPackNames(m_packPaths);
+
+    for(int i = 0; i < m_packNames.size(); i++) {
+        m_packs.push_back(new PackManager);
+        m_packs.at(i)->init(m_packNames.at(i), m_packPaths.at(i));
+        if(!m_packs.at(i)) return false;
+    }
+
     if(fileExists()) {
-        std::ifstream config(filename);
-        if(!config) {
-            fmt::print(stderr, fg(fmt::color::red), "[ERROR]: ");
-            fmt::print("Error opening config.json\n");
-            return;
-        }
         // At initialization, read the config file and store it in the local variables, so no data is lost if you launch the program multiple times
         if(!read()) {
             fmt::print(stderr, fg(fmt::color::red), "[ERROR]: ");
             fmt::print("Error reading config.json\n");
-            return;
+            return false;
         }
         setPacksPath(m_directory);
     } else {
         setup(false);
     }
+
+    return true;
+}
+
+void Config::setPackPaths(){
+    fs::path packsPath = m_directory;
+    std::vector<std::string> packPaths;
+
+    for(auto entry : fs::directory_iterator{packsPath}) {
+        if(fs::is_directory(entry)) {
+            // Make one array of paths of the packs, and one with just their names
+
+            std::string entryString = entry.path().string();
+            packPaths.push_back(entryString);
+        }
+    }
+    m_packPaths = packPaths;
+}
+
+void Config::setPackNames(const std::vector<std::string>& packPaths) {
+    std::vector<std::string> packNames;
+    for(auto path : packPaths) {
+        if(packPaths[packPaths.size() - 1] == "\\") {
+            packNames.pop_back();
+        }
+        std::string temp = path;
+        temp = path.substr(path.find_last_of('\\') + 1, (path.length() - path.find_last_of('\\')));
+        packNames.push_back(temp);
+    }
+    m_packNames = packNames;
 }
 
 bool Config::fileExists() {
@@ -41,6 +74,14 @@ bool Config::read() {
     m_settings["geometryDashPath"] = m_json["geometryDashPath"];
     m_settings["packsPath"] = m_json["packsPath"];
     m_settings["activePack"] = m_json["activePack"];
+
+    PackManager* activePack;
+    for(auto pack : m_packs) {
+        if(pack->getJson()["name"] == m_settings["activePack"])
+            activePack = pack;
+    }
+
+    m_activePack = activePack;
     return true;
 }
 
@@ -88,16 +129,51 @@ void Config::setup(bool manualActivate) {
     }
 
     if(!manualActivate) {
-        std::string defaultPack = "vanilla";
-        setActivePack(defaultPack);
+        PackManager* vanilla = new PackManager;
+        if(!vanilla) {
+            fmt::print(fg(fmt::color::red), "[ERROR]: ");
+            fmt::print("Error creating the vanilla pack object\n");
+            return;
+        }
+        createVanilla();
+        std::string vanillaPath = m_directory + "\\vanilla";
+        vanilla->init("vanilla", vanillaPath);
+        setActivePack(vanilla);
     }
     
     setGeometryDashPath(gdPath.string());
     save();
 }
 
-void Config::setActivePack(std::string& name) {
-    m_settings["activePack"] = name;
+void Config::createVanilla() {
+    // Creates vanilla folder if it doesn't exist
+    std::string vanillaStr = getPacksPath();
+    vanillaStr += "\\vanilla";
+    if(vanillaStr.at(vanillaStr.length() - 1) == '\\')
+        vanillaStr.pop_back();
+
+    fs::path vanillaPath = vanillaStr;
+    if(!fs::exists(vanillaPath)) {
+        fs::create_directory(vanillaPath);
+    }
+    vanillaPath.append("Resources");
+    if(!fs::exists(vanillaPath)) {
+        fs::create_directory(vanillaPath);
+    }
+}   
+
+
+std::vector<std::string> Config::getPackPaths() {
+    return m_packPaths;
+}
+
+std::vector<std::string> Config::getPackNames() {
+    return m_packNames;
+}
+
+void Config::setActivePack(PackManager* pack) {
+    m_activePack = pack;
+    m_settings["activePack"] = pack->getJson()["name"];
     save();
 }
 
@@ -111,6 +187,10 @@ void Config::setGeometryDashPath(std::string& path) {
     save();
 }
 
+std::vector<PackManager*> Config::getPacks() {
+    return m_packs;
+}
+
 std::string Config::getGeometryDashPath() {
     return m_settings["geometryDashPath"];
 }
@@ -119,6 +199,6 @@ std::string Config::getPacksPath() {
     return m_settings["packsPath"];
 }
 
-std::string Config::getActivePack() {
-    return m_settings["activePack"];
+PackManager* Config::getActivePack() {
+    return m_activePack;
 }

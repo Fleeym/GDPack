@@ -60,7 +60,11 @@ int main(int argc, char **argv) {
     Interface* interfaceObject = new Interface;
     Switcher* switcherObject = new Switcher;
 
-    configObject->init(filename, directory);
+    if(!configObject->init(filename, directory)) {
+        fmt::print(stderr, fg(fmt::color::red), "[ERROR]: ");
+        fmt::print(stderr, "Initializing Config failed.\n");
+        return -1;
+    }
     if(!switcherObject->init(configObject)) {
         fmt::print(stderr, fg(fmt::color::red), "[ERROR]: ");
         fmt::print(stderr, "Initializing Switcher failed.\n");
@@ -76,7 +80,6 @@ int main(int argc, char **argv) {
     delete configObject;
     delete interfaceObject;
     delete switcherObject;
-
     return 0;
 }
 

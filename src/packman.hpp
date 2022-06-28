@@ -33,10 +33,14 @@ public:
     void cacheFile(const std::string& fileName);
     // pushes the cache in the json and manifest
     void pushCache();
-    // reads the files that were cached for vanilla restoration
-    std::vector<std::string> readCache();
+    // clears the cache if Switcher detects a cache
+    void clearCache();
+    // gets the cache from m_cache
+    std::vector<std::string> getCache();
     // checks if manifest exists
     bool manifestExists();
+    // checks if the cache is empty
+    bool isCacheEmpty();
     
     json getJson();
 };

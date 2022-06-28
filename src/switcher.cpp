@@ -35,13 +35,36 @@ void Switcher::setActivePack(PackManager* pack, bool fromRevert) {
 
     const auto copyOptions = fs::copy_options::overwrite_existing
                             | fs::copy_options::recursive;
+
+    if(!pack->isCacheEmpty() && packName != "vanilla") {
+#ifdef _DEBUG
+    fmt::print(fg(fmt::color::light_green), "[DEBUG]: ");
+    fmt::print("Cache detected, clearing cache\n");
+#endif
+    pack->clearCache();
+    }
     
     // Iterate in the texture pack folder and remember which files to move
     auto iterator = fs::directory_iterator(packPathFiles);
     for(auto file : iterator) {
         std::string tempStr = file.path().string();
         std::string fileName = getNameFromPath(tempStr);
-        filesToCopy.push_back(fileName);
+        if(packName == "vanilla" && m_config->getActivePack()->getJson()["name"] != "vanilla") {
+            std::vector<std::string> cache = m_config->getActivePack()->getCache();
+            for(auto file : cache) {
+                if(file == fileName) {
+                    filesToCopy.push_back(fileName);
+#ifdef _DEBUG
+                    fmt::print(fg(fmt::color::light_green), "[DEBUG]: ");
+                    fmt::print("Adding {} to cache\n", fileName);
+#endif
+                }
+            }
+        } else {
+            filesToCopy.push_back(fileName);
+        }
+        if(packName != "vanilla")
+            pack->cacheFile(fileName);
     }
 
     if(filesToCopy.size() == 0) {
@@ -52,19 +75,19 @@ void Switcher::setActivePack(PackManager* pack, bool fromRevert) {
 
     std::string vanillaPathStr;
 
-    if(m_config->getActivePack() == "vanilla") {
-        vanillaPathStr = createVanilla().string();
+    if(m_config->getActivePack()->getJson()["name"] == "vanilla") {
+        vanillaPathStr = m_config->getActivePack()->getJson()["path"];
+        vanillaPathStr += "\\Resources";
         if(vanillaPathStr.at(vanillaPathStr.length() - 1) == '\\') 
             vanillaPathStr.pop_back();
     }
-    
     iterator = fs::directory_iterator(gdResPathFiles);
     for(auto file : iterator) {  
         std::string fileName = getNameFromPath(file.path().string());
         auto neededFile = std::find(filesToCopy.begin(), filesToCopy.end(), fileName);
         if(neededFile != std::end(filesToCopy)) {
             // Move original files to vanilla pack
-            if(m_config->getActivePack() == "vanilla") {
+            if(m_config->getActivePack()->getJson()["name"] == "vanilla") {
                 std::string destinationString = vanillaPathStr + "\\" + fileName;
                 fs::path destination = destinationString;
                 if(!fs::exists(destination))
@@ -73,11 +96,22 @@ void Switcher::setActivePack(PackManager* pack, bool fromRevert) {
         }
     }
     try {
-        fs::copy(packPathFiles, gdResPathFiles, copyOptions);
-        m_config->setActivePack(packName);
+        iterator = fs::directory_iterator(gdResPathFiles);
+        for(auto file : iterator) {
+            std::string fileName = getNameFromPath(file.path().string());
+            auto neededFile = std::find(filesToCopy.begin(), filesToCopy.end(), fileName);
+            if(neededFile != std::end(filesToCopy)) {
+                std::string originString = packPathFilesString + "\\" + fileName;
+                fs::path origin = originString;
+                fs::copy(origin, file, copyOptions);
+            }
+        }
+        m_config->setActivePack(pack);
         m_config->save();
         if(!fromRevert)
             fmt::print(fg(fmt::color::green), "Successfully switched pack to {}!\n", packName);
+        if(!pack->isCacheEmpty() || packName != "vanilla")
+            pack->pushCache();
     }
     catch (std::exception e) {
         fmt::print(fg(fmt::color::red), "Error while accessing GD Resources: {}. If your game is open, close it, and then use ", e.what());
@@ -91,20 +125,3 @@ std::string Switcher::getNameFromPath(std::string& path) {
     return temp.substr(temp.find_last_of('\\') + 1, (temp.length() - temp.find_last_of('\\')));
 }
 
-fs::path Switcher::createVanilla() {
-    // Creates vanilla folder if it doesn't exist
-    std::string vanillaStr = m_config->getPacksPath();
-    vanillaStr += "\\vanilla";
-    if(vanillaStr.at(vanillaStr.length() - 1) == '\\')
-        vanillaStr.pop_back();
-
-    fs::path vanillaPath = vanillaStr;
-    if(!fs::exists(vanillaPath)) {
-        fs::create_directory(vanillaPath);
-    }
-    vanillaPath.append("Resources");
-    if(!fs::exists(vanillaPath)) {
-        fs::create_directory(vanillaPath);
-    }   
-    return vanillaPath;
-}   

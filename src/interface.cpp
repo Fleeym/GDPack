@@ -5,47 +5,10 @@ bool Interface::init(Config* configObject, Switcher* switcherObject, std::string
     m_config = configObject;
     m_switcher = switcherObject;
 
-    if(!m_config->fileExists()) {
-        m_config->setup(false);
-    }
-
-    m_packPaths = getPackPaths();
-    m_packNames = getPackNames(m_packPaths);
-
-    for(int i = 0; i < m_packNames.size(); i++) {
-        m_packs.push_back(new PackManager);
-        m_packs.at(i)->init(m_packNames.at(i), m_packPaths.at(i));
-        if(!m_packs.at(i)) return false;
-    }
+    m_packNames = configObject->getPackNames();
+    m_packPaths = configObject->getPackPaths();
+    m_packs = configObject->getPacks();
     return true;
-}
-
-std::vector<std::string> Interface::getPackPaths(){
-    fs::path packsPath = m_directory;
-    std::vector<std::string> packPaths;
-
-    for(auto entry : fs::directory_iterator{packsPath}) {
-        if(fs::is_directory(entry)) {
-            // Make one array of paths of the packs, and one with just their names
-
-            std::string entryString = entry.path().string();
-            packPaths.push_back(entryString);
-        }
-    }
-    return packPaths;
-}
-
-std::vector<std::string> Interface::getPackNames(const std::vector<std::string>& packPaths) {
-    std::vector<std::string> packNames;
-    for(auto path : packPaths) {
-        if(packPaths[packPaths.size() - 1] == "\\") {
-            packNames.pop_back();
-        }
-        std::string temp = path;
-        temp = path.substr(path.find_last_of('\\') + 1, (path.length() - path.find_last_of('\\')));
-        packNames.push_back(temp);
-    }
-    return packNames;
 }
 
 void Interface::listTP(const std::string& argument) {
@@ -61,7 +24,7 @@ void Interface::listTP(const std::string& argument) {
     
         int i = 1;
         for(auto pack : m_packNames) {
-            if(m_config->getActivePack() == pack) {
+            if(m_config->getActivePack()->getJson()["name"] == pack) {
                 std::cout << i << ") " << pack << "[*]" << '\n';
             } else {
                 std::cout << i << ") " << pack << "\n";
@@ -113,7 +76,8 @@ void Interface::setPack(const std::string& indexStr) {
         return;
     }
     if(index <= m_packPaths.size() && index > 0) {
-        revert(true);
+        if(m_config->getActivePack()->getJson()["name"] != "vanilla")
+            revert(true);
         m_switcher->setActivePack(m_packs.at(index - 1), false);
     } else {
         fmt::print(fg(fmt::color::red), "[ERROR]: ");
@@ -124,7 +88,7 @@ void Interface::setPack(const std::string& indexStr) {
 }
 
 void Interface::revert(bool fromCommand) {
-    if(m_config->getActivePack() == "vanilla") {
+    if(m_config->getActivePack()->getJson()["name"] == "vanilla") {
         if(!fromCommand) {
             fmt::print(fg(fmt::color::red), "[ERROR]: ");
             fmt::print(fg(fmt::color::yellow), "\"vanilla\"");

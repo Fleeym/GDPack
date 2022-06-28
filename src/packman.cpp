@@ -30,11 +30,20 @@ void PackManager::readManifest() {
         m_settings["version"] = m_json["version"];
         m_settings["gdVersion"] = m_json["gdVersion"];
         m_settings["path"] = m_json["path"];
+
+        for(int i = 0; i < m_json["cache"].size(); i++) {
+            std::string temp = m_json["cache"][i];
+            m_cache.push_back(temp);
+        }
         
     } catch (std::exception e) {
         fmt::print(fg(fmt::color::red), "[ERROR]: ");
         fmt::print("Error while reading {} manifest.json: {}\n", m_settings["name"], e.what());
     }
+}
+
+std::vector<std::string> PackManager::getCache() {
+    return m_cache;
 }
 
 bool PackManager::manifestExists() {
@@ -45,6 +54,16 @@ bool PackManager::manifestExists() {
     
     manifest.close();
     return true;
+}
+
+void PackManager::clearCache() {
+    m_cache.clear();
+}
+
+bool PackManager::isCacheEmpty() {
+    if(m_cache.size() == 0)
+        return true;
+    return false;
 }
 
 json PackManager::getJson() {

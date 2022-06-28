@@ -16,6 +16,8 @@ private:
     Config *m_config;
     Switcher *m_switcher;
 
+    PackManager* m_activePack;
+
     std::vector<PackManager*> m_packs;
 
     std::vector<std::string> m_packPaths;
@@ -35,10 +37,9 @@ public:
     void showCommandHelp(const std::string& command);
     // sets the pack lol
     void setPack(const std::string& indexStr);
-    // Read the pack directories from the parent dir
-    std::vector<std::string> getPackPaths();
-    // Read the pack names from the parent dir
-    std::vector<std::string> getPackNames(const std::vector<std::string>& packPaths);
+
+    // Gets the active pack name from config.json and saves the pack in a PackManager object
+    void getActivePack();
 
     //getter
     std::string& getProgramVersion();

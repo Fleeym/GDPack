@@ -2,6 +2,7 @@
 
 #include <filesystem>
 #include <string>
+#include <algorithm>
 
 #include "config.hpp"
 #include "packman.hpp"
@@ -17,5 +18,4 @@ public:
     void setActivePack(PackManager* pack, bool fromRevert);
     std::string getNameFromPath(std::string& path);
     void setDefaultActivePack(std::string& name);
-    fs::path createVanilla();
 };
