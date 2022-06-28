@@ -124,19 +124,19 @@ void Interface::showHelp(std::string& version) {
                 "The CLI Geometry Dash texture pack manager!\n\n");
     fmt::print(fg(fmt::color::orange), "Here is a list of possible commands: \n");
 
-    fmt::print(fg(fmt::color::cyan), "* help -> ");
+    fmt::print(fg(fmt::color::yellow), "* help -> ");
     fmt::print("Shows this dialogue. Can be used as argument for other commands.\n");
 
-    fmt::print(fg(fmt::color::cyan), "* setup -> ");
+    fmt::print(fg(fmt::color::yellow), "* setup -> ");
     fmt::print("Repeats the first-run setup.\n");
 
-    fmt::print(fg(fmt::color::cyan), "* list -> ");
+    fmt::print(fg(fmt::color::yellow), "* list [INDEX] -> ");
     fmt::print("Lists all installed packs.\n");
 
-    fmt::print(fg(fmt::color::cyan), "* revert -> ");
+    fmt::print(fg(fmt::color::yellow), "* revert -> ");
     fmt::print("Reverts the game to vanilla resources.\n");
 
-    fmt::print(fg(fmt::color::cyan), "* set [INDEX] -> ");
+    fmt::print(fg(fmt::color::yellow), "* set [INDEX] -> ");
     fmt::print("Sets the active pack.\n");
 }
 
