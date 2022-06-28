@@ -52,6 +52,7 @@ std::vector<std::string> Interface::getPackNames(const std::vector<std::string>&
 void Interface::listTP() {
     fmt::print(fg(fmt::color::yellow), "GDPack CLI ");
     fmt::print(fg(fmt::color::purple), "v{}\n", m_programVersion);
+    
     if(m_packNames.size() == 0) {
         fmt::print(fg(fmt::color::orange), "You don't have any packs installed!\n");
         return;

@@ -63,6 +63,7 @@ int main(int argc, char **argv) {
         fmt::print(stderr, fg(fmt::color::red), "[ERROR]: Initializing Switcher failed.");
         return -1;
     }
+    interfaceObject->init(configObject, switcherObject, directory);
     selectCommand(interfaceObject, configObject, switcherObject,  command, argument, commandOptions);
 
     delete configObject;
