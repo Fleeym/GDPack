@@ -11,7 +11,7 @@ namespace fs = std::filesystem;
 class Switcher {
 private:
     Config *m_config;
-    PackManager *m_packman;
+    std::vector<PackManager*> m_packs;
 public:
     bool init(Config *config);
     void setActivePack(const std::string& packPathString, const std::string& gdResPathString, std::string& packName, bool fromRevert);

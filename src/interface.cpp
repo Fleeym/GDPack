@@ -1,13 +1,5 @@
 #include "interface.hpp"
 
-/*void Interface::init(Config& config, std::string& directory, Switcher& switcherObject) {
-    m_directory = directory;
-    if (!config.fileExists()) {
-        setup(config, switcherObject);
-    }
-    mainMenu(config, switcherObject);
-}*/
-
 bool Interface::init(Config* configObject, Switcher* switcherObject, std::string& directory) {
     m_directory = directory;
     m_config = configObject;
@@ -185,4 +177,8 @@ void Interface::setPackPaths(const std::vector<std::string> packPaths) {
 
 void Interface::setPackNames(const std::vector<std::string> packNames) {
     m_packNames = packNames;
+}
+
+std::vector<PackManager*> Interface::getPacks() {
+    return m_packs;
 }

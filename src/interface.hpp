@@ -46,4 +46,8 @@ public:
     //setter
     void setPackPaths(const std::vector<std::string> packPaths);
     void setPackNames(const std::vector<std::string> packNames);
+
+    std::vector<PackManager*> getPacks();
+
+    ~Interface();
 };
