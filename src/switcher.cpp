@@ -10,8 +10,10 @@ bool Switcher::init(Config *config) {
 // Future me, I am so, so terribly sorry for this pestilence that I have inflicted upon you. I only hope you have the mercy to gaze in the mirror after rewatching this
 // disaster of a function. Also sorry for playing hot potato with object references, I should have used pointers lol
 // nevermind i made it ok
-void Switcher::setActivePack(const std::string& packPathString, const std::string& gdResPathString, std::string& packName, bool fromRevert) {
-    //std::cout << packPathString << "\n" << gdResPathString << "\n";
+void Switcher::setActivePack(PackManager* pack, bool fromRevert) {
+    std::string gdResPathString = m_config->getGeometryDashPath();
+    std::string packPathString = pack->getJson()["path"];
+    std::string packName = pack->getJson()["name"];
     std::string packPathFilesString = packPathString + "\\Resources";
     std::string gdResPathFilesString = gdResPathString + "\\Resources";
 

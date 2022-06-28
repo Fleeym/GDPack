@@ -14,7 +14,7 @@ private:
     std::vector<PackManager*> m_packs;
 public:
     bool init(Config *config);
-    void setActivePack(const std::string& packPathString, const std::string& gdResPathString, std::string& packName, bool fromRevert);
+    void setActivePack(PackManager* pack, bool fromRevert);
     std::string getNameFromPath(std::string& path);
     void setDefaultActivePack(std::string& name);
     fs::path createVanilla();

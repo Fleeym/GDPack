@@ -114,7 +114,7 @@ void Interface::setPack(const std::string& indexStr) {
     }
     if(index <= m_packPaths.size() && index > 0) {
         revert(true);
-        m_switcher->setActivePack(m_packPaths.at(index - 1), m_config->getGeometryDashPath(), m_packNames.at(index - 1), false);
+        m_switcher->setActivePack(m_packs.at(index - 1), false);
     } else {
         fmt::print(fg(fmt::color::red), "[ERROR]: ");
         fmt::print("Invalid index. Use ");
@@ -138,7 +138,7 @@ void Interface::revert(bool fromCommand) {
         position = std::distance(m_packNames.begin(), found);
         // std::cout << "Pack position: " << position << '\n';
     }
-    m_switcher->setActivePack(m_packPaths.at(position), m_config->getGeometryDashPath(), m_packNames.at(position), fromCommand);
+    m_switcher->setActivePack(m_packs.at(position), fromCommand);
 }
 
 void Interface::showHelp(std::string& version) {
