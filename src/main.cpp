@@ -53,7 +53,10 @@ int main(int argc, char **argv) {
         command = argv[1];
     }
 
-    const std::vector<std::string> commandOptions = {"help", "setup", "list", "revert", "set"};
+    std::vector<std::string> commandOptions = {"help", "setup", "list", "revert", "set"};
+#ifdef _DEBUG
+    commandOptions.push_back("dev");
+#endif
 
     // Initialize components
     Config* configObject = new Config;
@@ -110,6 +113,7 @@ void selectCommand(Interface* interfaceObject, Config* configObject, Switcher* s
             case 2: interfaceObject->listTP(argument); break;
             case 3: interfaceObject->revert(false); break;
             case 4: interfaceObject->setPack(argument); break;
+            // case 5: devMode(argument); break;
         }    
     }
 }
