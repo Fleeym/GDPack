@@ -39,8 +39,12 @@ public:
     std::vector<std::string> getCache();
     // checks if manifest exists
     bool manifestExists();
+    // saves values to manifest
+    void writeManifest();
     // checks if the cache is empty
     bool isCacheEmpty();
+    // checks if manifest values are the same as the stored ones
+    void checkManifest();
     
     json getJson();
 };

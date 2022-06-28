@@ -25,9 +25,12 @@ void Interface::listTP(const std::string& argument) {
         int i = 1;
         for(auto pack : m_packNames) {
             if(m_config->getActivePack()->getJson()["name"] == pack) {
-                std::cout << i << ") " << pack << "[*]" << '\n';
+                fmt::print(fg(fmt::color::cyan), "[{}] ", i);
+                fmt::print("{} ", pack);
+                fmt::print(fg(fmt::color::green), "[Active]\n");
             } else {
-                std::cout << i << ") " << pack << "\n";
+                fmt::print(fg(fmt::color::cyan), "[{}] ", i);
+                fmt::print("{}\n", pack);
             }
             ++i;
         }
@@ -47,15 +50,24 @@ void Interface::listTP(const std::string& argument) {
             fmt::print(" to see available packs.\n");
             return;
         }
+        fmt::print("Showing info for pack: ");
         fmt::print(fg(fmt::color::yellow), "{}\n\n", m_packNames.at(index - 1));
         json manifest = m_packs.at(index - 1)->getJson();
-        fmt::print(fg(fmt::color::green), 
-                    "Author: {}\n"
-                    "Pack Version: {}\n"
-                    "Description: {}\n"
-                    "GD Version: {}\n"
-                    "Pack Path: {}\n",
-                    manifest["author"], manifest["version"], manifest["description"], manifest["gdVersion"], manifest["path"]);
+
+        fmt::print(fg(fmt::color::green_yellow), "Author: ");
+        fmt::print("{}\n", manifest["author"]);
+
+        fmt::print(fg(fmt::color::green_yellow), "Pack Version: ");
+        fmt::print("{}\n", manifest["version"]);
+
+        fmt::print(fg(fmt::color::green_yellow), "Description: ");
+        fmt::print("{}\n", manifest["description"]);
+
+        fmt::print(fg(fmt::color::green_yellow), "GD Version: ");
+        fmt::print("{}\n", manifest["gdVersion"]);
+
+        fmt::print(fg(fmt::color::green_yellow), "Pack Path: ");
+        fmt::print("{}\n", manifest["path"]);
     }
 }
 

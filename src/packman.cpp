@@ -10,6 +10,7 @@ void PackManager::init(const std::string& packName, const std::string& packPath)
         fmt::print("Found manifest.json for {}\n", m_settings["name"]);
 #endif
         readManifest();
+        checkManifest();
     } else {
 #ifdef _DEBUG
         fmt::print(fg(fmt::color::light_green), "[DEBUG]: ");
@@ -19,17 +20,45 @@ void PackManager::init(const std::string& packName, const std::string& packPath)
     }
 }
 
+void PackManager::writeManifest() {
+    std::ofstream out(m_manifestPath);
+    if(!out) {
+        fmt::print(fg(fmt::color::red), "[ERROR]: ");
+        fmt::print("Failed to write to manifest.json, pack: {}\n", m_settings["name"]);
+        return;
+    }
+    out << m_json;
+    out.close();
+}
+
+void PackManager::checkManifest() {
+    if(m_json["name"] != m_settings["name"]) {
+#ifdef _DEBUG
+    fmt::print(fg(fmt::color::light_green), "[DEBUG]: ");
+    fmt::print("Invalid name for pack {}, correcting manifest.json\n", m_settings["name"]);
+#endif
+    m_json["name"] = m_settings["name"];
+    writeManifest();
+    }
+    if(m_json["path"] != m_settings["path"]) {
+#ifdef _DEBUG
+    fmt::print(fg(fmt::color::light_green), "[DEBUG]: ");
+    fmt::print("Invalid path for pack {}, correcting manifest.json\n", m_settings["name"]);
+#endif
+    m_json["path"] = m_settings["path"];
+    writeManifest();
+    }
+}
+
 void PackManager::readManifest() {
     std::ifstream input(m_manifestPath);
     input >> m_json;  
     input.close();
     try {
-        m_settings["name"] = m_json["name"];
         m_settings["author"] = m_json["author"];
         m_settings["description"] = m_json["description"];
         m_settings["version"] = m_json["version"];
         m_settings["gdVersion"] = m_json["gdVersion"];
-        m_settings["path"] = m_json["path"];
 
         for(int i = 0; i < m_json["cache"].size(); i++) {
             std::string temp = m_json["cache"][i];
@@ -71,7 +100,6 @@ json PackManager::getJson() {
 }
 
 void PackManager::createManifest() {
-    std::ofstream manifest(m_manifestPath);
     m_json["name"] = m_settings["name"];
     m_json["author"] = "";
     m_json["description"] = "";
@@ -86,9 +114,7 @@ void PackManager::createManifest() {
         m_json["description"] = "The default resources for Geoemtry Dash.";
     }
 
-    manifest << m_json;
-
-    manifest.close();
+    writeManifest();
 }
 
 void PackManager::cacheFile(const std::string& fileName) {
@@ -97,7 +123,5 @@ void PackManager::cacheFile(const std::string& fileName) {
 
 void PackManager::pushCache() {
     m_json["cache"] = m_cache;
-    std::ofstream out(m_manifestPath);
-
-    out << m_json;
+    writeManifest();
 }
