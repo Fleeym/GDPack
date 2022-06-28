@@ -5,13 +5,15 @@ void PackManager::init(const std::string& packName, const std::string& packPath)
     m_packPath = packPath;
     m_manifestPath = m_packPath + "/manifest.json";
     if(manifestExists()) {
-#ifdef DEBUG
-        fmt::print("[DEBUG]: Found manifest.json for {}\n", m_packName);
+#ifdef _DEBUG
+        fmt::print(fg(fmt::color::light_green), "[DEBUG]: ");
+        fmt::print("Found manifest.json for {}\n", m_packName);
 #endif
         readManifest();
     } else {
-#ifdef DEBUG
-        fmt::print("[DEBUG]: manifest.json doesn't exist for {}, creating basic manifest.json!\n", m_packName);
+#ifdef _DEBUG
+        fmt::print(fg(fmt::color::light_green), "[DEBUG]: ");
+        fmt::print("manifest.json doesn't exist for {}, creating basic manifest.json!\n", m_packName);
 #endif
         createManifest();
     }
@@ -30,7 +32,8 @@ void PackManager::readManifest() {
         m_packPath = m_json["path"];
         
     } catch (std::exception e) {
-        std::cout << e.what() << '\n';
+        fmt::print(fg(fmt::color::red), "[ERROR]: ");
+        fmt::print("Error while reading {} manifest.json: {}\n", m_packName, e.what());
     }
 }
 

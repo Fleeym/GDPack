@@ -18,6 +18,4 @@ public:
     std::string getNameFromPath(std::string& path);
     void setDefaultActivePack(std::string& name);
     fs::path createVanilla();
-
-    ~Switcher();
 };
