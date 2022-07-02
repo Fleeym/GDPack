@@ -113,9 +113,9 @@ void Switcher::setActivePack(PackManager* pack, bool fromRevert) {
         if(!pack->isCacheEmpty() || packName != "vanilla")
             pack->pushCache();
     }
-    catch (std::exception e) {
-        fmt::print(fg(fmt::color::red), "Error while accessing GD Resources: {}. If your game is open, close it, and then use ", e.what());
-        fmt::print(fg(fmt::color::yellow), "\"gdpack revert\"\n");
+    catch (fs::filesystem_error e) {
+        fmt::print(fg(fmt::color::red), "[ERROR]: ");
+        fmt::print("{}\n", e.what());
     }
 }
 std::string Switcher::getNameFromPath(std::string& path) {
