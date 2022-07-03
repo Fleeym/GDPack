@@ -103,6 +103,34 @@ void Config::print() {
     std::cout << std::setw(4) << m_json;
 }
 
+void Config::checkForVanillaFiles() {
+    std::vector<fs::path> editedFiles;
+    std::ifstream input("cache.json");
+    json cacheJson;
+    input >> cacheJson;
+    input.close();
+
+    fs::path gdPath = m_settings["geometryDashPath"];
+    gdPath.append("Resources");
+
+    auto iterator = fs::directory_iterator(gdPath);
+
+    for (auto file : iterator) {
+        fs::path path = file.path();
+        std::string fileName = getNameFromPath(path.string());
+        uintmax_t fileSize = fs::file_size(path);
+
+        if(fileSize != cacheJson[fileName]) {
+            editedFiles.push_back(path);
+#ifdef _DEBUG
+            fmt::print(fg(fmt::color::light_green), "[DEBUG]: ");
+            fmt::print("Found {} with different size compared to vanilla\n", fileName);
+#endif
+        }
+    }
+
+}
+
 void Config::setup(bool manualActivate) {
     std::string input;
     fs::path gdPath;

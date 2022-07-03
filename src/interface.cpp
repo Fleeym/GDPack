@@ -169,6 +169,8 @@ void Interface::showCommandHelp(const std::string& command) {
         fmt::print(fg(INFO_COLOR), "DO NOT use this while the game is running. ");
         fmt::print("The index can be found by using ");
         fmt::print(fg(TITLE_COLOR), "\"gdpack list\".\n");
+    } else if(command == "dev") {
+        fmt::print("This is the help message, helpful right?\n");
     }
 }
 

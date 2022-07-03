@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "packman.hpp"
+#include "devmode.hpp"
 
 using json = nlohmann::json;
 
@@ -42,8 +43,10 @@ public:
     // First time setup, runs if config.json doesn't exist
     void setup(bool manualActivate);
 
+    void checkForVanillaFiles();
+
     // Creates the vanilla pack on first launch
-    void Config::createVanilla();
+    void createVanilla();
     
     // Setters for settings, cringe
     void setPacksPath(std::string& path);

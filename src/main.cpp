@@ -2,6 +2,7 @@
 #include "interface.hpp"
 #include "switcher.hpp"
 #include "packman.hpp"
+#include "devmode.hpp"
 
 #include <vector>
 #include <algorithm>
@@ -113,7 +114,7 @@ void selectCommand(Interface* interfaceObject, Config* configObject, Switcher* s
             case 2: interfaceObject->listTP(argument); break;
             case 3: interfaceObject->revert(false); break;
             case 4: interfaceObject->setPack(argument); break;
-            // case 5: devMode(argument); break;
+            case 5: chooseCommand(argument, configObject); break;
         }    
     }
 }
