@@ -6,6 +6,8 @@
 #include <nlohmann/json.hpp>
 namespace fs = std::filesystem;
 
+class Config;
+
 using json = nlohmann::json;
 
 void chooseCommand(const std::string& argument, Config* config);
