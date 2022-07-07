@@ -171,7 +171,6 @@ void Config::setup(bool manualActivate) {
                 gdPath = path;
                 ok = true;
             }
-
         }
     }
 
@@ -205,6 +204,9 @@ void Config::setup(bool manualActivate) {
     
     setGeometryDashPath(gdPath.string());
     save();
+    fmt::print(fg(SUCCESS_COLOR), "[SUCCESS]: ");
+    fmt::print("Geometry Dash installation has been set to: ");
+    fmt::print(fg(TITLE_COLOR), "{}\n", gdPath.string());
 }
 
 void Config::createVanilla() {
