@@ -31,12 +31,14 @@ GDPack
 
 Packs also have a specific folder structure. GDPack won't work if they are not setup this way.
 ```
-[Pack_Folder]
+*Pack Folder*
 |
 --Resources
   |
   -- *Pack files go here*
+-- manifest.json
 ```
+**Don't worry if you don't have a manifest.json, gdpack will generate one for you when running it with any command!**
 
 So, an example folder structure would be:
 ```
@@ -49,11 +51,13 @@ GDPack
    -- Resources
       |
       -- *pack 1 files*
+   -- manifest.json
 -- Pack 2
    |
    -- Resources
       |
       -- *pack 2 files*
+   -- manifest.json
 
 And so on...
 ```
@@ -75,7 +79,7 @@ GDPack uses a manifest.json for every pack. If your pack doesn't have one, GDPac
   "name": "",
   "path": "",
   "version": "",
-  "cache": {}
+  "cache": []
 }
 ```
 GDPack also uses the manifest system to cache files that it detected moving to the Resources folder of the game. This is so that it can reduce pack switching times when setting small packs with a large vanilla cache.
