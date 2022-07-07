@@ -1,4 +1,4 @@
-# GDPack - A CLI Geometry Dash texture pack manager!
+# GDPack - The CLI Geometry Dash texture pack manager!
 A small program I made for myself that manages Geometry Dash texture packs. As it stands this will probably be compatible with 2.2 with little or no updates, because it uses the file system. It should also work on any OS, I tried to only use std.
 This is my first project so if the code sucks, you know why. If you want to report a bug, or contact me, here's my discord: ```Flame#7148```
 
