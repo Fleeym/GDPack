@@ -6,6 +6,7 @@
 
 #include "config.hpp"
 #include "packman.hpp"
+#include "colors.hpp"
 
 namespace fs = std::filesystem;
 

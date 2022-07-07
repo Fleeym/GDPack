@@ -9,6 +9,7 @@
 
 #include "packman.hpp"
 #include "devmode.hpp"
+#include "colors.hpp"
 
 using json = nlohmann::json;
 

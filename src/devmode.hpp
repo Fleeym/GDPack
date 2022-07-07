@@ -5,6 +5,7 @@
 #include <fstream>
 #include <nlohmann/json.hpp>
 
+#include "colors.hpp"
 #include "config.hpp"
 
 namespace fs = std::filesystem;

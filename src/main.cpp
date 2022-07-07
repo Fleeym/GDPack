@@ -3,6 +3,7 @@
 #include "switcher.hpp"
 #include "packman.hpp"
 #include "devmode.hpp"
+#include "colors.hpp"
 
 #include <vector>
 #include <algorithm>
@@ -63,17 +64,17 @@ int main(int argc, char **argv) {
     Switcher* switcherObject = new Switcher;
 
     if(!configObject->init(filename, directory)) {
-        fmt::print(stderr, fg(fmt::color::red), "[ERROR]: ");
+        fmt::print(stderr, fg(ERROR_COLOR), "[ERROR]: ");
         fmt::print(stderr, "Initializing Config failed.\n");
         return -1;
     }
     if(!switcherObject->init(configObject)) {
-        fmt::print(stderr, fg(fmt::color::red), "[ERROR]: ");
+        fmt::print(stderr, fg(ERROR_COLOR), "[ERROR]: ");
         fmt::print(stderr, "Initializing Switcher failed.\n");
         return -1;
     }
     if(!interfaceObject->init(configObject, switcherObject, directory)) {
-        fmt::print(stderr, fg(fmt::color::red), "[ERROR]: ");
+        fmt::print(stderr, fg(ERROR_COLOR), "[ERROR]: ");
         fmt::print(stderr, "Initializing Interface failed.\n");
         return -1;
     }
@@ -99,7 +100,10 @@ void selectCommand(Interface* interfaceObject, Config* configObject, Switcher* s
     }
 
     if(commandID == -1) {
-        fmt::print(fg(fmt::color::red), "Invalid command, do \"gdpack help\" for more info!");
+        fmt::print(fg(ERROR_COLOR), "[ERROR]: ");
+        fmt::print("Invalid command, do ");
+        fmt::print(fg(TITLE_COLOR), "\"gdpack help\"");
+        fmt::print(" for more info!\n");
         return;
     }
 

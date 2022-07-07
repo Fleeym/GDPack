@@ -6,14 +6,14 @@ void PackManager::init(const std::string& packName, const std::string& packPath)
     m_manifestPath = m_settings["path"] + "/manifest.json";
     if(manifestExists()) {
 #ifdef _DEBUG
-        fmt::print(fg(fmt::color::light_green), "[DEBUG]: ");
+        fmt::print(fg(DEBUG_COLOR), "[DEBUG]: ");
         fmt::print("Found manifest.json for {}\n", m_settings["name"]);
 #endif
         readManifest();
         checkManifest();
     } else {
 #ifdef _DEBUG
-        fmt::print(fg(fmt::color::light_green), "[DEBUG]: ");
+        fmt::print(fg(DEBUG_COLOR), "[DEBUG]: ");
         fmt::print("manifest.json doesn't exist for {}, creating basic manifest.json!\n", m_settings["name"]);
 #endif
         createManifest();
@@ -23,7 +23,7 @@ void PackManager::init(const std::string& packName, const std::string& packPath)
 void PackManager::writeManifest() {
     std::ofstream out(m_manifestPath);
     if(!out) {
-        fmt::print(fg(fmt::color::red), "[ERROR]: ");
+        fmt::print(fg(ERROR_COLOR), "[ERROR]: ");
         fmt::print("Failed to write to manifest.json, pack: {}\n", m_settings["name"]);
         return;
     }
@@ -34,7 +34,7 @@ void PackManager::writeManifest() {
 void PackManager::checkManifest() {
     if(m_json["name"] != m_settings["name"]) {
 #ifdef _DEBUG
-    fmt::print(fg(fmt::color::light_green), "[DEBUG]: ");
+    fmt::print(fg(DEBUG_COLOR), "[DEBUG]: ");
     fmt::print("Invalid name for pack {}, correcting manifest.json\n", m_settings["name"]);
 #endif
     m_json["name"] = m_settings["name"];
@@ -42,7 +42,7 @@ void PackManager::checkManifest() {
     }
     if(m_json["path"] != m_settings["path"]) {
 #ifdef _DEBUG
-    fmt::print(fg(fmt::color::light_green), "[DEBUG]: ");
+    fmt::print(fg(DEBUG_COLOR), "[DEBUG]: ");
     fmt::print("Invalid path for pack {}, correcting manifest.json\n", m_settings["name"]);
 #endif
     m_json["path"] = m_settings["path"];
@@ -65,8 +65,8 @@ void PackManager::readManifest() {
             m_cache.push_back(temp);
         }
         
-    } catch (std::exception e) {
-        fmt::print(fg(fmt::color::red), "[ERROR]: ");
+    } catch (const std::exception& e) {
+        fmt::print(fg(ERROR_COLOR), "[ERROR]: ");
         fmt::print("Error while reading {} manifest.json: {}\n", m_settings["name"], e.what());
     }
 }

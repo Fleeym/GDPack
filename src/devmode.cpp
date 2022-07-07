@@ -1,19 +1,24 @@
 #include "devmode.hpp"
-#include "config.hpp"
 
 void chooseCommand(const std::string& argument, Config* config) {
     if(argument == "cgen") {
         gencache(config->getGeometryDashPath());
     } else {
-        fmt::print(fg(fmt::color::red), "[ERROR]: ");
+        fmt::print(fg(ERROR_COLOR), "[ERROR]: ");
         fmt::print("Invalid argument, use ");
-        fmt::print(fg(fmt::color::yellow), "\"gdpack dev help\" ");
+        fmt::print(fg(TITLE_COLOR), "\"gdpack dev help\" ");
         fmt::print("to see valid arguments.\n");
     }
 }
 
 void gencache(const std::string& gdPath) {
-    std::ofstream out("cache.json");
+    const std::string fileName = "cache.json";
+
+    std::ofstream out(fileName);
+    if(!out) {
+        fmt::print(stderr, fg(ERROR_COLOR), "[ERROR]: ");
+        fmt::print(stderr, "Error writing to file {}\n", fileName);
+    }
     json jsonFile;
 
     std::vector<uintmax_t> fileSizes;
@@ -25,13 +30,15 @@ void gencache(const std::string& gdPath) {
         std::string fileName = getNameFromPath(file.path().string());
         uintmax_t fileSize = fs::file_size(file.path());
         jsonFile[fileName] = fileSize;
-
-        fmt::print(fg(fmt::color::light_green), "[DEBUG]: ");
+#ifdef _DEBUG
+        fmt::print(fg(DEBUG_COLOR), "[DEBUG]: ");
         fmt::print("File {}, size {}\n", fileName, fileSize);
+#endif
     }
     out << jsonFile;
-
     out.close();
+    fmt::print(fg(SUCCESS_COLOR), "[SUCCESS]: ");
+    fmt::print("Exported vanilla file sizes to {}!\n", fileName);
 }
 
 std::string getNameFromPath(const std::string& path) {

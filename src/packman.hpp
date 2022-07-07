@@ -5,6 +5,8 @@
 #include <filesystem>
 #include <map>
 
+#include "colors.hpp"
+
 namespace fs = std::filesystem;
 using json = nlohmann::json;
 

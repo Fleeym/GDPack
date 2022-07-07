@@ -18,7 +18,7 @@ void Switcher::setActivePack(PackManager* pack, bool fromRevert) {
     std::string gdResPathFilesString = gdResPathString + "\\Resources";
 
     if(!fs::exists(packPathFilesString)) {
-        fmt::print(fg(fmt::color::red), "[ERROR]: ");
+        fmt::print(fg(ERROR_COLOR), "[ERROR]: ");
         fmt::print("Resources folder not detected in pack folder, check the pack's folder structure.\n");
         return;
     }
@@ -38,7 +38,7 @@ void Switcher::setActivePack(PackManager* pack, bool fromRevert) {
 
     if(!pack->isCacheEmpty() && packName != "vanilla") {
 #ifdef _DEBUG
-    fmt::print(fg(fmt::color::light_green), "[DEBUG]: ");
+    fmt::print(fg(DEBUG_COLOR), "[DEBUG]: ");
     fmt::print("Cache detected, clearing cache\n");
 #endif
     pack->clearCache();
@@ -55,7 +55,7 @@ void Switcher::setActivePack(PackManager* pack, bool fromRevert) {
                 if(file == fileName) {
                     filesToCopy.push_back(fileName);
 #ifdef _DEBUG
-                    fmt::print(fg(fmt::color::light_green), "[DEBUG]: ");
+                    fmt::print(fg(DEBUG_COLOR), "[DEBUG]: ");
                     fmt::print("Adding {} to cache\n", fileName);
 #endif
                 }
@@ -68,7 +68,7 @@ void Switcher::setActivePack(PackManager* pack, bool fromRevert) {
     }
 
     if(filesToCopy.size() == 0) {
-        fmt::print(fg(fmt::color::red), "[ERROR]: ");
+        fmt::print(fg(ERROR_COLOR), "[ERROR]: ");
         fmt::print("No files detected in pack Resources folder.\n");
         return;
     }
@@ -108,13 +108,15 @@ void Switcher::setActivePack(PackManager* pack, bool fromRevert) {
         }
         m_config->setActivePack(pack);
         m_config->save();
-        if(!fromRevert)
-            fmt::print(fg(fmt::color::green), "Successfully switched pack to {}!\n", packName);
+        if(!fromRevert) {
+            fmt::print(fg(SUCCESS_COLOR), "[SUCCESS]: ");
+            fmt::print("Successfully switched pack to {}!\n", packName);
+        }
         if(!pack->isCacheEmpty() || packName != "vanilla")
             pack->pushCache();
     }
     catch (fs::filesystem_error e) {
-        fmt::print(fg(fmt::color::red), "[ERROR]: ");
+        fmt::print(fg(ERROR_COLOR), "[ERROR]: ");
         fmt::print("{}\n", e.what());
     }
 }
