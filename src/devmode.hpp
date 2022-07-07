@@ -11,6 +11,8 @@ class Config; // why the fuck, what the fuck, for what god forsaken reason do i 
 
 namespace fs = std::filesystem;
 
+class Config;
+
 using json = nlohmann::json;
 
 void chooseCommand(const std::string& argument, Config* config);
