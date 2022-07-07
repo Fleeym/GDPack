@@ -7,8 +7,6 @@
 
 #include "config.hpp"
 
-class Config; // why the fuck, what the fuck, for what god forsaken reason do i need to write this
-
 namespace fs = std::filesystem;
 
 class Config;
