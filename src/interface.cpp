@@ -25,11 +25,11 @@ void Interface::listTP(const std::string& argument) {
         int i = 1;
         for(auto pack : m_packNames) {
             if(m_config->getActivePack()->getJson()["name"] == pack) {
-                fmt::print(fg(fmt::color::cyan), "[{}] ", i);
+                fmt::print(fg(INDEX_COLOR), "[{}] ", i);
                 fmt::print("{} ", pack);
-                fmt::print(fg(fmt::color::green), "[Active]\n");
+                fmt::print(fg(ACTIVE_COLOR), "[Active]\n");
             } else {
-                fmt::print(fg(fmt::color::cyan), "[{}] ", i);
+                fmt::print(fg(INDEX_COLOR), "[{}] ", i);
                 fmt::print("{}\n", pack);
             }
             ++i;
