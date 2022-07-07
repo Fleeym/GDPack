@@ -128,6 +128,17 @@ void Config::checkForVanillaFiles() {
 #endif
         }
     }
+    if(editedFiles.size() != 0) {
+        char choice;
+        fmt::print(fg(fmt::color::orange), "[INFO]: ");
+        fmt::print("Found {} files that are not vanilla. Do you want to create a new pack out of them? This will allow you to delete your Resources folder (y/n)");
+        std::cin >> choice;
+
+        // ignore \n
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+        
+    }
 
 }
 

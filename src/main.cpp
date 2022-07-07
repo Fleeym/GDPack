@@ -16,8 +16,6 @@
 #include <iostream>
 #include <string>
 
-#define DEBUG_MDOE true
-
 using json = nlohmann::json;
 
 void selectCommand(Interface* interfaceObject, Config* configObject, Switcher* switcherObject, 

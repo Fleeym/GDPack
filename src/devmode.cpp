@@ -1,4 +1,5 @@
 #include "devmode.hpp"
+#include "config.hpp"
 
 void chooseCommand(const std::string& argument, Config* config) {
     if(argument == "cgen") {
