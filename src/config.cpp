@@ -157,6 +157,24 @@ void Config::setup(bool manualActivate) {
         fmt::print("Couldn't find a config file. Setting up GDPack...\n");
     }
     bool ok = false;
+
+    for(auto path : m_pathsToCheck) {
+        if(fs::exists(path)) {
+            std::string choice = "";
+            fmt::print(fg(INFO_COLOR), "[INFO]: ");
+            fmt::print("Found Geometry Dash installation in: ");
+            fmt::print(fg(TITLE_COLOR), "{}. ", path.string());
+            fmt::print("Do you want to install GDPack to that installation? (Y/n): ");
+
+            std::getline(std::cin, choice);
+            if(choice == "y" || choice == "Y" || choice == "") {
+                gdPath = path;
+                ok = true;
+            }
+
+        }
+    }
+
     while(ok == false) {
         fmt::print("Enter your Geometry Dash folder path (Paste with CTRL + SHIFT + V): ");
         std::getline(std::cin, input);
@@ -181,6 +199,8 @@ void Config::setup(bool manualActivate) {
         std::string vanillaPath = m_directory + "\\vanilla";
         vanilla->init("vanilla", vanillaPath);
         setActivePack(vanilla);
+
+        delete vanilla;
     }
     
     setGeometryDashPath(gdPath.string());

@@ -20,6 +20,20 @@ private:
     std::string m_filename;
     std::string m_directory;
 
+    /* INSTALLATION PATHS
+    - basic steam install
+    - SteamLibrary in D
+    - linux
+    - linux (flatpak)
+    - mac (i hope it works)
+    INSTALLATION PATHS */ 
+
+    const std::vector<fs::path> m_pathsToCheck = {"C:/Program Files (x86)/Steam/steamapps/common/Geometry Dash",
+                                                "D:/SteamLibrary/steamapps/common/Geometry Dash",
+                                                "~/.steam/steamapps/common/Geometry Dash",
+                                                " .var/app/com.valvesoftware.Steam/data/Steam/steamapps/common/Geometry Dash",
+                                                "~/Library/Application Support/Steam/steamapps/common/Geometry Dash"};
+
     std::vector<std::string> m_packPaths;
     std::vector<std::string> m_packNames;
 
