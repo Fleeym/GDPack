@@ -164,7 +164,7 @@ void Config::setup(bool manualActivate) {
             fmt::print(fg(INFO_COLOR), "[INFO]: ");
             fmt::print("Found Geometry Dash installation in: ");
             fmt::print(fg(TITLE_COLOR), "{}. ", path.string());
-            fmt::print("Do you want to install GDPack to that installation? (Y/n): ");
+            fmt::print("Do you want to install GDPack to that location? (Y/n): ");
 
             std::getline(std::cin, choice);
             if(choice == "y" || choice == "Y" || choice == "") {
