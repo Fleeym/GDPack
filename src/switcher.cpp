@@ -120,7 +120,7 @@ void Switcher::setActivePack(PackManager* pack, bool fromRevert) {
         fmt::print("{}\n", e.what());
     }
 }
-std::string Switcher::getNameFromPath(std::string& path) {
+std::string Switcher::getNameFromPath(const std::string& path) {
     std::string temp = path;
     if(temp.at(temp.length() - 1) == '\\')
         temp.pop_back();

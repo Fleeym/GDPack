@@ -246,7 +246,7 @@ void Config::setPacksPath(std::string& path) {
     save();
 }
 
-void Config::setGeometryDashPath(std::string& path) {
+void Config::setGeometryDashPath(const std::string& path) {
     m_settings["geometryDashPath"] = path;
     save();
 }

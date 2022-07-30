@@ -65,7 +65,7 @@ public:
     
     // Setters for settings, cringe
     void setPacksPath(std::string& path);
-    void setGeometryDashPath(std::string& path);
+    void setGeometryDashPath(const std::string& path);
     void setActivePack(PackManager *pack);
     void setPackPaths();
     void setPackNames(const std::vector<std::string>& packPaths);

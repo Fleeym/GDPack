@@ -17,6 +17,6 @@ private:
 public:
     bool init(Config *config);
     void setActivePack(PackManager* pack, bool fromRevert);
-    std::string getNameFromPath(std::string& path);
-    void setDefaultActivePack(std::string& name);
+    std::string getNameFromPath(const std::string& path);
+    void setDefaultActivePack(const std::string& name);
 };
