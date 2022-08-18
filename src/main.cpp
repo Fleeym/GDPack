@@ -34,9 +34,10 @@ void selectCommand(Interface* interfaceObject, Config* configObject, Switcher* s
 
 int main(int argc, char **argv) {
     // Sets working directory to application folder, used to set config filepath
-    std::string directory = argv[0];
-    directory.erase(directory.find_last_of('\\')+ 1);
-    std::string filename = directory + "config.json";
+    fs::path directory = argv[0];
+    directory.remove_filename();
+    fs::path configFilename = directory;
+    configFilename.append("config.json");
 
     std::string command = "";
     std::string argument = "";
@@ -63,7 +64,7 @@ int main(int argc, char **argv) {
     Interface* interfaceObject = new Interface;
     Switcher* switcherObject = new Switcher;
 
-    if(!configObject->init(filename, directory)) {
+    if(!configObject->init(configFilename.string(), directory.string())) {
         fmt::print(stderr, fg(ERROR_COLOR), "[ERROR]: ");
         fmt::print(stderr, "Initializing Config failed.\n");
         return -1;
@@ -73,7 +74,7 @@ int main(int argc, char **argv) {
         fmt::print(stderr, "Initializing Switcher failed.\n");
         return -1;
     }
-    if(!interfaceObject->init(configObject, switcherObject, directory)) {
+    if(!interfaceObject->init(configObject, switcherObject, directory.string())) {
         fmt::print(stderr, fg(ERROR_COLOR), "[ERROR]: ");
         fmt::print(stderr, "Initializing Interface failed.\n");
         return -1;

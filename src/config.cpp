@@ -148,6 +148,8 @@ void Config::setup(bool manualActivate) {
     std::string input;
     fs::path gdPath;
 
+    m_settings["packsPath"] = m_directory;
+
     fmt::print(fg(TITLE_COLOR), "GDPack CLI Setup\n");
     fmt::print(fg(ERROR_COLOR), "[WARNING]: ");
     fmt::print("GDPack should be placed in an empty folder, if GDPack isn't in an empty folder, please move it.\n\n");
@@ -195,8 +197,9 @@ void Config::setup(bool manualActivate) {
             return;
         }
         createVanilla();
-        std::string vanillaPath = m_directory + "\\vanilla";
-        vanilla->init("vanilla", vanillaPath);
+        fs::path vanillaPath = m_directory;
+        vanillaPath.append("vanilla");
+        vanilla->init("vanilla", vanillaPath.string());
         setActivePack(vanilla);
 
         delete vanilla;
@@ -211,18 +214,14 @@ void Config::setup(bool manualActivate) {
 
 void Config::createVanilla() {
     // Creates vanilla folder if it doesn't exist
-    std::string vanillaStr = getPacksPath();
-    vanillaStr += "\\vanilla";
-    if(vanillaStr.at(vanillaStr.length() - 1) == '\\')
-        vanillaStr.pop_back();
-
-    fs::path vanillaPath = vanillaStr;
-    if(!fs::exists(vanillaPath)) {
-        fs::create_directory(vanillaPath);
+    fs::path path = getPacksPath();
+    path.append("vanilla");
+    if(!fs::exists(path)) {
+        fs::create_directory(path);
     }
-    vanillaPath.append("Resources");
-    if(!fs::exists(vanillaPath)) {
-        fs::create_directory(vanillaPath);
+    path.append("Resources");
+    if(!fs::exists(path)) {
+        fs::create_directory(path);
     }
 }   
 
