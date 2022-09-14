@@ -13,7 +13,7 @@ bool Config::init(std::string &configFilename)
             fmt::print("Error reading config.json\n");
             return false;
         }
-        setPacksPath();
+        setPacksPath(m_settings.geometryDashPath);
         setPackPaths();
         setPackNames(m_packPaths);
 
@@ -96,6 +96,7 @@ bool Config::read()
 void Config::save()
 {
     m_json["packsPath"] = m_settings.packsPath;
+    m_json["activePack"] = m_settings.activePack;
     m_json["geometryDashPath"] = m_settings.geometryDashPath;
 
     std::ofstream out(m_filename);
@@ -107,6 +108,10 @@ void Config::save()
     }
     out << m_json;
     out.close();
+#ifdef _DEBUG
+    fmt::print(fg(INFO_COLOR), "[INFO]: ");
+    fmt::print("Saved config file!\n");
+#endif
 }
 
 void Config::print()
@@ -201,30 +206,28 @@ void Config::setup(bool manualActivate)
             fmt::print("Not a valid path. Try again.\n");
             return;
         }
+        setPacksPath(gdPath.string());
+        setGeometryDashPath(gdPath.string());
         ok = true;
     }
 
-    if (!manualActivate)
+    PackManager *vanilla = new PackManager;
+    if (!vanilla)
     {
-        PackManager *vanilla = new PackManager;
-        if (!vanilla)
-        {
-            fmt::print(fg(ERROR_COLOR), "[ERROR]: ");
-            fmt::print("Error creating the vanilla pack object\n");
-            return;
-        }
-        createVanilla();
-        fs::path vanillaPath = gdPath;
-        vanillaPath.append("vanilla");
-        vanilla->init("vanilla", vanillaPath.string());
-        setActivePack(vanilla);
-
-        delete vanilla;
+        fmt::print(fg(ERROR_COLOR), "[ERROR]: ");
+        fmt::print("Error creating the vanilla pack object\n");
+        return;
     }
+    createVanilla();
+    fs::path vanillaPath = m_settings.packsPath;
+    vanillaPath.append("vanilla");
+    vanilla->init("vanilla", vanillaPath.string());
+    setActivePack(vanilla);
 
-    setGeometryDashPath(gdPath.string());
-    setPacksPath();
+    delete vanilla;
+
     save();
+
     fmt::print(fg(SUCCESS_COLOR), "[SUCCESS]: ");
     fmt::print("Geometry Dash installation has been set to: ");
     fmt::print(fg(TITLE_COLOR), "{}\n", gdPath.string());
@@ -233,7 +236,7 @@ void Config::setup(bool manualActivate)
 void Config::createVanilla()
 {
     // Creates vanilla folder if it doesn't exist
-    fs::path path = getPacksPath();
+    fs::path path = m_settings.packsPath;
     path.append("vanilla");
     if (!fs::exists(path))
     {
@@ -263,9 +266,9 @@ void Config::setActivePack(PackManager *pack)
     save();
 }
 
-void Config::setPacksPath()
+void Config::setPacksPath(const std::string &gdPath)
 {
-    fs::path packs = m_settings.geometryDashPath;
+    fs::path packs = gdPath;
     packs.append("gdpack");
     if (!fs::exists(packs))
     {

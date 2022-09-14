@@ -52,20 +52,21 @@ public:
     bool fileExists();
     // Reads the config file and turns it into a json object
     bool read();
-    // Prints the config file in json format, mostly for debugging
+    // Prints the config file in json format, for debugging
     void print();
     // Saves all stored settings to the config.json file
     void save();
     // First time setup, runs if config.json doesn't exist
     void setup(bool manualActivate);
 
+    // caching system
     void checkForVanillaFiles();
 
     // Creates the vanilla pack on first launch
     void createVanilla();
 
     // Setters for settings, cringe
-    void setPacksPath();
+    void setPacksPath(const std::string &gdPath);
     void setGeometryDashPath(const std::string &path);
     void setActivePack(PackManager *pack);
     void setPackPaths();
