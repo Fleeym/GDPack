@@ -1,8 +1,8 @@
 #pragma once
 
-#include <string>;
+#include <string>
 
-static struct ConfigSettings
+struct ConfigSettings
 {
     std::string packsPath;
     std::string geometryDashPath;

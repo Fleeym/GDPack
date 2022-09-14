@@ -13,9 +13,9 @@ bool Config::init(std::string &configFilename)
             fmt::print("Error reading config.json\n");
             return false;
         }
+        setPacksPath();
         setPackPaths();
         setPackNames(m_packPaths);
-        setPacksPath();
 
         for (int i = 0; i < m_packNames.size(); i++)
         {
@@ -37,16 +37,23 @@ void Config::setPackPaths()
 {
     fs::path packsPath = m_settings.packsPath;
     std::vector<std::string> packPaths;
-    for (auto entry : fs::directory_iterator{packsPath})
+    try
     {
-        if (fs::is_directory(entry))
+        for (auto entry : fs::directory_iterator{packsPath})
         {
-            // Make one array of paths of the packs, and one with just their names
-
-            std::string entryString = entry.path().string();
-            packPaths.push_back(entryString);
+            if (fs::is_directory(entry))
+            {
+                std::string entryString = entry.path().string();
+                packPaths.push_back(entryString);
+            }
         }
     }
+    catch (fs::filesystem_error e)
+    {
+        fmt::print(stderr, fg(ERROR_COLOR), "[ERROR]: ");
+        fmt::print(stderr, "{}.\n", e.what());
+    }
+
     m_packPaths = packPaths;
 }
 
@@ -90,7 +97,6 @@ void Config::save()
 {
     m_json["packsPath"] = m_settings.packsPath;
     m_json["geometryDashPath"] = m_settings.geometryDashPath;
-    m_json["activePack"] = m_settings.activePack;
 
     std::ofstream out(m_filename);
     if (!out)
@@ -261,6 +267,10 @@ void Config::setPacksPath()
 {
     fs::path packs = m_settings.geometryDashPath;
     packs.append("gdpack");
+    if (!fs::exists(packs))
+    {
+        fs::create_directory(packs);
+    }
     m_settings.packsPath = packs.string();
     save();
 }
