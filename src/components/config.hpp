@@ -8,12 +8,14 @@
 #include <vector>
 
 #include "packman.hpp"
-#include "devmode.hpp"
-#include "colors.hpp"
+#include "../devmode.hpp"
+#include "../types/colors.hpp"
+#include "../types/configSettings.hpp"
 
 using json = nlohmann::json;
 
-class Config {
+class Config
+{
 private:
     // Basic variables for functionality
     json m_json;
@@ -25,27 +27,27 @@ private:
     - linux
     - linux (flatpak)
     - mac (i hope it works)
-    INSTALLATION PATHS */ 
+    INSTALLATION PATHS */
 
     const std::vector<fs::path> m_pathsToCheck = {"C:/Program Files (x86)/Steam/steamapps/common/Geometry Dash",
-                                                "D:/SteamLibrary/steamapps/common/Geometry Dash",
-                                                "~/.steam/steamapps/common/Geometry Dash",
-                                                " .var/app/com.valvesoftware.Steam/data/Steam/steamapps/common/Geometry Dash",
-                                                "~/Library/Application Support/Steam/steamapps/common/Geometry Dash"};
+                                                  "D:/SteamLibrary/steamapps/common/Geometry Dash",
+                                                  "~/.steam/steamapps/common/Geometry Dash",
+                                                  " .var/app/com.valvesoftware.Steam/data/Steam/steamapps/common/Geometry Dash",
+                                                  "~/Library/Application Support/Steam/steamapps/common/Geometry Dash"};
 
     std::vector<std::string> m_packPaths;
     std::vector<std::string> m_packNames;
 
-    std::vector<PackManager*> m_packs;
+    std::vector<PackManager *> m_packs;
 
     // Settings
-    std::map<std::string, std::string> m_settings;
+    ConfigSettings m_settings;
 
-    PackManager* m_activePack;
+    PackManager *m_activePack;
 
 public:
     // Constructor, gets the filename of the config file
-    bool init(std::string& filename);
+    bool init(std::string &filename);
     // Checks if the config file exists
     bool fileExists();
     // Reads the config file and turns it into a json object
@@ -61,19 +63,19 @@ public:
 
     // Creates the vanilla pack on first launch
     void createVanilla();
-    
+
     // Setters for settings, cringe
     void setPacksPath();
-    void setGeometryDashPath(const std::string& path);
+    void setGeometryDashPath(const std::string &path);
     void setActivePack(PackManager *pack);
     void setPackPaths();
-    void setPackNames(const std::vector<std::string>& packPaths);
-    
+    void setPackNames(const std::vector<std::string> &packPaths);
+
     // Getters for settings, even more cringe
     std::string getPacksPath();
     std::string getGeometryDashPath();
-    PackManager* getActivePack();
+    PackManager *getActivePack();
     std::vector<std::string> getPackPaths();
     std::vector<std::string> getPackNames();
-    std::vector<PackManager*> getPacks();
+    std::vector<PackManager *> getPacks();
 };

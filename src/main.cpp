@@ -1,9 +1,9 @@
-#include "config.hpp"
-#include "interface.hpp"
-#include "switcher.hpp"
-#include "packman.hpp"
+#include "components/config.hpp"
+#include "components/interface.hpp"
+#include "components/switcher.hpp"
+#include "components/packman.hpp"
 #include "devmode.hpp"
-#include "colors.hpp"
+#include "types/colors.hpp"
 
 #include <vector>
 #include <algorithm>

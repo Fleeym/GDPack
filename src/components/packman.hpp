@@ -5,12 +5,13 @@
 #include <filesystem>
 #include <map>
 
-#include "colors.hpp"
+#include "../types/colors.hpp"
 
 namespace fs = std::filesystem;
 using json = nlohmann::json;
 
-class PackManager {
+class PackManager
+{
 private:
     // JSON file
     json m_json;
@@ -26,13 +27,13 @@ private:
 
 public:
     // initializer
-    void init(const std::string& packName, const std::string& packPath);
+    void init(const std::string &packName, const std::string &packPath);
     // creates a manifest.json for the pack
     void createManifest();
     // reads the manifest.json and loads it in memory
     void readManifest();
-    // caches files that were copied to GD/Resources when setting the pack. 
-    void cacheFile(const std::string& fileName);
+    // caches files that were copied to GD/Resources when setting the pack.
+    void cacheFile(const std::string &fileName);
     // pushes the cache in the json and manifest
     void pushCache();
     // clears the cache if Switcher detects a cache
@@ -47,6 +48,6 @@ public:
     bool isCacheEmpty();
     // checks if manifest values are the same as the stored ones
     void checkManifest();
-    
+
     json getJson();
 };
