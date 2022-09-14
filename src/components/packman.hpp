@@ -6,6 +6,7 @@
 #include <map>
 
 #include "../types/colors.hpp"
+#include "../types/packageSettings.hpp"
 
 namespace fs = std::filesystem;
 using json = nlohmann::json;
@@ -18,7 +19,8 @@ private:
 
     // Settings
     std::string m_manifestPath;
-    std::map<std::string, std::string> m_settings;
+    // std::map<std::string, std::string> m_settings;
+    PackageSettings m_settings;
 
     std::vector<std::string> m_cache;
 

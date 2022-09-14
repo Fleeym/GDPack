@@ -29,7 +29,8 @@ void Interface::listTP(const std::string &argument)
         int i = 1;
         for (auto pack : m_packNames)
         {
-            if (m_config->getActivePack()->getJson()["name"] == pack)
+            json activePackJson = m_config->getActivePack()->getJson();
+            if (activePackJson["name"] == pack)
             {
                 fmt::print(fg(INDEX_COLOR), "[{}] ", i);
                 fmt::print("{} ", pack);
