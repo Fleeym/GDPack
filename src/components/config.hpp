@@ -1,22 +1,21 @@
 #pragma once
 
-#include <nlohmann/json.hpp>
-#include <string>
 #include <fstream>
 #include <iostream>
 #include <map>
+#include <nlohmann/json.hpp>
+#include <string>
 #include <vector>
 
-#include "packman.hpp"
 #include "../devmode.hpp"
 #include "../types/colors.hpp"
 #include "../types/configSettings.hpp"
+#include "packman.hpp"
 
 using json = nlohmann::json;
 
-class Config
-{
-private:
+class Config {
+  private:
     // Basic variables for functionality
     json m_json;
     std::string m_filename;
@@ -29,11 +28,13 @@ private:
     - mac (i hope it works)
     INSTALLATION PATHS */
 
-    const std::vector<fs::path> m_pathsToCheck = {"C:/Program Files (x86)/Steam/steamapps/common/Geometry Dash",
-                                                  "D:/SteamLibrary/steamapps/common/Geometry Dash",
-                                                  "~/.steam/steamapps/common/Geometry Dash",
-                                                  " .var/app/com.valvesoftware.Steam/data/Steam/steamapps/common/Geometry Dash",
-                                                  "~/Library/Application Support/Steam/steamapps/common/Geometry Dash"};
+    const std::vector<fs::path> m_pathsToCheck = {
+        "C:/Program Files (x86)/Steam/steamapps/common/Geometry Dash",
+        "D:/SteamLibrary/steamapps/common/Geometry Dash",
+        "~/.steam/steamapps/common/Geometry Dash",
+        " .var/app/com.valvesoftware.Steam/data/Steam/steamapps/common/"
+        "Geometry Dash",
+        "~/Library/Application Support/Steam/steamapps/common/Geometry Dash"};
 
     std::vector<std::string> m_packPaths;
     std::vector<std::string> m_packNames;
@@ -45,7 +46,7 @@ private:
 
     PackManager *m_activePack;
 
-public:
+  public:
     // Constructor, gets the filename of the config file
     bool init(std::string &filename);
     // Checks if the config file exists

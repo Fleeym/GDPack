@@ -1,9 +1,9 @@
 #pragma once
 
-#include <nlohmann/json.hpp>
-#include <fstream>
 #include <filesystem>
+#include <fstream>
 #include <map>
+#include <nlohmann/json.hpp>
 
 #include "../types/colors.hpp"
 #include "../types/packageSettings.hpp"
@@ -11,15 +11,13 @@
 namespace fs = std::filesystem;
 using json = nlohmann::json;
 
-class PackManager
-{
-private:
+class PackManager {
+  private:
     // JSON file
     json m_json;
 
     // Settings
     std::string m_manifestPath;
-    // std::map<std::string, std::string> m_settings;
     PackageSettings m_settings;
 
     std::vector<std::string> m_cache;
@@ -27,7 +25,7 @@ private:
     // Checks if the pack is active
     bool m_isActive;
 
-public:
+  public:
     // initializer
     void init(const std::string &packName, const std::string &packPath);
     // creates a manifest.json for the pack
@@ -52,4 +50,5 @@ public:
     void checkManifest();
 
     json getJson();
+    PackageSettings &getPackInfo();
 };

@@ -1,7 +1,7 @@
 #include "devmode.hpp"
 
-void chooseCommand(const std::string& argument, Config* config) {
-    if(argument == "cgen") {
+void chooseCommand(const std::string &argument, Config *config) {
+    if (argument == "cgen") {
         gencache(config->getGeometryDashPath());
     } else {
         fmt::print(fg(ERROR_COLOR), "[ERROR]: ");
@@ -11,11 +11,11 @@ void chooseCommand(const std::string& argument, Config* config) {
     }
 }
 
-void gencache(const std::string& gdPath) {
+void gencache(const std::string &gdPath) {
     const std::string fileName = "cache.json";
 
     std::ofstream out(fileName);
-    if(!out) {
+    if (!out) {
         fmt::print(stderr, fg(ERROR_COLOR), "[ERROR]: ");
         fmt::print(stderr, "Error writing to file {}\n", fileName);
     }
@@ -26,7 +26,7 @@ void gencache(const std::string& gdPath) {
     path.append("Resources");
     auto iterator = fs::directory_iterator(path);
 
-    for(auto file : iterator) {
+    for (auto file : iterator) {
         std::string fileName = getNameFromPath(file.path().string());
         uintmax_t fileSize = fs::file_size(file.path());
         jsonFile[fileName] = fileSize;
@@ -41,9 +41,10 @@ void gencache(const std::string& gdPath) {
     fmt::print("Exported vanilla file sizes to {}!\n", fileName);
 }
 
-std::string getNameFromPath(const std::string& path) {
+std::string getNameFromPath(const std::string &path) {
     std::string temp = path;
-    if(temp.at(temp.length() - 1) == '\\')
+    if (temp.at(temp.length() - 1) == '\\')
         temp.pop_back();
-    return temp.substr(temp.find_last_of('\\') + 1, (temp.length() - temp.find_last_of('\\')));
+    return temp.substr(temp.find_last_of('\\') + 1,
+                       (temp.length() - temp.find_last_of('\\')));
 }

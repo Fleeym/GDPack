@@ -1,7 +1,7 @@
 #pragma once
 
-#include <fmt/core.h>
 #include <fmt/color.h>
+#include <fmt/core.h>
 
 const fmt::color DEBUG_COLOR = fmt::color::light_green;
 const fmt::color SUCCESS_COLOR = fmt::color::spring_green;

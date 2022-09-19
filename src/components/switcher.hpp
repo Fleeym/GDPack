@@ -1,22 +1,21 @@
 #pragma once
 
+#include <algorithm>
 #include <filesystem>
 #include <string>
-#include <algorithm>
 
+#include "../types/colors.hpp"
 #include "config.hpp"
 #include "packman.hpp"
-#include "../types/colors.hpp"
 
 namespace fs = std::filesystem;
 
-class Switcher
-{
-private:
+class Switcher {
+  private:
     Config *m_config;
     std::vector<PackManager *> m_packs;
 
-public:
+  public:
     bool init(Config *config);
     void setActivePack(PackManager *pack, bool fromRevert);
     std::string getNameFromPath(const std::string &path);

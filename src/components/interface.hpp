@@ -1,19 +1,18 @@
 #pragma once
 
-#include <iostream>
 #include <filesystem>
-#include <fmt/core.h>
 #include <fmt/color.h>
+#include <fmt/core.h>
+#include <iostream>
 
-#include "switcher.hpp"
-#include "packman.hpp"
 #include "../types/colors.hpp"
+#include "packman.hpp"
+#include "switcher.hpp"
 
 namespace fs = std::filesystem;
 
-class Interface
-{
-private:
+class Interface {
+  private:
     std::string m_directory;
     Config *m_config;
     Switcher *m_switcher;
@@ -26,11 +25,13 @@ private:
 
     std::vector<std::string> m_packPaths;
     std::vector<std::string> m_packNames;
-    std::string m_programVersion = "1.2.0-dev";
+    std::string m_programVersion = "2.0.0-dev";
 
-public:
-    // Initializes the interface and starts the first-time setup if no config file is detected
-    bool init(Config *configObject, Switcher *switcherObject, std::string &directory);
+  public:
+    // Initializes the interface and starts the first-time setup if no config
+    // file is detected
+    bool init(Config *configObject, Switcher *switcherObject,
+              std::string &directory);
     // Searches and lists texture packs in parent dir
     void listTP(const std::string &argument);
     // Reverts to vanilla textures
@@ -42,7 +43,8 @@ public:
     // sets the pack lol
     void setPack(const std::string &indexStr);
 
-    // Gets the active pack name from config.json and saves the pack in a PackManager object
+    // Gets the active pack name from config.json and saves the pack in a
+    // PackManager object
     void getActivePack();
 
     // getter

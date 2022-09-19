@@ -2,8 +2,7 @@
 
 #include <string>
 
-struct PackageSettings
-{
+struct PackageSettings {
     std::string name;
     std::string path;
     std::string author;
