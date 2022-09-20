@@ -192,10 +192,11 @@ void Config::setup(bool manualActivate) {
             fmt::print("Not a valid path. Try again.\n");
             return;
         }
-        setPacksPath(gdPath.string());
-        setGeometryDashPath(gdPath.string());
         ok = true;
     }
+
+    setPacksPath(gdPath.string());
+    setGeometryDashPath(gdPath.string());
 
     PackManager *vanilla = new PackManager;
     if (!vanilla) {
@@ -209,11 +210,11 @@ void Config::setup(bool manualActivate) {
     vanilla->init("vanilla", vanillaPath.string());
     setActivePack(vanilla);
 
-    delete vanilla;
-
     save();
 
-    fmt::print(fg(SUCCESS_COLOR), "[SUCCESS]: ");
+    delete vanilla;
+
+        fmt::print(fg(SUCCESS_COLOR), "[SUCCESS]: ");
     fmt::print("Geometry Dash installation has been set to: ");
     fmt::print(fg(TITLE_COLOR), "{}\n", gdPath.string());
 }
