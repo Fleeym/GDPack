@@ -6,6 +6,7 @@
 #include "types/colors.hpp"
 
 #include <algorithm>
+#include <cstdlib>
 #include <filesystem>
 #include <fmt/color.h>
 #include <fmt/core.h>
@@ -24,7 +25,8 @@ void selectCommand(Interface *interfaceObject, Config *configObject,
                    const std::string &argument,
                    const std::vector<std::string> &commands);
 
-// This is how I imagined the old IO system. Keeping it as a sort of easter egg
+// This is how I imagined the old IO system. Keeping it as a sort of time
+// machine
 // :)
 
 // First, ask for the paths and Geometry Dash location if this is the first run.
@@ -35,10 +37,14 @@ void selectCommand(Interface *interfaceObject, Config *configObject,
 // has files) 3) Edit config file 4) Exit program
 
 int main(int argc, char **argv) {
-    // Sets working directory to application folder, used to set config filepath
-    fs::path directory = argv[0];
-    directory.remove_filename();
+    fs::path directory = std::string(std::getenv("USERPROFILE"));
     fs::path configFilename = directory;
+    configFilename.append(".gdpack");
+
+    if (!fs::exists(configFilename)) {
+        fs::create_directory(configFilename);
+    }
+
     configFilename.append("config.json");
 
     std::string command = "";
