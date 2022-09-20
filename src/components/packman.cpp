@@ -106,7 +106,7 @@ void PackManager::createManifest() {
     m_json["author"] = "";
     m_json["description"] = "";
     // Dummy version
-    m_json["version"] = "v1.0";
+    m_json["version"] = "1.0.0";
     // Dummy gd version, assume the pack is for 2.113
     m_json["gdVersion"] = "2.1";
     m_json["path"] = m_settings.path;

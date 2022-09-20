@@ -12,11 +12,11 @@ FetchContent_MakeAvailable(json)
 FetchContent_Declare(fmt URL https://github.com/fmtlib/fmt/releases/download/8.1.1/fmt-8.1.1.zip DOWNLOAD_EXTRACT_TIMESTAMP TRUE)
 FetchContent_MakeAvailable(fmt)
 
-file (GLOB_RECURSE SOURCES
+file(GLOB_RECURSE SOURCES
         src/*.cpp
 )
 
-file (GLOB_RECURSE HEADERS
+file(GLOB_RECURSE HEADERS
         src/*.h
         src/*.hpp
 )

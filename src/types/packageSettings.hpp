@@ -7,6 +7,6 @@ struct PackageSettings {
     std::string path;
     std::string author;
     std::string description;
-    std::string version;
+    std::string version = "1.0.0";
     std::string gdVersion = "2.1";
 };
