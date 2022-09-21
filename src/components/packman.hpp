@@ -15,9 +15,11 @@ class PackManager {
   private:
     // JSON file
     json m_json;
+    json m_cacheJson;
 
     // Settings
     std::string m_manifestPath;
+    fs::path m_cachePath;
     PackageSettings m_settings;
 
     std::vector<std::string> m_cache;

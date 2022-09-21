@@ -4,6 +4,8 @@ void PackManager::init(const std::string &packName,
                        const std::string &packPath) {
     m_settings.name = packName;
     m_settings.path = packPath;
+    m_cachePath = packPath;
+    m_cachePath.append("cache.json");
     m_manifestPath = m_settings.path + "/manifest.json";
     if (manifestExists()) {
 #ifdef _DEBUG
@@ -25,13 +27,16 @@ void PackManager::init(const std::string &packName,
 
 void PackManager::writeManifest() {
     std::ofstream out(m_manifestPath);
-    if (!out) {
+    std::ofstream cacheOut(m_cachePath);
+    if (!out || !cacheOut) {
         fmt::print(fg(ERROR_COLOR), "[ERROR]: ");
         fmt::print("Failed to write to manifest.json, pack: {}\n",
                    m_settings.name);
         return;
     }
     out << m_json;
+    cacheOut << m_cacheJson;
+    cacheOut.close();
     out.close();
 }
 
@@ -60,14 +65,21 @@ void PackManager::readManifest() {
     std::ifstream input(m_manifestPath);
     input >> m_json;
     input.close();
+
+    if (m_settings.name != "vanilla") {
+        std::ifstream cacheInput(m_cachePath);
+        cacheInput >> m_cacheJson;
+        cacheInput.close();
+    }
+
     try {
         m_settings.author = m_json["author"];
         m_settings.description = m_json["description"];
         m_settings.version = m_json["version"];
         m_settings.gdVersion = m_json["gdVersion"];
 
-        for (int i = 0; i < m_json["cache"].size(); i++) {
-            std::string temp = m_json["cache"][i];
+        for (int i = 0; i < m_cacheJson.size(); i++) {
+            std::string temp = m_cacheJson[i];
             m_cache.push_back(temp);
         }
     } catch (const std::exception &e) {
@@ -124,6 +136,6 @@ void PackManager::cacheFile(const std::string &fileName) {
 }
 
 void PackManager::pushCache() {
-    m_json["cache"] = m_cache;
+    m_cacheJson = m_cache;
     writeManifest();
 }
