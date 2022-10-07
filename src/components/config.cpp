@@ -103,7 +103,7 @@ void Config::save() {
     }
     out << m_json;
     out.close();
-#ifdef _DEBUG
+#ifndef __optimize__
     fmt::print(fg(INFO_COLOR), "[INFO]: ");
     fmt::print("Saved config file!\n");
 #endif
@@ -130,7 +130,7 @@ void Config::checkForVanillaFiles() {
 
         if (fileSize != cacheJson[fileName]) {
             editedFiles.push_back(path);
-#ifdef _DEBUG
+#ifndef __optimize__
             fmt::print(fg(DEBUG_COLOR), "[DEBUG]: ");
             fmt::print("Found {} with different size compared to vanilla\n",
                        fileName);

@@ -72,7 +72,7 @@ int main(int argc, char **argv) {
 
     std::vector<std::string> commandOptions = {"help", "setup", "list",
                                                "revert", "set"};
-#ifdef _DEBUG
+#ifndef __optimize__
     commandOptions.push_back("dev");
 #endif
 

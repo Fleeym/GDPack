@@ -8,14 +8,14 @@ void PackManager::init(const std::string &packName,
     m_cachePath.append("cache.json");
     m_manifestPath = m_settings.path + "/manifest.json";
     if (manifestExists()) {
-#ifdef _DEBUG
+#ifndef __optimize__
         fmt::print(fg(DEBUG_COLOR), "[DEBUG]: ");
         fmt::print("Found manifest.json for {}\n", m_settings.name);
 #endif
         readManifest();
         checkManifest();
     } else {
-#ifdef _DEBUG
+#ifndef __optimize__
         fmt::print(fg(DEBUG_COLOR), "[DEBUG]: ");
         fmt::print("manifest.json doesn't exist for {}, creating basic "
                    "manifest.json!\n",
@@ -42,7 +42,7 @@ void PackManager::writeManifest() {
 
 void PackManager::checkManifest() {
     if (m_json["name"] != m_settings.name) {
-#ifdef _DEBUG
+#ifndef __optimize__
         fmt::print(fg(DEBUG_COLOR), "[DEBUG]: ");
         fmt::print("Invalid name for pack {}, correcting manifest.json\n",
                    m_settings.name);
@@ -51,7 +51,7 @@ void PackManager::checkManifest() {
         writeManifest();
     }
     if (m_json["path"] != m_settings.path) {
-#ifdef _DEBUG
+#ifndef __optimize__
         fmt::print(fg(DEBUG_COLOR), "[DEBUG]: ");
         fmt::print("Invalid path for pack {}, correcting manifest.json\n",
                    m_settings.name);
