@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.11)
+cmake_minimum_required(VERSION 3.16)
 project(gdpack VERSION 2.0.0)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -33,5 +33,5 @@ add_executable(gdpack ${SOURCES})
 target_precompile_headers(gdpack PUBLIC ${HEADERS})
 target_compile_definitions(gdpack PRIVATE)
 
-target_include_directories(gdpack PRIVATE include)
+target_include_directories(gdpack PRIVATE ${PROJECT_SOURCE_DIR})
 target_link_libraries(gdpack PRIVATE nlohmann_json::nlohmann_json fmt::fmt)
