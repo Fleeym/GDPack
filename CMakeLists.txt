@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.11)
-project(GDPack VERSION 0.1.0)
+project(gdpack VERSION 0.1.0)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED On)
@@ -29,9 +29,9 @@ file(GLOB_RECURSE HEADERS
         src/*.hpp
 )
 
-add_executable(GDPack ${SOURCES})
-target_precompile_headers(GDPack PUBLIC ${HEADERS})
-target_compile_definitions(GDPack PRIVATE)
+add_executable(gdpack ${SOURCES})
+target_precompile_headers(gdpack PUBLIC ${HEADERS})
+target_compile_definitions(gdpack PRIVATE)
 
-target_include_directories(GDPack PRIVATE include)
-target_link_libraries(GDPack PRIVATE nlohmann_json::nlohmann_json fmt::fmt)
+target_include_directories(gdpack PRIVATE include)
+target_link_libraries(gdpack PRIVATE nlohmann_json::nlohmann_json fmt::fmt)
