@@ -142,7 +142,8 @@ void Config::checkForVanillaFiles() {
         fmt::print(fg(INFO_COLOR), "[INFO]: ");
         fmt::print("Found {} files that are not vanilla. Do you want to create "
                    "a new pack out of them? This will allow you to delete your "
-                   "Resources folder (y/n)");
+                   "Resources folder (y/n)",
+                   editedFiles.size());
         std::cin >> choice;
 
         // ignore \n
