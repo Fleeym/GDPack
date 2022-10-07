@@ -26,12 +26,8 @@ void Interface::listTP(const std::string &argument) {
 
         int i = 1;
         for (auto pack : m_packNames) {
-            PackageSettings packInfo;
-            try {
-                packInfo = m_config->getActivePack()->getPackInfo();
-            } catch (const std::exception &e) {
-                fmt::print("ERROR: {}\n", e.what());
-            }
+            const PackageSettings packInfo =
+                m_config->getActivePack()->getPackInfo();
             if (packInfo.name == pack) {
                 fmt::print(fg(INDEX_COLOR), "[{}] ", i);
                 fmt::print("{} ", pack);

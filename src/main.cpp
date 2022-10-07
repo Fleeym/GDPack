@@ -37,7 +37,15 @@ void selectCommand(Interface *interfaceObject, Config *configObject,
 // has files) 3) Edit config file 4) Exit program
 
 int main(int argc, char **argv) {
-    fs::path directory = std::string(std::getenv("USERPROFILE"));
+    fs::path directory;
+#if defined(_WIN32)
+    directory = std::string(std::getenv("USERPROFILE"));
+#elif defined(__unix__)
+    directory = std::string(std::getenv("HOME"));
+#endif
+    if (directory.string() == "") {
+        return -1;
+    }
     fs::path configFilename = directory;
     configFilename.append(".gdpack");
 
@@ -72,7 +80,10 @@ int main(int argc, char **argv) {
     Interface *interfaceObject = new Interface;
     Switcher *switcherObject = new Switcher;
 
-    if (!configObject->init(configFilename.string())) {
+    std::string configString = configFilename.string();
+    std::string directoryString = directory.string();
+
+    if (!configObject->init(configString)) {
         fmt::print(stderr, fg(ERROR_COLOR), "[ERROR]: ");
         fmt::print(stderr, "Initializing Config failed.\n");
         return -1;
@@ -82,8 +93,7 @@ int main(int argc, char **argv) {
         fmt::print(stderr, "Initializing Switcher failed.\n");
         return -1;
     }
-    if (!interfaceObject->init(configObject, switcherObject,
-                               directory.string())) {
+    if (!interfaceObject->init(configObject, switcherObject, directoryString)) {
         fmt::print(stderr, fg(ERROR_COLOR), "[ERROR]: ");
         fmt::print(stderr, "Initializing Interface failed.\n");
         return -1;
