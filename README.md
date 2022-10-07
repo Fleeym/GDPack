@@ -29,12 +29,10 @@ GDPack creates it's own folder in the Geometry Dash folder to store packs.
 Packs also have a specific folder structure. GDPack won't work if they are not setup this way.
 
 ```text
-*Pack Folder*
-|
---Resources
-  |
-  -- *Pack files go here*
--- manifest.json
+Pack
+├ Resources
+│ └ *Pack files go here*
+│ manifest.json
 ```
 
 **Don't worry if you don't have a manifest.json, gdpack will generate one for you when running it with any command!**
@@ -43,24 +41,17 @@ So, an example folder structure would be:
 
 ```text
 Geometry Dash
-|
-   gdpack
-   |
-   -- config.json
-   -- Pack 1
-      |
-      -- Resources
-         |
-         -- *pack 1 files*
-      -- manifest.json
-      -- cache.json
-   -- Pack 2
-      |
-      -- Resources
-         |
-         -- *pack 2 files*
-      -- manifest.json
-      -- cache.json
+└  gdpack
+   ├ Pack 1
+   │  │ manifest.json
+   │  │ cache.json
+   │  └ Resources
+   │     └ *pack 1 files*
+   ├ Pack 2
+   │  ├ Resources
+   │  │  └ *pack 2 files*
+   │  │ manifest.json
+   │  │ cache.json
 
 And so on...
 ```
