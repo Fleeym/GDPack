@@ -16,8 +16,15 @@ void Switcher::setActivePack(PackManager *pack, bool fromRevert) {
     std::string gdResPathString = m_config->getGeometryDashPath();
     std::string packPathString = pack->getJson()["path"];
     std::string packName = pack->getJson()["name"];
-    std::string packPathFilesString = packPathString + "\\Resources";
-    std::string gdResPathFilesString = gdResPathString + "\\Resources";
+
+    std::string separator = "/";
+
+#if defined(_WIN32)
+    separator = "\\";
+#endif
+
+    std::string packPathFilesString = packPathString + separator + "Resources";
+    std::string gdResPathFilesString = gdResPathString + "Resources";
 
     if (!fs::exists(packPathFilesString)) {
         fmt::print(fg(ERROR_COLOR), "[ERROR]: ");
@@ -40,7 +47,7 @@ void Switcher::setActivePack(PackManager *pack, bool fromRevert) {
         fs::copy_options::overwrite_existing | fs::copy_options::recursive;
 
     if (!pack->isCacheEmpty() && packName != "vanilla") {
-#ifdef _DEBUG
+#ifndef __optimize__
         fmt::print(fg(DEBUG_COLOR), "[DEBUG]: ");
         fmt::print("Cache detected, clearing cache\n");
 #endif
@@ -59,7 +66,7 @@ void Switcher::setActivePack(PackManager *pack, bool fromRevert) {
             for (auto file : cache) {
                 if (file == fileName) {
                     filesToCopy.push_back(fileName);
-#ifdef _DEBUG
+#ifndef __optimize__
                     fmt::print(fg(DEBUG_COLOR), "[DEBUG]: ");
                     fmt::print("Adding {} to cache\n", fileName);
 #endif
@@ -82,8 +89,9 @@ void Switcher::setActivePack(PackManager *pack, bool fromRevert) {
 
     if (m_config->getActivePack()->getJson()["name"] == "vanilla") {
         vanillaPathStr = m_config->getActivePack()->getJson()["path"];
-        vanillaPathStr += "\\Resources";
-        if (vanillaPathStr.at(vanillaPathStr.length() - 1) == '\\')
+        vanillaPathStr += separator + "Resources";
+        if (vanillaPathStr.at(vanillaPathStr.length() - 1) ==
+            separator.c_str()[0])
             vanillaPathStr.pop_back();
     }
     iterator = fs::directory_iterator(gdResPathFiles);
@@ -95,7 +103,7 @@ void Switcher::setActivePack(PackManager *pack, bool fromRevert) {
             // Move original files to vanilla pack
             if (m_config->getActivePack()->getJson()["name"] == "vanilla") {
                 std::string destinationString =
-                    vanillaPathStr + "\\" + fileName;
+                    vanillaPathStr + separator + fileName;
                 fs::path destination = destinationString;
                 if (!fs::exists(destination))
                     fs::copy(file.path(), destination);
@@ -110,7 +118,7 @@ void Switcher::setActivePack(PackManager *pack, bool fromRevert) {
                 std::find(filesToCopy.begin(), filesToCopy.end(), fileName);
             if (neededFile != std::end(filesToCopy)) {
                 std::string originString =
-                    packPathFilesString + "\\" + fileName;
+                    packPathFilesString + separator + fileName;
                 fs::path origin = originString;
                 fs::copy(origin, file, copyOptions);
             }
@@ -130,8 +138,15 @@ void Switcher::setActivePack(PackManager *pack, bool fromRevert) {
 }
 std::string Switcher::getNameFromPath(const std::string &path) {
     std::string temp = path;
-    if (temp.at(temp.length() - 1) == '\\')
+    char separator = '/';
+
+#if defined(_WIN32)
+    separator = '\\'
+#endif
+        if (temp.at(temp.length() - 1) == separator) {
         temp.pop_back();
-    return temp.substr(temp.find_last_of('\\') + 1,
-                       (temp.length() - temp.find_last_of('\\')));
+    }
+
+    return temp.substr(temp.find_last_of(separator) + 1,
+                       (temp.length() - temp.find_last_of(separator)));
 }

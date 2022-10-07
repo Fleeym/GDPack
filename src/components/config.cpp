@@ -4,9 +4,6 @@ bool Config::init(std::string &configFilename) {
     m_filename = configFilename;
 
     if (fileExists()) {
-        // At initialization, read the config file and store it in the local
-        // variables, so no data is lost if you launch the program multiple
-        // times
         if (!read()) {
             fmt::print(stderr, fg(ERROR_COLOR), "[ERROR]: ");
             fmt::print("Error reading config.json\n");
@@ -55,10 +52,14 @@ void Config::setPackPaths() {
 
 void Config::setPackNames(const std::vector<std::string> &packPaths) {
     std::vector<std::string> packNames;
-    for (auto path : packPaths) {
+    char separator = '/';
+#if defined(_WIN32)
+    separator = '\\'
+#endif
+        for (auto path : packPaths) {
         std::string temp = path;
-        temp = path.substr(path.find_last_of('\\') + 1,
-                           (path.length() - path.find_last_of('\\')));
+        temp = path.substr(path.find_last_of(separator) + 1,
+                           (path.length() - path.find_last_of(separator)));
         packNames.push_back(temp);
     }
     m_packNames = packNames;
@@ -102,7 +103,7 @@ void Config::save() {
     }
     out << m_json;
     out.close();
-#ifdef _DEBUG
+#ifndef __optimize__
     fmt::print(fg(INFO_COLOR), "[INFO]: ");
     fmt::print("Saved config file!\n");
 #endif
@@ -129,7 +130,7 @@ void Config::checkForVanillaFiles() {
 
         if (fileSize != cacheJson[fileName]) {
             editedFiles.push_back(path);
-#ifdef _DEBUG
+#ifndef __optimize__
             fmt::print(fg(DEBUG_COLOR), "[DEBUG]: ");
             fmt::print("Found {} with different size compared to vanilla\n",
                        fileName);
@@ -214,7 +215,7 @@ void Config::setup(bool manualActivate) {
 
     delete vanilla;
 
-        fmt::print(fg(SUCCESS_COLOR), "[SUCCESS]: ");
+    fmt::print(fg(SUCCESS_COLOR), "[SUCCESS]: ");
     fmt::print("Geometry Dash installation has been set to: ");
     fmt::print(fg(TITLE_COLOR), "{}\n", gdPath.string());
 }
