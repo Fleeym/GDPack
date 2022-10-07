@@ -43,8 +43,11 @@ void gencache(const std::string &gdPath) {
 
 std::string getNameFromPath(const std::string &path) {
     std::string temp = path;
-    if (temp.at(temp.length() - 1) == '\\')
-        temp.pop_back();
-    return temp.substr(temp.find_last_of('\\') + 1,
-                       (temp.length() - temp.find_last_of('\\')));
+    char separator = '/';
+#if defined(_WIN32)
+    separator = '\\'
+#endif
+                if (temp.at(temp.length() - 1) == separator) temp.pop_back();
+    return temp.substr(temp.find_last_of(separator) + 1,
+                       (temp.length() - temp.find_last_of(separator)));
 }
