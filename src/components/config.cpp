@@ -54,9 +54,9 @@ void Config::setPackNames(const std::vector<std::string> &packPaths) {
     std::vector<std::string> packNames;
     char separator = '/';
 #if defined(_WIN32)
-    separator = '\\'
+    separator = '\\';
 #endif
-        for (auto path : packPaths) {
+    for (auto path : packPaths) {
         std::string temp = path;
         temp = path.substr(path.find_last_of(separator) + 1,
                            (path.length() - path.find_last_of(separator)));

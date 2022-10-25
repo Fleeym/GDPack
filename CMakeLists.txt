@@ -4,22 +4,6 @@ project(gdpack VERSION 2.0.0)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED On)
 
-include(FetchContent)
-
-FetchContent_Declare(
-        json
-        GIT_REPOSITORY https://github.com/nlohmann/json.git
-        URL https://github.com/nlohmann/json/releases/download/v3.10.5/json.tar.xz
-        DOWNLOAD_EXTRACT_TIMESTAMP TRUE
-)
-FetchContent_Declare(
-        fmt
-        GIT_REPOSITORY https://github.com/fmtlib/fmt.git
-        URL https://github.com/fmtlib/fmt/releases/download/8.1.1/fmt-8.1.1.zip
-        DOWNLOAD_EXTRACT_TIMESTAMP TRUE
-)
-FetchContent_MakeAvailable(fmt json)
-
 file(GLOB_RECURSE SOURCES
         src/*.cpp
 )
@@ -29,9 +13,12 @@ file(GLOB_RECURSE HEADERS
         src/*.hpp
 )
 
-add_executable(gdpack ${SOURCES})
-target_precompile_headers(gdpack PUBLIC ${HEADERS})
-target_compile_definitions(gdpack PRIVATE)
+add_subdirectory(include/fmt)
+add_subdirectory(include/json)
 
-target_include_directories(gdpack PRIVATE ${PROJECT_SOURCE_DIR})
-target_link_libraries(gdpack PRIVATE nlohmann_json::nlohmann_json fmt::fmt)
+add_executable(${PROJECT_NAME} ${SOURCES})
+target_precompile_headers(${PROJECT_NAME} PUBLIC ${HEADERS})
+target_compile_definitions(${PROJECT_NAME} PRIVATE)
+
+target_include_directories(${PROJECT_NAME} PRIVATE include/fmt include/json)
+target_link_libraries(${PROJECT_NAME} PRIVATE nlohmann_json::nlohmann_json fmt::fmt)

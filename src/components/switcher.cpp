@@ -141,9 +141,9 @@ std::string Switcher::getNameFromPath(const std::string &path) {
     char separator = '/';
 
 #if defined(_WIN32)
-    separator = '\\'
+    separator = '\\';
 #endif
-        if (temp.at(temp.length() - 1) == separator) {
+    if (temp.at(temp.length() - 1) == separator) {
         temp.pop_back();
     }
 
