@@ -3,7 +3,7 @@
 #include "components/pack.hpp"
 #include "components/switcher.hpp"
 #include "devmode.hpp"
-#include "types/colors.hpp"
+#include "colors.hpp"
 
 #include <algorithm>
 #include <cstdlib>

@@ -4,7 +4,7 @@
 #include <filesystem>
 #include <string>
 
-#include "../types/colors.hpp"
+#include "../colors.hpp"
 #include "config.hpp"
 #include "pack.hpp"
 #include "../utils.hpp"

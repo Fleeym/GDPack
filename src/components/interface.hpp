@@ -5,7 +5,7 @@
 #include <fmt/core.h>
 #include <iostream>
 
-#include "../types/colors.hpp"
+#include "../colors.hpp"
 #include "pack.hpp"
 #include "switcher.hpp"
 

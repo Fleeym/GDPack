@@ -5,11 +5,19 @@
 #include <map>
 #include <nlohmann/json.hpp>
 
-#include "../types/colors.hpp"
-#include "../types/packageSettings.hpp"
+#include "../colors.hpp"
 
 namespace fs = std::filesystem;
 using json = nlohmann::json;
+
+struct PackageSettings {
+    std::string name;
+    std::string path;
+    std::string author;
+    std::string description;
+    std::string version = "1.0.0";
+    std::string gdVersion = "2.1";
+};
 
 class Pack {
   private:

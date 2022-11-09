@@ -8,11 +8,16 @@
 #include <vector>
 
 #include "../utils.hpp"
-#include "../types/colors.hpp"
-#include "../types/configSettings.hpp"
+#include "../colors.hpp"
 #include "pack.hpp"
 
 using json = nlohmann::json;
+
+struct ConfigSettings {
+    std::string packsPath;
+    std::string geometryDashPath;
+    std::string activePack;
+};
 
 class Config {
   private:

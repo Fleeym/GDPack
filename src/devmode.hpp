@@ -6,7 +6,7 @@
 #include <nlohmann/json.hpp>
 
 #include "components/config.hpp"
-#include "types/colors.hpp"
+#include "colors.hpp"
 #include "utils.hpp"
 
 namespace fs = std::filesystem;
