@@ -14,7 +14,7 @@ bool Config::init(std::string &configFilename) {
         setPackNames(m_packPaths);
 
         for (int i = 0; i < m_packNames.size(); i++) {
-            m_packs.push_back(new PackManager);
+            m_packs.push_back(new Pack);
             m_packs.at(i)->init(m_packNames.at(i), m_packPaths.at(i));
             if (!m_packs.at(i))
                 return false;
@@ -200,7 +200,7 @@ void Config::setup(bool manualActivate) {
     setPacksPath(gdPath.string());
     setGeometryDashPath(gdPath.string());
 
-    PackManager *vanilla = new PackManager;
+    Pack *vanilla = new Pack;
     if (!vanilla) {
         fmt::print(fg(ERROR_COLOR), "[ERROR]: ");
         fmt::print("Error creating the vanilla pack object\n");
@@ -238,7 +238,7 @@ std::vector<std::string> Config::getPackPaths() { return m_packPaths; }
 
 std::vector<std::string> Config::getPackNames() { return m_packNames; }
 
-void Config::setActivePack(PackManager *pack) {
+void Config::setActivePack(Pack *pack) {
     m_activePack = pack;
     m_settings.activePack = pack->getJson()["name"];
     save();
@@ -259,7 +259,7 @@ void Config::setGeometryDashPath(const std::string &path) {
     save();
 }
 
-std::vector<PackManager *> Config::getPacks() { return m_packs; }
+std::vector<Pack *> Config::getPacks() { return m_packs; }
 
 std::string Config::getGeometryDashPath() {
     return m_settings.geometryDashPath;
@@ -267,4 +267,4 @@ std::string Config::getGeometryDashPath() {
 
 std::string Config::getPacksPath() { return m_settings.packsPath; }
 
-PackManager *Config::getActivePack() { return m_activePack; }
+Pack *Config::getActivePack() { return m_activePack; }

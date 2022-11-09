@@ -1,6 +1,6 @@
 #include "components/config.hpp"
 #include "components/interface.hpp"
-#include "components/packman.hpp"
+#include "components/pack.hpp"
 #include "components/switcher.hpp"
 #include "devmode.hpp"
 #include "types/colors.hpp"

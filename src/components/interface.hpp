@@ -6,7 +6,7 @@
 #include <iostream>
 
 #include "../types/colors.hpp"
-#include "packman.hpp"
+#include "pack.hpp"
 #include "switcher.hpp"
 
 namespace fs = std::filesystem;
@@ -19,9 +19,9 @@ class Interface {
 
     // colors
 
-    PackManager *m_activePack;
+    Pack *m_activePack;
 
-    std::vector<PackManager *> m_packs;
+    std::vector<Pack *> m_packs;
 
     std::vector<std::string> m_packPaths;
     std::vector<std::string> m_packNames;
@@ -54,7 +54,7 @@ class Interface {
     void setPackPaths(const std::vector<std::string> packPaths);
     void setPackNames(const std::vector<std::string> packNames);
 
-    std::vector<PackManager *> getPacks();
+    std::vector<Pack *> getPacks();
 
     ~Interface();
 };

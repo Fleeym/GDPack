@@ -1,6 +1,6 @@
-#include "packman.hpp"
+#include "pack.hpp"
 
-void PackManager::init(const std::string &packName,
+void Pack::init(const std::string &packName,
                        const std::string &packPath) {
     m_settings.name = packName;
     m_settings.path = packPath;
@@ -25,7 +25,7 @@ void PackManager::init(const std::string &packName,
     }
 }
 
-void PackManager::writeManifest() {
+void Pack::writeManifest() {
     std::ofstream out(m_manifestPath);
     std::ofstream cacheOut(m_cachePath);
     if (!out || !cacheOut) {
@@ -40,7 +40,7 @@ void PackManager::writeManifest() {
     out.close();
 }
 
-void PackManager::checkManifest() {
+void Pack::checkManifest() {
     if (m_json["name"] != m_settings.name) {
 #ifndef __optimize__
         fmt::print(fg(DEBUG_COLOR), "[DEBUG]: ");
@@ -61,7 +61,7 @@ void PackManager::checkManifest() {
     }
 }
 
-void PackManager::readManifest() {
+void Pack::readManifest() {
     std::ifstream input(m_manifestPath);
     input >> m_json;
     input.close();
@@ -89,9 +89,9 @@ void PackManager::readManifest() {
     }
 }
 
-std::vector<std::string> PackManager::getCache() { return m_cache; }
+std::vector<std::string> Pack::getCache() { return m_cache; }
 
-bool PackManager::manifestExists() {
+bool Pack::manifestExists() {
     std::ifstream manifest(m_manifestPath);
 
     if (!manifest)
@@ -101,19 +101,19 @@ bool PackManager::manifestExists() {
     return true;
 }
 
-void PackManager::clearCache() { m_cache.clear(); }
+void Pack::clearCache() { m_cache.clear(); }
 
-bool PackManager::isCacheEmpty() {
+bool Pack::isCacheEmpty() {
     if (m_cache.size() == 0)
         return true;
     return false;
 }
 
-json PackManager::getJson() { return m_json; }
+json Pack::getJson() { return m_json; }
 
-PackageSettings &PackManager::getPackInfo() { return m_settings; };
+PackageSettings &Pack::getPackInfo() { return m_settings; };
 
-void PackManager::createManifest() {
+void Pack::createManifest() {
     m_json["name"] = m_settings.name;
     m_json["author"] = "";
     m_json["description"] = "";
@@ -131,11 +131,11 @@ void PackManager::createManifest() {
     writeManifest();
 }
 
-void PackManager::cacheFile(const std::string &fileName) {
+void Pack::cacheFile(const std::string &fileName) {
     m_cache.push_back(fileName);
 }
 
-void PackManager::pushCache() {
+void Pack::pushCache() {
     m_cacheJson = m_cache;
     writeManifest();
 }

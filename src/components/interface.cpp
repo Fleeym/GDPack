@@ -199,7 +199,7 @@ void Interface::setPackNames(const std::vector<std::string> packNames) {
     m_packNames = packNames;
 }
 
-std::vector<PackManager *> Interface::getPacks() { return m_packs; }
+std::vector<Pack *> Interface::getPacks() { return m_packs; }
 
 Interface::~Interface() {
     for (auto pack : m_packs) {

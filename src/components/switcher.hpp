@@ -6,18 +6,18 @@
 
 #include "../types/colors.hpp"
 #include "config.hpp"
-#include "packman.hpp"
+#include "pack.hpp"
 
 namespace fs = std::filesystem;
 
 class Switcher {
   private:
     Config *m_config;
-    std::vector<PackManager *> m_packs;
+    std::vector<Pack *> m_packs;
 
   public:
     bool init(Config *config);
-    void setActivePack(PackManager *pack, bool fromRevert);
+    void setActivePack(Pack *pack, bool fromRevert);
     std::string getNameFromPath(const std::string &path);
     void setDefaultActivePack(const std::string &name);
 };

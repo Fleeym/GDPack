@@ -10,7 +10,7 @@
 #include "../devmode.hpp"
 #include "../types/colors.hpp"
 #include "../types/configSettings.hpp"
-#include "packman.hpp"
+#include "pack.hpp"
 
 using json = nlohmann::json;
 
@@ -39,12 +39,12 @@ class Config {
     std::vector<std::string> m_packPaths;
     std::vector<std::string> m_packNames;
 
-    std::vector<PackManager *> m_packs;
+    std::vector<Pack *> m_packs;
 
     // Settings
     ConfigSettings m_settings;
 
-    PackManager *m_activePack;
+    Pack *m_activePack;
 
   public:
     // Constructor, gets the filename of the config file
@@ -69,15 +69,15 @@ class Config {
     // Setters for settings, cringe
     void setPacksPath(const std::string &gdPath);
     void setGeometryDashPath(const std::string &path);
-    void setActivePack(PackManager *pack);
+    void setActivePack(Pack *pack);
     void setPackPaths();
     void setPackNames(const std::vector<std::string> &packPaths);
 
     // Getters for settings, even more cringe
     std::string getPacksPath();
     std::string getGeometryDashPath();
-    PackManager *getActivePack();
+    Pack *getActivePack();
     std::vector<std::string> getPackPaths();
     std::vector<std::string> getPackNames();
-    std::vector<PackManager *> getPacks();
+    std::vector<Pack *> getPacks();
 };

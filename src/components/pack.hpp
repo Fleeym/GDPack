@@ -11,7 +11,7 @@
 namespace fs = std::filesystem;
 using json = nlohmann::json;
 
-class PackManager {
+class Pack {
   private:
     // JSON file
     json m_json;
