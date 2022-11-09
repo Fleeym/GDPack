@@ -60,17 +60,15 @@ void Switcher::setActivePack(Pack *pack, bool fromRevert) {
     for (auto file : iterator) {
         std::string tempStr = file.path().string();
         std::string fileName = Utils::getNameFromPath(tempStr);
-        if (packName == "vanilla" &&
-            m_config->getActivePack()->getJson()["name"] != "vanilla") {
-            std::vector<std::string> cache =
-                m_config->getActivePack()->getCache();
+        if (packName == "vanilla" && m_config->getActivePack()->getJson()["name"] != "vanilla") {
+            std::vector<std::string> cache = m_config->getActivePack()->getCache();
             for (auto file : cache) {
                 if (file == fileName) {
                     filesToCopy.push_back(fileName);
-#ifndef __optimize__
-                    fmt::print(fg(DEBUG_COLOR), "[DEBUG]: ");
-                    fmt::print("Adding {} to cache\n", fileName);
-#endif
+                    if (Utils::isDebug()) {
+                        fmt::print(fg(DEBUG_COLOR), "[DEBUG]: ");
+                        fmt::print("Adding {} to cache\n", fileName);
+                    }
                 }
             }
         } else {

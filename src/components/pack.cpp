@@ -8,19 +8,21 @@ void Pack::init(const std::string &packName,
     m_cachePath.append("cache.json");
     m_manifestPath = m_settings.path + "/manifest.json";
     if (manifestExists()) {
-#ifndef __optimize__
-        fmt::print(fg(DEBUG_COLOR), "[DEBUG]: ");
-        fmt::print("Found manifest.json for {}\n", m_settings.name);
-#endif
+        if (Utils::isDebug()) {
+            fmt::print(fg(DEBUG_COLOR), "[DEBUG]: ");
+            fmt::print("Found manifest.json for {}\n", m_settings.name);
+        }
+
         readManifest();
         checkManifest();
     } else {
-#ifndef __optimize__
-        fmt::print(fg(DEBUG_COLOR), "[DEBUG]: ");
-        fmt::print("manifest.json doesn't exist for {}, creating basic "
+        if (Utils::isDebug()) {
+            fmt::print(fg(DEBUG_COLOR), "[DEBUG]: ");
+            fmt::print("manifest.json doesn't exist for {}, creating basic "
                    "manifest.json!\n",
                    m_settings.name);
-#endif
+        }
+
         createManifest();
     }
 }
@@ -42,20 +44,20 @@ void Pack::writeManifest() {
 
 void Pack::checkManifest() {
     if (m_json["name"] != m_settings.name) {
-#ifndef __optimize__
-        fmt::print(fg(DEBUG_COLOR), "[DEBUG]: ");
-        fmt::print("Invalid name for pack {}, correcting manifest.json\n",
+        if (Utils::isDebug()) {
+            fmt::print(fg(DEBUG_COLOR), "[DEBUG]: ");
+            fmt::print("Invalid name for pack {}, correcting manifest.json\n",
                    m_settings.name);
-#endif
+        }
         m_json["name"] = m_settings.name;
         writeManifest();
     }
     if (m_json["path"] != m_settings.path) {
-#ifndef __optimize__
-        fmt::print(fg(DEBUG_COLOR), "[DEBUG]: ");
-        fmt::print("Invalid path for pack {}, correcting manifest.json\n",
+        if (Utils::isDebug()) {
+            fmt::print(fg(DEBUG_COLOR), "[DEBUG]: ");
+            fmt::print("Invalid path for pack {}, correcting manifest.json\n",
                    m_settings.name);
-#endif
+        }
         m_json["path"] = m_settings.path;
         writeManifest();
     }
