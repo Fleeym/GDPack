@@ -37,7 +37,7 @@ class Interface {
     // Reverts to vanilla textures
     void revert(bool);
     // Shows the help dialogue
-    void showHelp(std::string &version);
+    void showHelp(const std::string &version);
     // Shows help for a specified command
     void showCommandHelp(const std::string &command);
     // sets the pack lol
@@ -48,7 +48,7 @@ class Interface {
     void getActivePack();
 
     // getter
-    std::string &getProgramVersion();
+    const std::string &getProgramVersion();
 
     // setter
     void setPackPaths(const std::vector<std::string> packPaths);

@@ -123,7 +123,7 @@ void Interface::revert(bool fromCommand) {
     m_switcher->setActivePack(m_packs.at(position), fromCommand);
 }
 
-void Interface::showHelp(std::string &version) {
+void Interface::showHelp(const std::string &version) {
     fmt::print(fg(TITLE_COLOR), "GDPack ");
     fmt::print(fg(VERSION_COLOR), "v{}", version);
     fmt::print(" [COMMAND] [ARGUMENT]\n"
@@ -189,7 +189,7 @@ void Interface::showCommandHelp(const std::string &command) {
     }
 }
 
-std::string &Interface::getProgramVersion() { return m_programVersion; }
+const std::string &Interface::getProgramVersion() { return m_programVersion; }
 
 void Interface::setPackPaths(const std::vector<std::string> packPaths) {
     m_packPaths = packPaths;
