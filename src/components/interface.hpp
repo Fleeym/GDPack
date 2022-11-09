@@ -25,7 +25,7 @@ class Interface {
 
     std::vector<std::string> m_packPaths;
     std::vector<std::string> m_packNames;
-    const std::string m_programVersion = "v2.1.0";
+    const std::string m_programVersion = "2.1.0";
 
   public:
     // Initializes the interface and starts the first-time setup if no config
