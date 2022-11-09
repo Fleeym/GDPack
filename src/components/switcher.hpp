@@ -11,10 +11,13 @@
 
 namespace fs = std::filesystem;
 
+
 class Switcher {
   private:
     Config *m_config;
     std::vector<Pack *> m_packs;
+
+    void moveFiles(fs::path &source, fs::path &destination, std::vector<std::string> &filesToCopy);
 
   public:
     bool init(Config *config);

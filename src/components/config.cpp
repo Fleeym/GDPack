@@ -261,10 +261,13 @@ void Config::setGeometryDashPath(const std::string &path) {
 
 std::vector<Pack *> Config::getPacks() { return m_packs; }
 
+// Returns path of Geometry Dash folder
 std::string Config::getGeometryDashPath() {
     return m_settings.geometryDashPath;
 }
 
+// Returns path of packs folder
 std::string Config::getPacksPath() { return m_settings.packsPath; }
 
+// Returns pointer to active pack
 Pack *Config::getActivePack() { return m_activePack; }

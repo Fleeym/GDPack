@@ -7,45 +7,27 @@ bool Switcher::init(Config *config) {
     return true;
 }
 
-// Future me, I am so, so terribly sorry for this pestilence that I have
-// inflicted upon you. I only hope you have the mercy to gaze in the mirror
-// after rewatching this disaster of a function. Also sorry for playing hot
-// potato with object references, I should have used pointers lol nevermind i
-// made it ok
 void Switcher::setActivePack(Pack *pack, bool fromRevert) {
-    std::string gdResPathString = m_config->getGeometryDashPath();
-    std::string packPathString = pack->getJson()["path"];
-    std::string packName = pack->getJson()["name"];
+    fs::path gdPath = m_config->getGeometryDashPath();
+    fs::path packPath = pack->getPackInfo().path;
 
-    std::string separator = "/";
+    fs::path gdResources = m_config->getGeometryDashPath();
+    gdResources.append("Resources");
 
-#if defined(_WIN32)
-    separator = "\\";
-#endif
+    fs::path packResources = pack->getPackInfo().path;
+    packResources.append("Resources");
 
-    fs::path gdResPathFiles = gdResPathString;
-    fs::path packPathFiles = packPathString;
-    gdResPathFiles.append("Resources");
-    packPathFiles.append("Resources");
+    // Name of pack that we are switching to
+    std::string packName = pack->getPackInfo().name;
 
-    if (!fs::exists(packPathFiles)) {
+    if (!fs::exists(packResources)) {
         fmt::print(fg(ERROR_COLOR), "[ERROR]: ");
         fmt::print("Resources folder not detected in pack folder, check the "
                    "pack's folder structure.\n");
         return;
     }
 
-    // Paths to <pack>/Resources, and GD/Resources respectively
-    
-
-    // Paths to root folder of pack and GD folder
-    fs::path packPath = packPathString;
-    fs::path gdResPath = gdResPathString;
-
     std::vector<std::string> filesToCopy;
-
-    const auto copyOptions =
-        fs::copy_options::overwrite_existing | fs::copy_options::recursive;
 
     if (!pack->isCacheEmpty() && packName != "vanilla") {
         if (Utils::isDebug()) {
@@ -56,15 +38,18 @@ void Switcher::setActivePack(Pack *pack, bool fromRevert) {
     }
 
     // Iterate in the texture pack folder and remember which files to move
-    auto iterator = fs::directory_iterator(packPathFiles);
+    auto iterator = fs::directory_iterator(packResources);
     for (auto file : iterator) {
-        std::string tempStr = file.path().string();
-        std::string fileName = Utils::getNameFromPath(tempStr);
-        if (packName == "vanilla" && m_config->getActivePack()->getJson()["name"] != "vanilla") {
+        std::string filePath = file.path().string();
+        std::string fileName = Utils::getNameFromPath(filePath);
+
+        // If we are reverting, also check the cache of the active pack.
+        if (packName == "vanilla" && m_config->getActivePack()->getPackInfo().name != "vanilla") {
             std::vector<std::string> cache = m_config->getActivePack()->getCache();
             for (auto file : cache) {
                 if (file == fileName) {
                     filesToCopy.push_back(fileName);
+
                     if (Utils::isDebug()) {
                         fmt::print(fg(DEBUG_COLOR), "[DEBUG]: ");
                         fmt::print("Adding {} to cache\n", fileName);
@@ -74,6 +59,7 @@ void Switcher::setActivePack(Pack *pack, bool fromRevert) {
         } else {
             filesToCopy.push_back(fileName);
         }
+        // If we are not reverting, cache the file.
         if (packName != "vanilla")
             pack->cacheFile(fileName);
     }
@@ -84,52 +70,49 @@ void Switcher::setActivePack(Pack *pack, bool fromRevert) {
         return;
     }
 
-    std::string vanillaPathStr;
+    // If vanilla is active, move the untouched files first.
+    if (m_config->getActivePack()->getPackInfo().name == "vanilla") {
+        fs::path vanillaResources = m_config->getActivePack()->getPackInfo().path;
+        vanillaResources.append("Resources");
 
-    if (m_config->getActivePack()->getJson()["name"] == "vanilla") {
-        vanillaPathStr = m_config->getActivePack()->getJson()["path"];
-        vanillaPathStr += separator + "Resources";
-
-        if (vanillaPathStr.at(vanillaPathStr.length() - 1) == separator.c_str()[0])
-            vanillaPathStr.pop_back();
+        fs::path destination = vanillaResources;
+        moveFiles(gdResources, destination, filesToCopy);
     }
 
-    iterator = fs::directory_iterator(gdResPathFiles);
+    // Move files from pack to GD resources
+    moveFiles(packResources, gdResources, filesToCopy);
 
+    m_config->setActivePack(pack);
+    m_config->save();
+    if (!fromRevert) {
+        fmt::print(fg(SUCCESS_COLOR), "[SUCCESS]: ");
+        fmt::print("Successfully switched pack to {}!\n", packName);
+    }
+    if (!pack->isCacheEmpty() || packName != "vanilla")
+        pack->pushCache();
+}
+/**
+ * Moves files in filesToCopy from source to destination
+ * filesToCopy has to contain file names
+**/
+void Switcher::moveFiles(fs::path &source, fs::path &destination, std::vector<std::string> &filesToCopy) {
+    const auto copyOptions = 
+        fs::copy_options::overwrite_existing | 
+        fs::copy_options::recursive;
+
+    auto iterator = fs::directory_iterator(source);
     for (auto file : iterator) {
         std::string fileName = Utils::getNameFromPath(file.path().string());
         auto neededFile = std::find(filesToCopy.begin(), filesToCopy.end(), fileName);
         if (neededFile != std::end(filesToCopy)) {
-            // Move original files to vanilla pack
-            if (m_config->getActivePack()->getJson()["name"] == "vanilla") {
-                std::string destinationString = vanillaPathStr + separator + fileName;
-                fs::path destination = destinationString;
-                if (!fs::exists(destination))
-                    fs::copy(file.path(), destination);
+            fs::path destinationFilename = destination;
+            destinationFilename.append(fileName);
+
+            try {
+                fs::copy(file.path(), destinationFilename, copyOptions);
+            } catch (fs::filesystem_error &e) {
+                std::cout << e.what() << "\n";
             }
         }
-    }
-    try {
-        iterator = fs::directory_iterator(gdResPathFiles);
-        for (auto file : iterator) {
-            std::string fileName = Utils::getNameFromPath(file.path().string());
-            auto neededFile = std::find(filesToCopy.begin(), filesToCopy.end(), fileName);
-            if (neededFile != std::end(filesToCopy)) {
-                std::string originString = packPathFiles.string() + separator + fileName;
-                fs::path origin = originString;
-                fs::copy(origin, file, copyOptions);
-            }
-        }
-        m_config->setActivePack(pack);
-        m_config->save();
-        if (!fromRevert) {
-            fmt::print(fg(SUCCESS_COLOR), "[SUCCESS]: ");
-            fmt::print("Successfully switched pack to {}!\n", packName);
-        }
-        if (!pack->isCacheEmpty() || packName != "vanilla")
-            pack->pushCache();
-    } catch (fs::filesystem_error e) {
-        fmt::print(fg(ERROR_COLOR), "[ERROR]: ");
-        fmt::print("{}\n", e.what());
     }
 }
