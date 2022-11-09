@@ -1,6 +1,6 @@
 #include "utils.hpp"
 
-std::string getNameFromPath(const std::string &path) {
+std::string Utils::getNameFromPath(const std::string &path) {
     std::string temp = path;
     char separator = '/';
     
@@ -12,7 +12,7 @@ std::string getNameFromPath(const std::string &path) {
     return temp.substr(temp.find_last_of(separator) + 1, (temp.length() - temp.find_last_of(separator)));
 }
 
-bool isDebug() {
+bool Utils::isDebug() {
 #ifndef _optimize_
     return true;
 #endif

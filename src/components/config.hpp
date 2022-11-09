@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-#include "../devmode.hpp"
+#include "../utils.hpp"
 #include "../types/colors.hpp"
 #include "../types/configSettings.hpp"
 #include "pack.hpp"

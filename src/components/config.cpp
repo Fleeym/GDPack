@@ -126,7 +126,7 @@ void Config::checkForVanillaFiles() {
 
     for (auto file : iterator) {
         fs::path path = file.path();
-        std::string fileName = getNameFromPath(path.string());
+        std::string fileName = Utils::getNameFromPath(path.string());
         uintmax_t fileSize = fs::file_size(path);
 
         if (fileSize != cacheJson[fileName]) {

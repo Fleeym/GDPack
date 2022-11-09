@@ -48,10 +48,10 @@ void Switcher::setActivePack(Pack *pack, bool fromRevert) {
         fs::copy_options::overwrite_existing | fs::copy_options::recursive;
 
     if (!pack->isCacheEmpty() && packName != "vanilla") {
-#ifndef __optimize__
-        fmt::print(fg(DEBUG_COLOR), "[DEBUG]: ");
-        fmt::print("Cache detected, clearing cache\n");
-#endif
+        if (Utils::isDebug()) {
+            fmt::print(fg(DEBUG_COLOR), "[DEBUG]: ");
+            fmt::print("Cache detected, clearing cache\n");
+        }
         pack->clearCache();
     }
 
