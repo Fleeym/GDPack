@@ -66,9 +66,20 @@ void Pack::readManifest() {
     input >> m_json;
     input.close();
 
+    // if no cache found, just create an empty file.
+    if (!fs::exists(m_cachePath) && m_settings.name != "vanilla") {
+        std::ofstream cache(m_cachePath);
+        cache << "[]";
+        cache.close();
+    }
+
     if (m_settings.name != "vanilla") {
         std::ifstream cacheInput(m_cachePath);
-        cacheInput >> m_cacheJson;
+        try {
+            cacheInput >> m_cacheJson;\
+        } catch (nlohmann::json::exception &e) {
+            std::cout << e.what() << "\n";
+        }
         cacheInput.close();
     }
 

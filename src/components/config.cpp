@@ -103,6 +103,7 @@ void Config::save() {
     }
     out << m_json;
     out.close();
+
 #ifndef __optimize__
     fmt::print(fg(INFO_COLOR), "[INFO]: ");
     fmt::print("Saved config file!\n");
@@ -130,11 +131,12 @@ void Config::checkForVanillaFiles() {
 
         if (fileSize != cacheJson[fileName]) {
             editedFiles.push_back(path);
+
 #ifndef __optimize__
             fmt::print(fg(DEBUG_COLOR), "[DEBUG]: ");
-            fmt::print("Found {} with different size compared to vanilla\n",
-                       fileName);
+            fmt::print("Found {} with different size compared to vanilla\n", fileName);
 #endif
+
         }
     }
     if (editedFiles.size() != 0) {
@@ -146,7 +148,7 @@ void Config::checkForVanillaFiles() {
                    editedFiles.size());
         std::cin >> choice;
 
-        // ignore \n
+        // ignore characters up to \n
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
 }

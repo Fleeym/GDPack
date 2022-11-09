@@ -23,10 +23,12 @@ void Switcher::setActivePack(Pack *pack, bool fromRevert) {
     separator = "\\";
 #endif
 
-    std::string packPathFilesString = packPathString + separator + "Resources";
-    std::string gdResPathFilesString = gdResPathString + "Resources";
+    fs::path gdResPathFiles = gdResPathString;
+    fs::path packPathFiles = packPathString;
+    gdResPathFiles.append("Resources");
+    packPathFiles.append("Resources");
 
-    if (!fs::exists(packPathFilesString)) {
+    if (!fs::exists(packPathFiles)) {
         fmt::print(fg(ERROR_COLOR), "[ERROR]: ");
         fmt::print("Resources folder not detected in pack folder, check the "
                    "pack's folder structure.\n");
@@ -34,8 +36,7 @@ void Switcher::setActivePack(Pack *pack, bool fromRevert) {
     }
 
     // Paths to <pack>/Resources, and GD/Resources respectively
-    fs::path gdResPathFiles = gdResPathFilesString;
-    fs::path packPathFiles = packPathFilesString;
+    
 
     // Paths to root folder of pack and GD folder
     fs::path packPath = packPathString;
@@ -94,16 +95,16 @@ void Switcher::setActivePack(Pack *pack, bool fromRevert) {
             separator.c_str()[0])
             vanillaPathStr.pop_back();
     }
+
     iterator = fs::directory_iterator(gdResPathFiles);
+
     for (auto file : iterator) {
         std::string fileName = getNameFromPath(file.path().string());
-        auto neededFile =
-            std::find(filesToCopy.begin(), filesToCopy.end(), fileName);
+        auto neededFile = std::find(filesToCopy.begin(), filesToCopy.end(), fileName);
         if (neededFile != std::end(filesToCopy)) {
             // Move original files to vanilla pack
             if (m_config->getActivePack()->getJson()["name"] == "vanilla") {
-                std::string destinationString =
-                    vanillaPathStr + separator + fileName;
+                std::string destinationString = vanillaPathStr + separator + fileName;
                 fs::path destination = destinationString;
                 if (!fs::exists(destination))
                     fs::copy(file.path(), destination);
@@ -117,8 +118,7 @@ void Switcher::setActivePack(Pack *pack, bool fromRevert) {
             auto neededFile =
                 std::find(filesToCopy.begin(), filesToCopy.end(), fileName);
             if (neededFile != std::end(filesToCopy)) {
-                std::string originString =
-                    packPathFilesString + separator + fileName;
+                std::string originString = packPathFiles.string() + separator + fileName;
                 fs::path origin = originString;
                 fs::copy(origin, file, copyOptions);
             }
