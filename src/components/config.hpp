@@ -21,24 +21,24 @@ struct ConfigSettings {
 
 class Config {
   private:
-    // Basic variables for functionality
     json m_json;
     std::string m_filename;
 
-    /* INSTALLATION PATHS
-    - basic steam install
-    - SteamLibrary in D
-    - linux
-    - linux (flatpak)
-    - mac (i hope it works)
-    INSTALLATION PATHS */
+    /* 
+     * INSTALLATION PATHS
+     * - basic steam install
+     * - SteamLibrary in D
+     * - linux
+     * - linux (flatpak)
+     * - mac (i hope it works)
+     * INSTALLATION PATHS
+    **/
 
     const std::vector<fs::path> m_pathsToCheck = {
         "C:/Program Files (x86)/Steam/steamapps/common/Geometry Dash",
         "D:/SteamLibrary/steamapps/common/Geometry Dash",
         "~/.steam/steamapps/common/Geometry Dash",
-        " .var/app/com.valvesoftware.Steam/data/Steam/steamapps/common/"
-        "Geometry Dash",
+        " .var/app/com.valvesoftware.Steam/data/Steam/steamapps/common/Geometry Dash",
         "~/Library/Application Support/Steam/steamapps/common/Geometry Dash"};
 
     std::vector<std::string> m_packPaths;
@@ -46,13 +46,11 @@ class Config {
 
     std::vector<Pack *> m_packs;
 
-    // Settings
     ConfigSettings m_settings;
 
     Pack *m_activePack;
 
   public:
-    // Constructor, gets the filename of the config file
     bool init(std::string &filename);
     // Checks if the config file exists
     bool fileExists();
