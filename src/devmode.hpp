@@ -16,4 +16,4 @@ class Config;
 using json = nlohmann::json;
 
 void chooseCommand(const std::string &argument, Config *config);
-void gencache(const std::string &gdPath);
+void genCache(const std::string &gdPath);

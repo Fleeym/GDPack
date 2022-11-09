@@ -1,8 +1,8 @@
 #include "devmode.hpp"
 
 void chooseCommand(const std::string &argument, Config *config) {
-    if (argument == "cgen") {
-        gencache(config->getGeometryDashPath());
+    if (argument == "generate-cache") {
+        genCache(config->getGeometryDashPath());
     } else {
         fmt::print(fg(ERROR_COLOR), "[ERROR]: ");
         fmt::print("Invalid argument, use ");
@@ -11,7 +11,7 @@ void chooseCommand(const std::string &argument, Config *config) {
     }
 }
 
-void gencache(const std::string &gdPath) {
+void genCache(const std::string &gdPath) {
     const std::string fileName = "cache.json";
 
     std::ofstream out(fileName);
