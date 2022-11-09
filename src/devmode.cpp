@@ -27,28 +27,17 @@ void gencache(const std::string &gdPath) {
     auto iterator = fs::directory_iterator(path);
 
     for (auto file : iterator) {
-        std::string fileName = getNameFromPath(file.path().string());
+        std::string fileName = Utils::getNameFromPath(file.path().string());
         uintmax_t fileSize = fs::file_size(file.path());
         jsonFile[fileName] = fileSize;
-#ifdef _DEBUG
-        fmt::print(fg(DEBUG_COLOR), "[DEBUG]: ");
-        fmt::print("File {}, size {}\n", fileName, fileSize);
-#endif
+
+        if (Utils::isDebug()) {
+            fmt::print(fg(DEBUG_COLOR), "[DEBUG]: ");
+            fmt::print("File {}, size {}\n", fileName, fileSize);
+        }
     }
     out << jsonFile;
     out.close();
     fmt::print(fg(SUCCESS_COLOR), "[SUCCESS]: ");
     fmt::print("Exported vanilla file sizes to {}!\n", fileName);
-}
-
-std::string getNameFromPath(const std::string &path) {
-    std::string temp = path;
-    char separator = '/';
-#if defined(_WIN32)
-    separator = '\\';
-#endif
-    if (temp.at(temp.length() - 1) == separator)
-        temp.pop_back();
-    return temp.substr(temp.find_last_of(separator) + 1,
-                       (temp.length() - temp.find_last_of(separator)));
 }

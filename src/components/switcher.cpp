@@ -59,7 +59,7 @@ void Switcher::setActivePack(Pack *pack, bool fromRevert) {
     auto iterator = fs::directory_iterator(packPathFiles);
     for (auto file : iterator) {
         std::string tempStr = file.path().string();
-        std::string fileName = getNameFromPath(tempStr);
+        std::string fileName = Utils::getNameFromPath(tempStr);
         if (packName == "vanilla" &&
             m_config->getActivePack()->getJson()["name"] != "vanilla") {
             std::vector<std::string> cache =
@@ -91,15 +91,15 @@ void Switcher::setActivePack(Pack *pack, bool fromRevert) {
     if (m_config->getActivePack()->getJson()["name"] == "vanilla") {
         vanillaPathStr = m_config->getActivePack()->getJson()["path"];
         vanillaPathStr += separator + "Resources";
-        if (vanillaPathStr.at(vanillaPathStr.length() - 1) ==
-            separator.c_str()[0])
+
+        if (vanillaPathStr.at(vanillaPathStr.length() - 1) == separator.c_str()[0])
             vanillaPathStr.pop_back();
     }
 
     iterator = fs::directory_iterator(gdResPathFiles);
 
     for (auto file : iterator) {
-        std::string fileName = getNameFromPath(file.path().string());
+        std::string fileName = Utils::getNameFromPath(file.path().string());
         auto neededFile = std::find(filesToCopy.begin(), filesToCopy.end(), fileName);
         if (neededFile != std::end(filesToCopy)) {
             // Move original files to vanilla pack
@@ -114,9 +114,8 @@ void Switcher::setActivePack(Pack *pack, bool fromRevert) {
     try {
         iterator = fs::directory_iterator(gdResPathFiles);
         for (auto file : iterator) {
-            std::string fileName = getNameFromPath(file.path().string());
-            auto neededFile =
-                std::find(filesToCopy.begin(), filesToCopy.end(), fileName);
+            std::string fileName = Utils::getNameFromPath(file.path().string());
+            auto neededFile = std::find(filesToCopy.begin(), filesToCopy.end(), fileName);
             if (neededFile != std::end(filesToCopy)) {
                 std::string originString = packPathFiles.string() + separator + fileName;
                 fs::path origin = originString;
@@ -135,18 +134,4 @@ void Switcher::setActivePack(Pack *pack, bool fromRevert) {
         fmt::print(fg(ERROR_COLOR), "[ERROR]: ");
         fmt::print("{}\n", e.what());
     }
-}
-std::string Switcher::getNameFromPath(const std::string &path) {
-    std::string temp = path;
-    char separator = '/';
-
-#if defined(_WIN32)
-    separator = '\\';
-#endif
-    if (temp.at(temp.length() - 1) == separator) {
-        temp.pop_back();
-    }
-
-    return temp.substr(temp.find_last_of(separator) + 1,
-                       (temp.length() - temp.find_last_of(separator)));
 }

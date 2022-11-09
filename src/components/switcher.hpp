@@ -7,6 +7,7 @@
 #include "../types/colors.hpp"
 #include "config.hpp"
 #include "pack.hpp"
+#include "../utils.hpp"
 
 namespace fs = std::filesystem;
 
@@ -18,6 +19,5 @@ class Switcher {
   public:
     bool init(Config *config);
     void setActivePack(Pack *pack, bool fromRevert);
-    std::string getNameFromPath(const std::string &path);
     void setDefaultActivePack(const std::string &name);
 };
